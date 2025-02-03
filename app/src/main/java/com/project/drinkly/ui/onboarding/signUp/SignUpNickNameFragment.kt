@@ -5,13 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import com.project.drinkly.R
-import com.project.drinkly.databinding.FragmentSignUpPassBinding
+import com.project.drinkly.databinding.FragmentSignUpNicknameBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.home.HomeMapFragment
 
-class SignUpPassFragment : Fragment() {
+class SignUpNickNameFragment : Fragment() {
 
-    lateinit var binding: FragmentSignUpPassBinding
+    lateinit var binding: FragmentSignUpNicknameBinding
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
@@ -19,16 +21,25 @@ class SignUpPassFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentSignUpPassBinding.inflate(layoutInflater)
+        binding = FragmentSignUpNicknameBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
         binding.run {
+            editTextNickname.addTextChangedListener {
+               if(editTextNickname.text.isNotEmpty()) {
+                   buttonNext.isEnabled = true
+               } else {
+                   buttonNext.isEnabled = false
+               }
+            }
+
+            editTextNickname.setOnEditorActionListener { textView, i, keyEvent ->
+                // 닉네임 중복 확인
+
+                true
+            }
+
             buttonNext.setOnClickListener {
-                // 패스 본인인증
-                mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, SignUpNickNameFragment())
-                    .addToBackStack(null)
-                    .commit()
             }
         }
 
@@ -45,11 +56,12 @@ class SignUpPassFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "본인 인증"
+                textViewTitle.text = "정보 입력"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }
             }
         }
     }
+
 }
