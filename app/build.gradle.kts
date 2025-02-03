@@ -53,4 +53,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // onboarding dot indicator
+    implementation("com.tbuonomo:dotsindicator:5.1.0")
 }
