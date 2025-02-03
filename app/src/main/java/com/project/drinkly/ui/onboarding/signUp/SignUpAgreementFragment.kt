@@ -47,6 +47,10 @@ class SignUpAgreementFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, SignUpPassFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
