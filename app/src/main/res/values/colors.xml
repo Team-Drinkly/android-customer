@@ -2,4 +2,35 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- background 색상 -->
+    <color name="background">#101012</color>
+    <color name="card_background">#17181D</color>
+    <color name="dialog_background">#1E212A</color>
+
+    <!-- gray 색상 -->
+    <color name="gray1">#FAFAFE</color>
+    <color name="gray2">#F7F8FB</color>
+    <color name="gray3">#EFF1F5</color>
+    <color name="gray4">#E2E5EB</color>
+    <color name="gray5">#D2D6DE</color>
+    <color name="gray6">#A4ADBE</color>
+    <color name="gray7">#71788C</color>
+    <color name="gray8">#585E70</color>
+    <color name="gray9">#353C49</color>
+    <color name="gray10">#1C1E1F</color>
+
+    <!-- primary 색상 -->
+    <color name="primary_10">#DCE1FB</color>
+    <color name="primary_20">#A8B3F5</color>
+    <color name="primary_30">#8595F2</color>
+    <color name="primary_40">#7486F0</color>
+    <color name="primary_50">#5168EC</color>
+
+    <!-- sub 색상 -->
+    <color name="red_5">#FFF4F4</color>
+    <color name="red">#EF4C43</color>
+    <color name="green_5">#EFFFEF</color>
+    <color name="green">#309C51</color>
+    <color name="yellow">#FDCF59</color>
 </resources>
