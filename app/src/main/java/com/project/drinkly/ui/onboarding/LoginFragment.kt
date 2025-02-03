@@ -29,6 +29,14 @@ class LoginFragment : Fragment() {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         mainActivity = activity as MainActivity
 
+        binding.root.post {
+            setupViewPager()  // post()를 사용하여 뷰가 완전히 생성된 후 실행
+        }
+
+        return binding.root
+    }
+
+    private fun setupViewPager() {
         binding.run {
             viewPager.run {
                 adapter = MainFragmentStateAdapter(mainActivity)
@@ -47,8 +55,6 @@ class LoginFragment : Fragment() {
                 })
             }
         }
-
-        return binding.root
     }
 
     private val autoSlideRunnable = object : Runnable {
