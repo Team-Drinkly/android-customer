@@ -96,6 +96,11 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        mainActivity.hideBottomNavigation(true)
+    }
+
     private fun setupViewPager() {
         binding.run {
             viewPager.run {

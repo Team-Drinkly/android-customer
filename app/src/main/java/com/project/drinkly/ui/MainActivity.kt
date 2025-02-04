@@ -66,4 +66,20 @@ class MainActivity : AppCompatActivity() {
             Log.e("KeyHash", "Exception: $e")
         }
     }
+
+    fun hideKeyboard() {
+        val currentFocusView = currentFocus
+        if (currentFocusView != null) {
+            val inputManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(
+                currentFocusView.windowToken,
+                InputMethodManager.HIDE_NOT_ALWAYS
+            )
+        }
+    }
+
+    fun hideBottomNavigation(state: Boolean) {
+        if (state) binding.bottomNavigationView.visibility =
+            View.GONE else binding.bottomNavigationView.visibility = View.VISIBLE
+    }
 }
