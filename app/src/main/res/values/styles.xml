@@ -60,4 +60,24 @@
         <item name="android:fontFamily">@font/pretendard_semi_bold</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <!-- Button -->
+    <style name="NextButton" parent="HeadLine3">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="android:backgroundTint">@drawable/background_button_next</item>
+        <item name="android:paddingVertical">13dp</item>
+    </style>
+
+    <!-- 회원가입 입력창 -->
+    <style name="SignUpEditText" parent="body2">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textColor">@color/gray2</item>
+        <item name="android:textColorHint">@color/gray6</item>
+        <item name="android:background">@drawable/background_edittext_default</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">18dp</item>
+    </style>
 </resources>
