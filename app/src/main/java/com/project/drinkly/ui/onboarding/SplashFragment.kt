@@ -23,7 +23,11 @@ class SplashFragment : Fragment() {
         binding = FragmentSplashBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        mainActivity.hideBottomNavigation(true)
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMyLocationButton(true)
+            hideMapButton(true)
+        }
 
         Handler().postDelayed({
             mainActivity.supportFragmentManager.beginTransaction()

@@ -40,6 +40,10 @@ class SignUpNickNameFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, HomeMapFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
@@ -52,7 +56,11 @@ class SignUpNickNameFragment : Fragment() {
     }
 
     fun initView() {
-        mainActivity.hideBottomNavigation(true)
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMyLocationButton(true)
+            hideMapButton(true)
+        }
 
         binding.run {
             toolbar.run {

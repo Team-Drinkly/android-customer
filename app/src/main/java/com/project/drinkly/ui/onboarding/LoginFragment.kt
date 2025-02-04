@@ -19,6 +19,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentLoginBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.home.HomeMapFragment
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
 
 class LoginFragment : Fragment() {
@@ -60,6 +61,10 @@ class LoginFragment : Fragment() {
         binding.run {
             buttonSeek.setOnClickListener {
                 // 제휴업체 둘러보기
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, HomeMapFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
 
             buttonKakao.setOnClickListener {
@@ -98,7 +103,11 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        mainActivity.hideBottomNavigation(true)
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMyLocationButton(true)
+            hideMapButton(true)
+        }
     }
 
     private fun setupViewPager() {

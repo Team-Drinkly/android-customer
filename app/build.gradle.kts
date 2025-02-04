@@ -26,6 +26,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "KAKAO_APP_KEY", "\"${properties["kakao_key"]}\"")
+        buildConfigField("String", "MAP_API_KEY", "\"${properties["map_client_id"]}\"")
 //        buildConfigField("String", "SERVER_URL", properties.getProperty("SERVER_URL"))
 
         manifestPlaceholders["kakao_native_key"] = kakaoNativeKey
@@ -70,7 +71,13 @@ dependencies {
 
     // onboarding dot indicator
     implementation("com.tbuonomo:dotsindicator:5.1.0")
+    // tooltip
+    implementation("com.github.skydoves:balloon:1.6.6")
 
     // 카카오 로그인
     implementation("com.kakao.sdk:v2-user:2.20.6")
+
+    // 네이버 지도
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.naver.maps:map-sdk:3.19.1")
 }

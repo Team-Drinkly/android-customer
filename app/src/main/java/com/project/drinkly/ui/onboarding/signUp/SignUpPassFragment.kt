@@ -41,7 +41,11 @@ class SignUpPassFragment : Fragment() {
     }
 
     fun initView() {
-        mainActivity.hideBottomNavigation(true)
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMyLocationButton(true)
+            hideMapButton(true)
+        }
 
         binding.run {
             toolbar.run {
