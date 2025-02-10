@@ -23,6 +23,7 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentHomeMapBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.onboarding.signUp.SignUpNickNameFragment
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
@@ -65,9 +66,16 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             }
 
             locationSource = FusedLocationSource(this@HomeMapFragment, LOCATION_PERMISSTION_REQUEST_CODE)
+        }
 
-            mainActivity.binding.buttonList.setOnClickListener {
-                showToolTip()
+        mainActivity.binding.buttonList.run {
+            setImageResource(R.drawable.ic_list)
+            setOnClickListener {
+                // 제휴업체 - 리스트 화면으로 전환
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, HomeListFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
@@ -122,7 +130,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             // 위치가 유효할 때 카메라 이동
             val cameraUpdate = CameraUpdate.scrollAndZoomTo(
                 LatLng(lastLocation.latitude, lastLocation.longitude),
-                18.0 // 적절한 줌 레벨
+                12.0 // 줌 레벨
             ).animate(CameraAnimation.Easing)
             naverMap.moveCamera(cameraUpdate)
         } else {
@@ -205,12 +213,29 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             setLayerGroupEnabled(NaverMap.LAYER_GROUP_BUILDING, true)
             isIndoorEnabled = true
             isNightModeEnabled = true
-            uiSettings.setLogoMargin(40, 0, 40, 300)
-            uiSettings.isScaleBarEnabled = false
+            uiSettings.run {
+                setLogoMargin(40, 0, 40, 300)
+                isScaleBarEnabled = false
+                isZoomControlEnabled = false
+            }
         }
 
         // 위치 소스 연결
         naverMap.locationSource = locationSource
+
+        // 현재 위치 가져오기 & 초기 지도 설정
+        val lastLocation = locationSource.lastLocation
+        if (lastLocation != null) {
+            // 위치 정보가 있을 경우, 현재 위치로 지도 초기화
+            val currentLatLng = LatLng(lastLocation.latitude, lastLocation.longitude)
+            val cameraUpdate = CameraUpdate.scrollAndZoomTo(currentLatLng, 12.0).animate(CameraAnimation.Easing)
+            naverMap.moveCamera(cameraUpdate)
+        } else {
+            // 위치 정보가 없을 경우, 추적 모드 활성화 (현재 위치 자동 업데이트)
+            checkLocationPermission()
+//            naverMap.locationTrackingMode = LocationTrackingMode.Follow
+//            Log.d("MapFragment", "현재 위치 정보를 가져올 수 없어 추적 모드 활성화")
+        }
 
         // 확대 축소 범위 설정
         naverMap.maxZoom = 20.0
@@ -224,13 +249,6 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
         marker.position = LatLng(latitude, longitude)
         marker.icon = OverlayImage.fromResource(R.drawable.ic_marker_enabled)
         marker.map = naverMap
-
-        // 초기 위치 및 줌 레벨 설정
-        val cameraUpdate = CameraUpdate.scrollAndZoomTo(
-            LatLng(latitude, longitude),
-            12.0 // 초기 줌 레벨
-        ).animate(CameraAnimation.Easing)
-        naverMap.moveCamera(cameraUpdate)
 
         // 위치 추적 모드 설정
         naverMap.locationTrackingMode = LocationTrackingMode.None
