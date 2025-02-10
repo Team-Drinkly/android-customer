@@ -1,4 +1,4 @@
-package com.project.drinkly.ui.home
+package com.project.drinkly.ui.store
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentHomeListBinding
 import com.project.drinkly.ui.MainActivity
 
-class HomeListFragment : Fragment() {
+class StoreListFragment : Fragment() {
 
     lateinit var binding: FragmentHomeListBinding
     lateinit var mainActivity: MainActivity
@@ -30,7 +30,7 @@ class HomeListFragment : Fragment() {
             setOnClickListener {
                 // 제휴업체 - 리스트 화면으로 전환
                 mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, HomeMapFragment())
+                    .replace(R.id.fragmentContainerView_main, StoreMapFragment())
                     .addToBackStack(null)
                     .commit()
             }

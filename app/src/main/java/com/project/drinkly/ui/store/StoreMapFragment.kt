@@ -1,4 +1,4 @@
-package com.project.drinkly.ui.home
+package com.project.drinkly.ui.store
 
 import android.os.Bundle
 import android.os.Handler
@@ -23,7 +23,6 @@ import com.naver.maps.map.util.FusedLocationSource
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentHomeMapBinding
 import com.project.drinkly.ui.MainActivity
-import com.project.drinkly.ui.onboarding.signUp.SignUpNickNameFragment
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
 import com.skydoves.balloon.Balloon
@@ -31,7 +30,7 @@ import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.showAlignStart
 
-class HomeMapFragment : Fragment(), OnMapReadyCallback {
+class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
     lateinit var binding: FragmentHomeMapBinding
     lateinit var mainActivity: MainActivity
@@ -65,7 +64,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
                 checkLocationPermission()
             }
 
-            locationSource = FusedLocationSource(this@HomeMapFragment, LOCATION_PERMISSTION_REQUEST_CODE)
+            locationSource = FusedLocationSource(this@StoreMapFragment, LOCATION_PERMISSTION_REQUEST_CODE)
         }
 
         mainActivity.binding.buttonList.run {
@@ -73,7 +72,7 @@ class HomeMapFragment : Fragment(), OnMapReadyCallback {
             setOnClickListener {
                 // 제휴업체 - 리스트 화면으로 전환
                 mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, HomeListFragment())
+                    .replace(R.id.fragmentContainerView_main, StoreListFragment())
                     .addToBackStack(null)
                     .commit()
             }

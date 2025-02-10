@@ -19,7 +19,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentLoginBinding
 import com.project.drinkly.ui.MainActivity
-import com.project.drinkly.ui.home.HomeMapFragment
+import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
 
 class LoginFragment : Fragment() {
@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
             buttonSeek.setOnClickListener {
                 // 제휴업체 둘러보기
                 mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, HomeMapFragment())
+                    .replace(R.id.fragmentContainerView_main, StoreMapFragment())
                     .addToBackStack(null)
                     .commit()
             }
