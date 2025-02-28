@@ -21,7 +21,7 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.project.drinkly.R
-import com.project.drinkly.databinding.FragmentHomeMapBinding
+import com.project.drinkly.databinding.FragmentStoreMapBinding
 import com.project.drinkly.ui.MainActivity
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
@@ -32,7 +32,7 @@ import com.skydoves.balloon.showAlignStart
 
 class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
-    lateinit var binding: FragmentHomeMapBinding
+    lateinit var binding: FragmentStoreMapBinding
     lateinit var mainActivity: MainActivity
 
     private lateinit var mapView: MapView
@@ -48,7 +48,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentHomeMapBinding.inflate(layoutInflater)
+        binding = FragmentStoreMapBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
         mapView = binding.mapView
