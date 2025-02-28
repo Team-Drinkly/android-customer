@@ -23,6 +23,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+        buildConfigField("String", "SERVER_URL", "\"${properties["server_url"]}\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "KAKAO_APP_KEY", "\"${properties["kakao_key"]}\"")
@@ -68,6 +70,18 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // api
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0") // JSON 변환
+    implementation("com.squareup.okhttp3:okhttp:4.10.0") // OkHttp 라이브러리
+    implementation("com.squareup.okhttp3:logging-interceptor:3.11.0")
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
+    implementation("com.squareup.okhttp3:okhttp-urlconnection:4.9.0")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.13.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
 
     // onboarding dot indicator
     implementation("com.tbuonomo:dotsindicator:5.1.0")
