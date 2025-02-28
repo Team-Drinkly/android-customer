@@ -20,6 +20,11 @@
         <item name="android:fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">20sp</item>
     </style>
+    
+    <style name="HeadLine5">
+        <item name="android:fontFamily">@font/pretendard_bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
     <style name="SubTitle1">
         <item name="android:fontFamily">@font/pretendard_semi_bold</item>
@@ -79,5 +84,14 @@
         <item name="android:background">@drawable/background_edittext_default</item>
         <item name="android:paddingHorizontal">16dp</item>
         <item name="android:paddingVertical">18dp</item>
+    </style>
+
+    <!-- 이미지 round style - 5dp -->
+    <style name="RoundSector5">
+        <item name="cornerSizeTopLeft">5dp</item>
+        <item name="cornerSizeTopRight">5dp</item>
+        <item name="cornerSizeBottomRight">5dp</item>
+        <item name="cornerSizeBottomLeft">5dp</item>
+        <item name="cornerFamily">rounded</item>
     </style>
 </resources>

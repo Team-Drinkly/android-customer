@@ -82,4 +82,14 @@ class MainActivity : AppCompatActivity() {
         if (state) binding.bottomNavigationView.visibility =
             View.GONE else binding.bottomNavigationView.visibility = View.VISIBLE
     }
+
+    fun hideMapButton(state: Boolean) {
+        if (state) binding.buttonList.visibility =
+            View.GONE else binding.buttonList.visibility = View.VISIBLE
+    }
+
+    fun hideMyLocationButton(state: Boolean) {
+        if (state) binding.buttonMyLocation.visibility =
+            View.GONE else binding.buttonMyLocation.visibility = View.VISIBLE
+    }
 }

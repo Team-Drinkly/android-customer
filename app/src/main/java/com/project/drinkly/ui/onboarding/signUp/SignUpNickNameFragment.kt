@@ -9,7 +9,7 @@ import androidx.core.widget.addTextChangedListener
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSignUpNicknameBinding
 import com.project.drinkly.ui.MainActivity
-import com.project.drinkly.ui.home.HomeMapFragment
+import com.project.drinkly.ui.store.StoreMapFragment
 
 class SignUpNickNameFragment : Fragment() {
 
@@ -40,6 +40,10 @@ class SignUpNickNameFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, StoreMapFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
@@ -52,7 +56,11 @@ class SignUpNickNameFragment : Fragment() {
     }
 
     fun initView() {
-        mainActivity.hideBottomNavigation(true)
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMyLocationButton(true)
+            hideMapButton(true)
+        }
 
         binding.run {
             toolbar.run {
