@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.kakao.sdk.auth.model.OAuthToken
@@ -21,11 +22,14 @@ import com.project.drinkly.databinding.FragmentLoginBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
+import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 
 class LoginFragment : Fragment() {
 
     lateinit var binding: FragmentLoginBinding
     lateinit var mainActivity: MainActivity
+
+    lateinit var viewModel: LoginViewModel
 
     private val handler = Handler(Looper.getMainLooper())  // UI 스레드 핸들러
     private val delay: Long = 3000 // 자동 슬라이드 시간 (3초)
@@ -39,10 +43,7 @@ class LoginFragment : Fragment() {
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
             // 로그인 기능 구현
-            mainActivity.supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView_main, SignUpAgreementFragment())
-                .addToBackStack(null)
-                .commit()
+            viewModel.login(mainActivity, "KAKAO", token.accessToken.toString())
         }
     }
 
@@ -53,6 +54,7 @@ class LoginFragment : Fragment() {
 
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         mainActivity = activity as MainActivity
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         binding.root.post {
             setupViewPager()  // post()를 사용하여 뷰가 완전히 생성된 후 실행
@@ -86,10 +88,7 @@ class LoginFragment : Fragment() {
                         } else if (token != null) {
                             Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
                             // 로그인 기능 구현
-                            mainActivity.supportFragmentManager.beginTransaction()
-                                .replace(R.id.fragmentContainerView_main, SignUpAgreementFragment())
-                                .addToBackStack(null)
-                                .commit()
+                            viewModel.login(mainActivity, "KAKAO", token.accessToken.toString())
                         }
                     }
                 } else {

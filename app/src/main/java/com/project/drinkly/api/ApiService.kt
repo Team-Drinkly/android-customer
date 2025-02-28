@@ -11,4 +11,10 @@ import retrofit2.http.PartMap
 import retrofit2.http.Path
 
 interface ApiService {
+    // OAuth로그인
+    @POST("/api/v1/member/oauth/MEMBER/{provider}")
+    fun login(
+        @Path("provider") provider: String,
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<LoginResponse>>
 }
