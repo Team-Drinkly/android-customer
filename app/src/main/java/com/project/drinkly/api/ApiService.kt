@@ -1,6 +1,7 @@
 package com.project.drinkly.api
 
 import com.project.drinkly.api.response.BaseResponse
+import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import okhttp3.RequestBody
@@ -36,4 +37,10 @@ interface ApiService {
         @Query("enc_data") enc_data: String,
         @Query("integrity_value") integrity_value: String
     ): Call<BaseResponse<String>>
+
+    // 닉네임 중복 확인
+    @GET("/api/v1/member/nickname/duplicate/{nickname}")
+    fun checkNicknameDuplicate(
+        @Path("nickname") nickname: String
+    ): Call<BaseResponse<CheckNicknameDuplicateResponse>>
 }
