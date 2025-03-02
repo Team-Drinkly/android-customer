@@ -22,6 +22,9 @@
         android:theme="@style/Theme.Drinkly"
         tools:targetApi="31">
         <activity
+            android:name=".ui.onboarding.signUp.PassWebActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
@@ -29,17 +32,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- 카카오 로그인, 인가코드를 받기 위한 액티비티 -->
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+        </activity> <!-- 카카오 로그인, 인가코드를 받기 위한 액티비티 -->
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="oauth"
+                <data
+                    android:host="oauth"
                     android:scheme="${kakao_native_key}" />
             </intent-filter>
         </activity>

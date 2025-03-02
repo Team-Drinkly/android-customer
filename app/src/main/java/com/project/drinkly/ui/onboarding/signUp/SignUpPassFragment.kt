@@ -1,5 +1,6 @@
 package com.project.drinkly.ui.onboarding.signUp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import android.view.ViewGroup
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSignUpPassBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.store.StoreMapFragment
+import com.project.drinkly.util.MyApplication
 
 class SignUpPassFragment : Fragment() {
 
@@ -25,10 +28,8 @@ class SignUpPassFragment : Fragment() {
         binding.run {
             buttonNext.setOnClickListener {
                 // 패스 본인인증
-                mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, SignUpNickNameFragment())
-                    .addToBackStack(null)
-                    .commit()
+                val passIntent = Intent(mainActivity, PassWebActivity::class.java)
+                startActivity(passIntent)
             }
         }
 
@@ -38,6 +39,16 @@ class SignUpPassFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initView()
+
+        if(MyApplication.signUpPassAuthorization) {
+            // 패스 인증 완료 후 회원가입 - 닉네임 화면 이동
+            MyApplication.signUpPassAuthorization = false
+
+            mainActivity.supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainerView_main, SignUpNickNameFragment())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     fun initView() {
