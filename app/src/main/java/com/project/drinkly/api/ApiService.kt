@@ -6,6 +6,7 @@ import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
+import com.project.drinkly.api.response.store.StoreListResponse
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -52,4 +53,13 @@ interface ApiService {
     fun signUp(
         @Body parameters: SignUpRequest
     ): Call<BaseResponse<SignUpResponse>>
+
+    // 제휴업체 조회
+    @GET("/api/v1/store/m/list")
+    fun getStoreList(
+        @Query("latitude") latitude: String,
+        @Query("longitude") longitude: String,
+        @Query("radius") radius: Int,
+        @Query("searchKeyword") searchKeyword: String?
+    ): Call<BaseResponse<List<StoreListResponse>>>
 }
