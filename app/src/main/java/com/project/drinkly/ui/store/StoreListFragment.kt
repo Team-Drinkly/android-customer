@@ -6,19 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project.drinkly.R
-import com.project.drinkly.databinding.FragmentHomeListBinding
+import com.project.drinkly.databinding.FragmentStoreListBinding
 import com.project.drinkly.ui.MainActivity
 
 class StoreListFragment : Fragment() {
 
-    lateinit var binding: FragmentHomeListBinding
+    lateinit var binding: FragmentStoreListBinding
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeListBinding.inflate(layoutInflater)
+        binding = FragmentStoreListBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
         binding.run {
