@@ -1,11 +1,14 @@
 package com.project.drinkly.api
 
+import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
+import com.project.drinkly.api.response.login.SignUpResponse
 import okhttp3.RequestBody
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -43,4 +46,10 @@ interface ApiService {
     fun checkNicknameDuplicate(
         @Path("nickname") nickname: String
     ): Call<BaseResponse<CheckNicknameDuplicateResponse>>
+
+    // 회원가입 - 정보 저장
+    @POST("/api/v1/member/signup")
+    fun signUp(
+        @Body parameters: SignUpRequest
+    ): Call<BaseResponse<SignUpResponse>>
 }

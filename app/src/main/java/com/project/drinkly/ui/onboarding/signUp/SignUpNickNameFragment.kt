@@ -69,10 +69,7 @@ class SignUpNickNameFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
-                mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, StoreMapFragment())
-                    .addToBackStack(null)
-                    .commit()
+                viewModel.signUp(mainActivity, editTextNickname.text.toString())
             }
         }
 
