@@ -13,6 +13,7 @@ import com.project.drinkly.databinding.FragmentStoreDetailBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreImagePagerAdapter
+import com.project.drinkly.ui.store.adapter.StoreMenuImageAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 
 class StoreDetailFragment : Fragment() {
@@ -22,7 +23,7 @@ class StoreDetailFragment : Fragment() {
     lateinit var viewModel: StoreViewModel
 
     lateinit var storeMainImageAdapter: StoreImagePagerAdapter
-    lateinit var storeMenuImageAdapter: StoreImagePagerAdapter
+    lateinit var storeMenuImageAdapter: StoreMenuImageAdapter
     lateinit var storeAvaiableDrinkAdapter: StoreAvailableDrinkAdapter
 
     private var getStoreDetailInfo: StoreDetailResponse? = null
@@ -44,7 +45,7 @@ class StoreDetailFragment : Fragment() {
                 }
             }
         }
-        storeMenuImageAdapter = StoreImagePagerAdapter(mainActivity, listOf())
+        storeMenuImageAdapter = StoreMenuImageAdapter(mainActivity, listOf())
         storeAvaiableDrinkAdapter = StoreAvailableDrinkAdapter(mainActivity, listOf())
 
         observeViewModel()
