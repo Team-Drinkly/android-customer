@@ -27,7 +27,52 @@ class SubscribeFragment : Fragment() {
         mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(this)[SubscribeViewModel::class.java]
 
+        observeViewModel()
+
+        viewModel.getUserId(mainActivity)
+
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        initView()
+
+        mainActivity.run {
+            hideMapButton(true)
+            hideMyLocationButton(true)
+        }
+    }
+
+    fun observeViewModel() {
+        viewModel.run {
+            userInfo.observe(viewLifecycleOwner) {
+                binding.run {
+                    textViewNickname.text = "${it?.nickname}님"
+                    if(it?.isSubscribe == true) {
+                        layoutMembershipButton.visibility = View.GONE
+                        textViewExpirationDday.text = "D-${it.subscribeInfo?.leftDays}"
+                        textViewExpirationDay.text = "${it.subscribeInfo?.expiredDate} 만료"
+                        textViewMembershipUsedNumber.text = "${it.subscribeInfo?.usedCount}회"
+                    } else {
+                        layoutSubscribe.visibility = View.GONE
+                        layoutMembershipInfo.visibility = View.GONE
+
+                        buttonSubscribeMembership.setOnClickListener {
+                            // 멤버십 구독 화면으로 전환
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun initView() {
+        binding.run {
+            toolbar.run {
+                textViewTitle.text = "구독"
+            }
+        }
+    }
 }

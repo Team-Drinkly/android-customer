@@ -16,6 +16,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.project.drinkly.R
 import com.project.drinkly.databinding.ActivityMainBinding
+import com.project.drinkly.ui.store.StoreDetailFragment
+import com.project.drinkly.ui.store.StoreMapFragment
+import com.project.drinkly.ui.subscribe.SubscribeFragment
 import com.project.drinkly.util.MainUtil.setStatusBarTransparent
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -33,13 +36,8 @@ class MainActivity : AppCompatActivity() {
         this.setStatusBarTransparent()
         getKeyHash()
 
-//        enableEdgeToEdge()
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
+        setBottomNavigationView()
 
 
         window.apply {
@@ -48,6 +46,34 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private fun setBottomNavigationView() {
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_home -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, StoreMapFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+
+                R.id.menu_subscribe -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, SubscribeFragment())
+                        .addToBackStack(null)
+                        .commit()
+                    true
+                }
+
+                R.id.menu_mypage -> {
+                    true
+                }
+
+                else -> false
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.P)
