@@ -76,9 +76,18 @@ class StoreListFragment : Fragment() {
         ).apply {
             itemClickListener = object : StoreListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+//                    viewModel.getStoreDetail(mainActivity, getStoreList[position].id)
                     // 제휴업체 - 세부 화면으로 전환
+                    var nextFragment = StoreDetailFragment()
+
+                    val bundle = Bundle().apply { putLong("storeId", getStoreList[position].id) }
+
+                    // 전달할 Fragment 생성
+                    nextFragment = StoreDetailFragment().apply {
+                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                    }
                     mainActivity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView_main, StoreDetailFragment())
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
                         .addToBackStack(null)
                         .commit()
                 }

@@ -11,24 +11,10 @@
         layout="@layout/toolbar_back_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_membership"
-        style="@style/HeadLine3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="30dp"
-        android:paddingVertical="13dp"
-        android:text="멤버십 구독하러 가기"
-        android:textColor="@color/gray1"
-        android:translationZ="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -42,15 +28,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/imageView_store"
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/viewPager_store_image"
                 android:layout_width="0dp"
-                android:layout_height="240dp"
+                android:layout_height="335dp"
                 android:scaleType="centerCrop"
+                android:layout_marginHorizontal="0.5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout2"
@@ -60,10 +46,10 @@
                 android:padding="14dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView_store">
+                app:layout_constraintTop_toBottomOf="@+id/viewPager_store_image">
 
                 <TextView
-                    android:id="@+id/textView_store_info"
+                    android:id="@+id/textView_store_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_regular"
@@ -80,13 +66,13 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="15dp"
                     android:background="@color/gray8"
-                    app:layout_constraintEnd_toEndOf="@+id/textView_store_info"
-                    app:layout_constraintStart_toStartOf="@+id/textView_store_info"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_store_info" />
+                    app:layout_constraintEnd_toEndOf="@+id/textView_store_description"
+                    app:layout_constraintStart_toStartOf="@+id/textView_store_description"
+                    app:layout_constraintTop_toBottomOf="@+id/textView_store_description" />
 
 
                 <LinearLayout
-                    android:id="@+id/layout_store_location"
+                    android:id="@+id/layout_store_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -96,14 +82,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/divider_store_info">
 
                     <ImageView
-                        android:id="@+id/imageView_store_location"
+                        android:id="@+id/imageView_store_address"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_marker" />
 
                     <TextView
-                        android:id="@+id/textView_store_location"
+                        android:id="@+id/textView_store_address"
                         style="@style/body3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -120,8 +106,8 @@
                     android:layout_marginTop="13dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/layout_store_location"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_store_location">
+                    app:layout_constraintStart_toStartOf="@+id/layout_store_address"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_store_address">
 
                     <ImageView
                         android:id="@+id/imageView_store_time"
@@ -152,7 +138,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout_store_available"
+                    android:id="@+id/layout_store_available_days"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
@@ -162,14 +148,14 @@
                     app:layout_constraintTop_toBottomOf="@+id/layout_store_time">
 
                     <ImageView
-                        android:id="@+id/imageView_store_available"
+                        android:id="@+id/imageView_store_available_days"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
                         app:srcCompat="@drawable/ic_calendar" />
 
                     <TextView
-                        android:id="@+id/textView_store_available_title"
+                        android:id="@+id/textView_store_available_days_title"
                         style="@style/body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -179,7 +165,7 @@
                         android:textColor="@color/gray1" />
 
                     <TextView
-                        android:id="@+id/textView_store_available_value"
+                        android:id="@+id/textView_store_available_days_value"
                         style="@style/body3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -196,8 +182,8 @@
                     android:layout_marginTop="13dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/layout_store_available"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_store_available">
+                    app:layout_constraintStart_toStartOf="@+id/layout_store_available_days"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_store_available_days">
 
                     <ImageView
                         android:id="@+id/imageView_store_call"
@@ -293,4 +279,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView_menu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/button_membership"
+        style="@style/HeadLine3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="30dp"
+        android:paddingVertical="13dp"
+        android:text="멤버십 구독하러 가기"
+        android:textColor="@color/gray1"
+        android:translationZ="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package com.project.drinkly.api.response.store
 
 data class StoreListResponse(
-    val id: Int,
+    val id: Long,
     val storeName: String?,
     val storeMainImageUrl: String?,
     val latitude: String?,

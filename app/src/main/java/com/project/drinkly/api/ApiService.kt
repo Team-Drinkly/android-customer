@@ -62,4 +62,10 @@ interface ApiService {
         @Query("radius") radius: Int,
         @Query("searchKeyword") searchKeyword: String?
     ): Call<BaseResponse<List<StoreListResponse>>>
+
+    // 제휴업체 상세 조회
+    @GET("/api/v1/store/m/list/{storeId}")
+    fun getStoreDetail(
+        @Path("storeId") storeId: Long
+    ): Call<BaseResponse<StoreDetailResponse>>
 }
