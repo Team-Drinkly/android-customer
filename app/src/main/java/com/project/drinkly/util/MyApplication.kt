@@ -10,5 +10,10 @@ class MyApplication : Application() {
         // 회원가입 정보
         var oauthId = 0
         var signUpPassAuthorization = false
+
+        // 지도
+        var latitude = ""
+        var longitude = ""
+        var radius = 0
     }
 }

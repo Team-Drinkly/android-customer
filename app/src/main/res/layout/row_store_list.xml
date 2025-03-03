@@ -2,21 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_store_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingHorizontal="14dp"
     android:paddingVertical="15dp"
-    android:background="@drawable/background_list_card">
+    android:layout_marginBottom="15dp"
+    android:background="@drawable/background_card_radius10">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_store"
-        app:shapeAppearanceOverlay="@style/RoundSector5"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
+        app:shapeAppearanceOverlay="@style/RoundSector5"
         app:srcCompat="@drawable/img_onboarding1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,17 +50,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_store"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView_store"
-        app:layout_constraintTop_toTopOf="@+id/imageView_store">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView_store_name"
             style="@style/HeadLine5"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="가게명"
+            android:maxLines="1"
+            android:minLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -93,7 +97,7 @@
             <TextView
                 android:id="@+id/textView_store_closeOrOpenTime"
                 style="@style/body3"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
