@@ -23,6 +23,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
+import com.project.drinkly.util.MyApplication
 
 class LoginFragment : Fragment() {
 
@@ -102,10 +103,27 @@ class LoginFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        mainActivity.run {
-            hideBottomNavigation(true)
-            hideMyLocationButton(true)
-            hideMapButton(true)
+        initView()
+
+    }
+
+    fun initView() {
+        binding.run {
+            if(arguments?.getBoolean("isEnter", false) == true) {
+                buttonSeek.visibility = View.GONE
+                mainActivity.run {
+                    hideBottomNavigation(false)
+                    hideMyLocationButton(true)
+                    hideMapButton(true)
+                }
+            } else {
+                buttonSeek.visibility = View.VISIBLE
+                mainActivity.run {
+                    hideBottomNavigation(true)
+                    hideMyLocationButton(true)
+                    hideMapButton(true)
+                }
+            }
         }
     }
 

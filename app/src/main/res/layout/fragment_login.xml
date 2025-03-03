@@ -44,60 +44,67 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewPager"
                 app:progressMode="true"
                 app:selectedDotColor="@color/primary_50"
-                tools:layout_editor_absoluteX="94dp" />
+                tools:layout_editor_absoluteX="94dp" >
 
-            <Button
-                android:id="@+id/button_seek"
-                style="@style/SubTitle2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="121dp"
-                android:paddingVertical="15.5dp"
-                android:text="제휴업체 둘러보기"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dots_indicator" />
+            </com.tbuonomo.viewpagerdotsindicator.DotsIndicator>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/button_kakao"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="30dp"
-                android:background="@drawable/background_button_kakao"
-                android:paddingVertical="15.5dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="142dp"
+                tools:layout_editor_absoluteY="120dp"
+                android:layout_marginTop="121dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/button_seek">
+                app:layout_constraintTop_toBottomOf="@+id/dots_indicator"
+                app:layout_constraintBottom_toBottomOf="parent">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/button_seek"
+                    style="@style/SubTitle2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:paddingVertical="15.5dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="제휴업체 둘러보기" />
 
-                    <ImageView
-                        android:id="@+id/imageView_kakao"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/button_kakao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/background_button_kakao"
+                    android:paddingVertical="15.5dp">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_vertical"
-                        android:src="@drawable/ic_kakao" />
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:id="@+id/textView_kakao"
-                        style="@style/SubTitle2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center|center_vertical"
-                        android:layout_marginLeft="10dp"
-                        android:text="카카오로 계속하기"
-                        android:textColor="#21232A" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <ImageView
+                            android:id="@+id/imageView_kakao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_vertical"
+                            android:src="@drawable/ic_kakao" />
+
+                        <TextView
+                            android:id="@+id/textView_kakao"
+                            style="@style/SubTitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|center_vertical"
+                            android:layout_marginLeft="10dp"
+                            android:text="카카오로 계속하기"
+                            android:textColor="#21232A" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
