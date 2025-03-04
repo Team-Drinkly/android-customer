@@ -55,8 +55,9 @@ class StoreMembershipSelectFragment : Fragment() {
 
             buttonNext.setOnClickListener {
                 val bundle = Bundle().apply {
-                    putLong("storeId", 0)
-                    putString("drink", "")
+                    putString("storeName", getStoreDetailInfo?.storeName.toString())
+                    putLong("storeId", getStoreDetailInfo?.storeId ?: 0)
+                    putString("drinkName", getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.description.toString())
                 }
 
                 // 전달할 Fragment 생성
