@@ -142,9 +142,13 @@ class LoginViewModel : ViewModel() {
                         val result: BaseResponse<String>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        MyApplication.signUpPassAuthorization = true
-
                         activity.finish()
+
+                        if(response.body()?.result?.code == 403) {
+                            MyApplication.signUpPassAuthorization = false
+                        } else {
+                            MyApplication.signUpPassAuthorization = true
+                        }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String>? = response.body()
