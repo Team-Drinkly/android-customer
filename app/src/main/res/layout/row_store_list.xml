@@ -14,6 +14,7 @@
         android:id="@+id/imageView_store"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

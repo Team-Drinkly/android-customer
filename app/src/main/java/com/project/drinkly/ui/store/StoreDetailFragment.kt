@@ -91,8 +91,8 @@ class StoreDetailFragment : Fragment() {
                     textViewStoreAvailableDaysValue.text = getStoreDetailInfo?.availableDays?.replace(" ", ",") ?: ""
                     textViewStoreCall.text = getStoreDetailInfo?.storeTel
                     if(getStoreDetailInfo?.instagramUrl != null) {
-                        textViewStoreInstagram.text = getStoreDetailInfo?.instagramUrl
-//                        textViewStoreInstagram.text = it.instagramUrl.substring(26, it.instagramUrl.length - 1)
+//                        textViewStoreInstagram.text = getStoreDetailInfo?.instagramUrl
+                        textViewStoreInstagram.text = "@${it.instagramUrl?.substring(26, it.instagramUrl.length)}"
                     } else {
                         layoutStoreInstagram.visibility = View.GONE
                     }
