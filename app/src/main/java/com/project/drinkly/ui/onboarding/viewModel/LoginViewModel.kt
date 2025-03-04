@@ -204,6 +204,7 @@ class LoginViewModel : ViewModel() {
     fun signUp(activity: MainActivity, nickname: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
+        val mypageViewModel = ViewModelProvider(activity)[MypageViewModel::class.java]
 
         apiClient.apiService.signUp(SignUpRequest(MyApplication.oauthId, nickname))
             .enqueue(object :
@@ -219,6 +220,7 @@ class LoginViewModel : ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
+                        mypageViewModel.getCoupon(activity, "INITIAL")
 
                         MyApplication.isLogin = true
 

@@ -43,7 +43,10 @@ class MypageFragment : Fragment() {
             }
             // 내 쿠폰함
             layoutButtonCoupon.setOnClickListener {
-
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, MypageCouponFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
             // 계정 관리
             layoutButtonAccount.setOnClickListener {

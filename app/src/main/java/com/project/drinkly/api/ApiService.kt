@@ -2,6 +2,7 @@ package com.project.drinkly.api
 
 import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.response.BaseResponse
+import com.project.drinkly.api.response.coupon.CouponListResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
@@ -90,4 +91,23 @@ interface ApiService {
     fun getStoreDetail(
         @Path("storeId") storeId: Long
     ): Call<BaseResponse<StoreDetailResponse>>
+
+    // 쿠폰 발급
+    @POST("/api/v1/payment/m/coupon-issue")
+    fun getCoupon(
+        @Header("Authorization") token: String,
+        @Query("type") type: String
+    ): Call<BaseResponse<Long?>>
+
+    // 사용 전 쿠폰 조회
+    @GET("/api/v1/payment/m/coupons/available")
+    fun getAvailableCouponList(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<List<CouponListResponse?>>>
+
+    // 사용 완료 쿠폰 조회
+    @GET("/api/v1/payment/m/coupons/used")
+    fun getUsedCouponList(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<List<CouponListResponse?>>>
 }
