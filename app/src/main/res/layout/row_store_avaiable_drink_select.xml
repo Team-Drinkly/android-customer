@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:layout_marginRight="12dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView_avaiable_drink"
+        android:layout_width="0dp"
+        android:layout_height="170dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/RoundSector5"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView_avaiable_drink"
+        style="@style/body2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_card_radius10"
+        android:paddingHorizontal="23.5dp"
+        android:paddingVertical="5.5dp"
+        android:text="drink"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_avaiable_drink"
+        app:layout_constraintStart_toStartOf="@+id/imageView_avaiable_drink"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_avaiable_drink" />
+</androidx.constraintlayout.widget.ConstraintLayout>

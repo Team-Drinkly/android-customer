@@ -1,6 +1,7 @@
 package com.project.drinkly.api
 
 import com.project.drinkly.api.request.login.SignUpRequest
+import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.CouponListResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
@@ -91,6 +92,13 @@ interface ApiService {
     fun getStoreDetail(
         @Path("storeId") storeId: Long
     ): Call<BaseResponse<StoreDetailResponse>>
+
+    // 멤버십 사용
+    @POST("/api/v1/store/m/free-drink")
+    fun useMembership(
+        @Header("Authorization") token: String,
+        @Body parameters: UseMembershipRequest
+    ): Call<BaseResponse<String>>
 
     // 쿠폰 발급
     @POST("/api/v1/payment/m/coupon-issue")

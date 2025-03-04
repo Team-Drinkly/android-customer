@@ -282,7 +282,7 @@
 
     <Button
         android:id="@+id/button_membership"
-        style="@style/HeadLine3"
+        style="@style/NextButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
