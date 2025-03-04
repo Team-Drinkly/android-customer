@@ -31,11 +31,11 @@ class MypageAccountFragment : Fragment() {
         binding.run {
             // 로그아웃
             layoutButtonLogout.setOnClickListener {
-                val dialog = DialogBasicButton("로그아웃 하시겠습니까?", "취소", "로그아웃")
+                val dialog = DialogBasicButton("로그아웃 하시겠습니까?", "취소", "로그아웃", R.color.primary_50)
 
                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                     override fun onClickYesButton() {
-                        // 로그아웃
+                        // 로그아웃 기능 구현
                         TokenManager(mainActivity).deleteAccessToken()
                         TokenManager(mainActivity).deleteRefreshToken()
                         fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
@@ -47,7 +47,10 @@ class MypageAccountFragment : Fragment() {
 
             // 계정탈퇴
             layoutButtonWithdrawal.setOnClickListener {
-
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, MypageWithdrawalFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
@@ -60,6 +63,12 @@ class MypageAccountFragment : Fragment() {
     }
 
     fun initView() {
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMapButton(true)
+            hideMyLocationButton(true)
+        }
+
         binding.run {
             toolbar.run {
                 textViewTitle.text = "계정 관리"

@@ -13,6 +13,7 @@ import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -62,6 +63,12 @@ interface ApiService {
     fun getUserId(
         @Header("Authorization") token: String
     ): Call<BaseResponse<UserIdResponse>>
+
+    // 계정 탈퇴
+    @DELETE("/api/v1/member/deactivate")
+    fun withdrawal(
+        @Header("member-id") memberId: Long
+    ): Call<BaseResponse<String>>
 
     // 유저 정보 조회
     @GET("/api/v1/member/profile/{memberId}")

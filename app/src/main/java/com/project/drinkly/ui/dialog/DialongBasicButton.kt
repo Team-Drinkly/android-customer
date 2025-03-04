@@ -16,7 +16,7 @@ interface BasicButtonDialogInterface {
     fun onClickYesButton()
 }
 
-class DialogBasicButton(var message: String, var cancelText: String, var chechText: String) : DialogFragment() {
+class DialogBasicButton(var message: String, var cancelText: String, var chechText: String, var color: Int) : DialogFragment() {
 
     // 뷰 바인딩 정의
     private var _binding: DialogBasicButtonBinding? = null
@@ -54,6 +54,7 @@ class DialogBasicButton(var message: String, var cancelText: String, var chechTe
 
             buttonCheck.run {
                 text = chechText
+                backgroundTintList = resources.getColorStateList(color)
                 setOnClickListener {
                     listener?.onClickYesButton() // 인터페이스를 통해 이벤트 전달
                     dismiss()
