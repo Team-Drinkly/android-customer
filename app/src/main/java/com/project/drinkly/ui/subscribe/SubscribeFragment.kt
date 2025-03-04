@@ -31,17 +31,22 @@ class SubscribeFragment : Fragment() {
 
         viewModel.getUserId(mainActivity)
 
+        binding.run {
+            buttonSubscribeMembership.setOnClickListener {
+                // 구독권 결제 화면으로 이동
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         initView()
-
-        mainActivity.run {
-            hideMapButton(true)
-            hideMyLocationButton(true)
-        }
     }
 
     fun observeViewModel() {
@@ -57,11 +62,6 @@ class SubscribeFragment : Fragment() {
                     } else {
                         layoutSubscribe.visibility = View.GONE
                         layoutMembershipInfo.visibility = View.GONE
-
-                        buttonSubscribeMembership.setOnClickListener {
-                            // 멤버십 구독 화면으로 전환
-
-                        }
                     }
                 }
             }
@@ -69,6 +69,12 @@ class SubscribeFragment : Fragment() {
     }
 
     fun initView() {
+        mainActivity.run {
+            hideBottomNavigation(false)
+            hideMapButton(true)
+            hideMyLocationButton(true)
+        }
+
         binding.run {
             toolbar.run {
                 textViewTitle.text = "구독"
