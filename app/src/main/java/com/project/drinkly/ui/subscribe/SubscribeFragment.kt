@@ -9,8 +9,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSubscribeBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.mypage.MypageWithdrawalFragment
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
+import com.project.drinkly.util.MyApplication
 
 class SubscribeFragment : Fragment() {
 
@@ -28,8 +30,6 @@ class SubscribeFragment : Fragment() {
         viewModel = ViewModelProvider(this)[SubscribeViewModel::class.java]
 
         observeViewModel()
-
-        viewModel.getUserId(mainActivity)
 
         binding.run {
             buttonSubscribeMembership.setOnClickListener {
@@ -76,6 +76,15 @@ class SubscribeFragment : Fragment() {
         }
 
         binding.run {
+
+            textViewNickname.text = "${MyApplication.userNickName}님"
+            if(MyApplication.isSubscribe) {
+                layoutMembershipButton.visibility = View.GONE
+                viewModel.getUserId(mainActivity)
+            } else {
+                layoutSubscribe.visibility = View.GONE
+                layoutMembershipInfo.visibility = View.GONE
+            }
             toolbar.run {
                 textViewTitle.text = "구독"
             }
