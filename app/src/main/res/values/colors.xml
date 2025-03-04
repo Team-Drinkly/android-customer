@@ -8,6 +8,7 @@
     <color name="background">#101012</color>
     <color name="card_background">#17181D</color>
     <color name="dialog_background">#1E212A</color>
+    <color name="alert_background">#292D32</color>
 
     <!-- gray 색상 -->
     <color name="gray1">#FAFAFE</color>

@@ -89,6 +89,24 @@
         <item name="android:paddingVertical">25dp</item>
     </style>
 
+    <!-- dialog check Button -->
+    <style name="DialogCheckButton" parent="SubTitle2">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:backgroundTint">@color/primary_50</item>
+        <item name="android:paddingVertical">11dp</item>
+    </style>
+
+    <!-- dialog cancel Button -->
+    <style name="DialogCancelButton" parent="SubTitle2">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:backgroundTint">@color/primary_50</item>
+        <item name="android:paddingVertical">13dp</item>
+    </style>
+
     <!-- 회원가입 입력창 -->
     <style name="SignUpEditText" parent="body2">
         <item name="android:layout_height">wrap_content</item>
