@@ -9,7 +9,7 @@ class MyApplication : Application() {
 
         // 회원가입 정보
         var oauthId = 0
-        var signUpPassAuthorization = false
+        var signUpPassAuthorization: Boolean? = null
 
         // 유저 정보
         var isSubscribe = false

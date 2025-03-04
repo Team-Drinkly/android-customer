@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSignUpPassBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.BasicDialogInterface
+import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.util.MyApplication
 
@@ -40,14 +43,26 @@ class SignUpPassFragment : Fragment() {
         super.onResume()
         initView()
 
-        if(MyApplication.signUpPassAuthorization) {
+        if(MyApplication.signUpPassAuthorization == true) {
             // 패스 인증 완료 후 회원가입 - 닉네임 화면 이동
-            MyApplication.signUpPassAuthorization = false
+            MyApplication.signUpPassAuthorization = null
 
             mainActivity.supportFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainerView_main, SignUpNickNameFragment())
                 .addToBackStack(null)
                 .commit()
+        } else if(MyApplication.signUpPassAuthorization == false) {
+            MyApplication.signUpPassAuthorization = null
+
+            val dialog = DialogBasic("이미 가입한 회원입니다.\n가입된 계정으로 로그인해주세요.")
+
+            dialog.setBasicDialogInterface(object : BasicDialogInterface {
+                override fun onClickYesButton() {
+                    fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                }
+            })
+
+            dialog.show(mainActivity.supportFragmentManager, "DialogPass")
         }
     }
 
