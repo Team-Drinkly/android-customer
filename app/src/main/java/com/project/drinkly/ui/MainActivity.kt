@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        binding.bottomNavigationView.selectedItemId = R.id.menu_home
     }
 
     private fun setBottomNavigationView() {
@@ -113,6 +112,11 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    // ✅ HomeFragment에 들어오면 Bottom Navigation을 "Home"으로 설정하는 함수
+    fun setBottomNavigationHome() {
+        binding.bottomNavigationView.selectedItemId = R.id.menu_home
     }
 
     @RequiresApi(Build.VERSION_CODES.P)

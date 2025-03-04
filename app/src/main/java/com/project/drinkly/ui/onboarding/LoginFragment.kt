@@ -64,10 +64,7 @@ class LoginFragment : Fragment() {
         binding.run {
             buttonSeek.setOnClickListener {
                 // 제휴업체 둘러보기
-                mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, StoreMapFragment())
-                    .addToBackStack(null)
-                    .commit()
+                mainActivity.setBottomNavigationHome()
             }
 
             buttonKakao.setOnClickListener {

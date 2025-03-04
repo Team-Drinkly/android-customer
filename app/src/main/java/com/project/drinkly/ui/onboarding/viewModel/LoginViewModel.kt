@@ -13,7 +13,10 @@ import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
+import com.project.drinkly.databinding.DialogBasicBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.BasicDialogInterface
+import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.onboarding.signUp.PassWebActivity
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
@@ -57,10 +60,7 @@ class LoginViewModel : ViewModel() {
                             MyApplication.isLogin = true
 
                             // 홈화면 이동
-                            activity.supportFragmentManager.beginTransaction()
-                                .replace(R.id.fragmentContainerView_main, StoreMapFragment())
-                                .addToBackStack(null)
-                                .commit()
+                            activity.setBottomNavigationHome()
                         } else {
                             MyApplication.oauthId = result?.payload?.oauthId!!
                             // 회원가입 화면 이동
@@ -220,11 +220,9 @@ class LoginViewModel : ViewModel() {
 
                         tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
 
-                        // 홈화면 이동
-                        activity.supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainerView_main, StoreMapFragment())
-                            .addToBackStack(null)
-                            .commit()
+                        MyApplication.isLogin = true
+
+                        activity.setBottomNavigationHome()
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<SignUpResponse>? = response.body()
