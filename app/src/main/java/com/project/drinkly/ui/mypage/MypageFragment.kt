@@ -35,11 +35,14 @@ class MypageFragment : Fragment() {
             }
             // 내 쿠폰함
             layoutButtonCoupon.setOnClickListener {
-                
+
             }
             // 계정 관리
             layoutButtonAccount.setOnClickListener {
-
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, MypageAccountFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
             // 고객센터
             layoutButtonQna.setOnClickListener {
