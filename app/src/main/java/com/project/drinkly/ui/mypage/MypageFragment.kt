@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentMypageBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
 import com.project.drinkly.util.MyApplication
@@ -26,6 +27,13 @@ class MypageFragment : Fragment() {
         mainActivity = activity as MainActivity
 
         binding.run {
+            buttonMembershipPayment.setOnClickListener {
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+
             // 구독 관리
             layoutButtonSubscribe.setOnClickListener {
                 mainActivity.supportFragmentManager.beginTransaction()
@@ -46,7 +54,10 @@ class MypageFragment : Fragment() {
             }
             // 고객센터
             layoutButtonQna.setOnClickListener {
-
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, MypageQnaFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 
@@ -59,14 +70,22 @@ class MypageFragment : Fragment() {
     }
 
     fun initView() {
+        mainActivity.run {
+            hideBottomNavigation(false)
+            hideMapButton(true)
+            hideMyLocationButton(true)
+        }
+
         binding.run {
             if(MyApplication.isSubscribe) {
-                buttonMembershipPayment.visibility = View.VISIBLE
-                layoutSubscribe.visibility = View.GONE
-            } else {
                 buttonMembershipPayment.visibility = View.GONE
                 layoutSubscribe.visibility = View.VISIBLE
+            } else {
+                buttonMembershipPayment.visibility = View.VISIBLE
+                layoutSubscribe.visibility = View.GONE
             }
+
+            textViewNickname.text = "${MyApplication.userNickName}님"
 
             toolbar.run {
                 textViewTitle.text = "마이페이지"

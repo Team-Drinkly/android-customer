@@ -66,6 +66,7 @@
                     android:id="@+id/layout_subscribe"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -91,6 +92,7 @@
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="20dp"
                     android:paddingVertical="6dp"
+                    android:layout_marginTop="10dp"
                     android:text="드링클리 구독하기"
                     app:cornerRadius="10dp" />
 

@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">드링클리</string>
 
+    <!-- 이메일 -->
+    <string name="email">drinkly.team@gmail.com</string>
+    <string name="copyRight">ⓒ Drinkly Corp. All Rights Reserved.</string>
+    <string name="drinklyInfo">사업자 등록번호 : 754-25-01719 | 대표 : 변상우\nEmail : drinkly.team@gmail.com</string>
+
     <!-- 온보딩 -->
     <string name="onboarding1_title">하루에 한 잔, 부담없이 즐기세요!</string>
     <string name="onboarding1_description">바쁜 일상 속 술 한 잔의 여유를 느껴보세요\n</string>
