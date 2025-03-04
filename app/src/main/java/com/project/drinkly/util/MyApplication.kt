@@ -1,6 +1,7 @@
 package com.project.drinkly.util
 
 import android.app.Application
+import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 
 class MyApplication : Application() {
     companion object {
@@ -15,6 +16,8 @@ class MyApplication : Application() {
         var isSubscribe = false
         var isUsedToday = false
         var isLogin = false
+        var userNickName = ""
+        var userInfo : UserSubscribeDataResponse? = null
 
         // 지도
         var latitude = ""

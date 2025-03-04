@@ -2,6 +2,7 @@ package com.project.drinkly.api
 
 import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.response.BaseResponse
+import com.project.drinkly.api.response.coupon.CouponListResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
@@ -13,6 +14,7 @@ import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -63,6 +65,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<BaseResponse<UserIdResponse>>
 
+    // 계정 탈퇴
+    @DELETE("/api/v1/member/deactivate")
+    fun withdrawal(
+        @Header("member-id") memberId: Long
+    ): Call<BaseResponse<String>>
+
     // 유저 정보 조회
     @GET("/api/v1/member/profile/{memberId}")
     fun getUserInfo(
@@ -83,4 +91,30 @@ interface ApiService {
     fun getStoreDetail(
         @Path("storeId") storeId: Long
     ): Call<BaseResponse<StoreDetailResponse>>
+
+    // 쿠폰 발급
+    @POST("/api/v1/payment/m/coupon-issue")
+    fun getCoupon(
+        @Header("Authorization") token: String,
+        @Query("type") type: String
+    ): Call<BaseResponse<Long?>>
+
+    // 사용 전 쿠폰 조회
+    @GET("/api/v1/payment/m/coupons/available")
+    fun getAvailableCouponList(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<List<CouponListResponse?>>>
+
+    // 사용 완료 쿠폰 조회
+    @GET("/api/v1/payment/m/coupons/used")
+    fun getUsedCouponList(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<List<CouponListResponse?>>>
+
+    // 쿠폰 사용
+    @POST("/api/v1/payment/m/coupon-use")
+    fun useCoupon(
+        @Header("Authorization") token: String,
+        @Query("couponId") couponId: Long
+    ): Call<BaseResponse<String?>>
 }

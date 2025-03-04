@@ -36,6 +36,7 @@ class SubscribeViewModel : ViewModel() {
                         val result: BaseResponse<UserIdResponse>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
+
                         getUserInfo(activity, result?.payload?.memberId!!)
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -72,6 +73,10 @@ class SubscribeViewModel : ViewModel() {
 
                         MyApplication.isSubscribe = result?.payload?.isSubscribe == true
                         MyApplication.isUsedToday = result?.payload?.subscribeInfo?.isUsedToday == true
+
+                        MyApplication.userNickName = result?.payload?.nickname.toString()
+
+                        MyApplication.userInfo = result?.payload
 
                         userInfo.value = result?.payload
                     } else {

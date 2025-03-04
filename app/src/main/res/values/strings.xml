@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">드링클리</string>
 
+    <!-- 이메일 -->
+    <string name="email">drinkly.team@gmail.com</string>
+    <string name="copyRight">ⓒ Drinkly Corp. All Rights Reserved.</string>
+    <string name="drinklyInfo">사업자 등록번호 : 754-25-01719 | 대표 : 변상우\nEmail : drinkly.team@gmail.com</string>
+
     <!-- 온보딩 -->
     <string name="onboarding1_title">하루에 한 잔, 부담없이 즐기세요!</string>
     <string name="onboarding1_description">바쁜 일상 속 술 한 잔의 여유를 느껴보세요\n</string>
@@ -16,6 +21,7 @@
     <string name="membership_cancel_guide">- 결제 후 7일 이내에 결제 취소가 가능합니다.\n- 결제 이후 1번 이상 사용하면 취소가 불가능합니다.\n- 결제 후 7일 이내에 드링클리 앱 “마이페이지 > 구독관리 > 구독 취소하기” 를 통해 결제 취소가 가능합니다.\n- 그 외의 취소/환불 문의는 “마이페이지 > 고객센터 > 카카오톡 플러스친구 또는 대표 이메일을 통해 문의해주시면 신속하게 응답해드리겠습니다.</string>
 
     <string name="membership_price">16,900원</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- 계정 탈퇴 안내사항 -->
+    <string name="withdrawal_guide">탈퇴시 현재 구독중인 멤버십이 사라집니다.\n탈퇴 후, 24시간 뒤 재가입할 수 있습니다.</string>
 </resources>

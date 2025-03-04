@@ -3,6 +3,7 @@ package com.project.drinkly.ui.onboarding.viewModel
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.BuildConfig
 import com.project.drinkly.R
 import com.project.drinkly.api.ApiClient
@@ -17,11 +18,14 @@ import com.project.drinkly.databinding.DialogBasicBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
+import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.onboarding.signUp.PassWebActivity
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
 import com.project.drinkly.ui.onboarding.signUp.SignUpNickNameFragment
 import com.project.drinkly.ui.store.StoreMapFragment
+import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.util.MyApplication
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -40,6 +44,7 @@ class LoginViewModel : ViewModel() {
     fun login(activity: MainActivity, provider: String, token: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
+        val viewModel = ViewModelProvider(activity)[SubscribeViewModel::class.java]
 
         apiClient.apiService.login(provider,token)
             .enqueue(object :
@@ -56,6 +61,8 @@ class LoginViewModel : ViewModel() {
 
                         if(result?.payload?.isRegistered == true) {
                             tokenManager.saveTokens(result.payload.accessToken, result.payload.refreshToken)
+
+                            viewModel.getUserId(activity)
 
                             MyApplication.isLogin = true
 
@@ -204,6 +211,8 @@ class LoginViewModel : ViewModel() {
     fun signUp(activity: MainActivity, nickname: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
+        val viewModel = ViewModelProvider(activity)[SubscribeViewModel::class.java]
+        val mypageViewModel = ViewModelProvider(activity)[MypageViewModel::class.java]
 
         apiClient.apiService.signUp(SignUpRequest(MyApplication.oauthId, nickname))
             .enqueue(object :
@@ -219,6 +228,8 @@ class LoginViewModel : ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
+                        viewModel.getUserId(activity)
+                        mypageViewModel.getCoupon(activity, "INITIAL")
 
                         MyApplication.isLogin = true
 

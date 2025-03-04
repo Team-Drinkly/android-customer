@@ -71,12 +71,28 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!-- tab -->
+    <style name="tab">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:lineSpacingExtra">0dp</item>
+    </style>
+
     <!-- NEXT Button -->
     <style name="NextButton" parent="HeadLine3">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="cornerRadius">50dp</item>
         <item name="android:backgroundTint">@drawable/background_button</item>
+        <item name="android:paddingVertical">13dp</item>
+    </style>
+
+    <!-- 탈퇴 Button -->
+    <style name="WithdrawalButton" parent="HeadLine3">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="cornerRadius">50dp</item>
+        <item name="android:backgroundTint">@drawable/background_button_withdrawal</item>
         <item name="android:paddingVertical">13dp</item>
     </style>
 
@@ -103,8 +119,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="cornerRadius">8dp</item>
-        <item name="android:backgroundTint">@color/primary_50</item>
-        <item name="android:paddingVertical">13dp</item>
+        <item name="android:backgroundTint">@color/gray7</item>
+        <item name="android:paddingVertical">11dp</item>
     </style>
 
     <!-- 회원가입 입력창 -->
