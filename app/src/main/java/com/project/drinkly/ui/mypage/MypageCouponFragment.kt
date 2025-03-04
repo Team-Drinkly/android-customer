@@ -70,6 +70,12 @@ class MypageCouponFragment : Fragment() {
     }
 
     fun initView() {
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMapButton(true)
+            hideMyLocationButton(true)
+        }
+
         binding.run {
             toolbar.run {
                 textViewTitle.text = "내 쿠폰함"

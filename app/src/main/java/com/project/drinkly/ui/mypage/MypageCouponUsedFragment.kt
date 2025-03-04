@@ -64,7 +64,7 @@ class MypageCouponUsedFragment : Fragment() {
         ).apply {
             itemClickListener = object : CouponAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
-                    // 쿠폰 사용
+
                 }
             }
         }

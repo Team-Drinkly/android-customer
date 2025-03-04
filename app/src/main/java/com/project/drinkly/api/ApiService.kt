@@ -110,4 +110,11 @@ interface ApiService {
     fun getUsedCouponList(
         @Header("Authorization") token: String
     ): Call<BaseResponse<List<CouponListResponse?>>>
+
+    // 쿠폰 사용
+    @POST("/api/v1/payment/m/coupon-use")
+    fun useCoupon(
+        @Header("Authorization") token: String,
+        @Query("couponId") couponId: Long
+    ): Call<BaseResponse<String?>>
 }

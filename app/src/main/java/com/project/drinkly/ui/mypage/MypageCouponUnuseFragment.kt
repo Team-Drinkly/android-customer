@@ -5,14 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.drinkly.R
+import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.response.coupon.CouponListResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.FragmentMypageCouponUnuseBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
+import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.mypage.adapter.CouponAdapter
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.store.StoreDetailFragment
@@ -64,7 +68,16 @@ class MypageCouponUnuseFragment : Fragment() {
         ).apply {
             itemClickListener = object : CouponAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
-                    // 쿠폰 사용
+                    val dialog = DialogBasicButton("구독권 쿠폰을 사용하시겠습니까?", "취소", "사용하기", R.color.primary_50)
+
+                    dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+                        override fun onClickYesButton() {
+                            // 쿠폰 사용
+                            viewModel.useCoupon(mainActivity, getCouponList[position].id)
+                        }
+                    })
+
+                    dialog.show(mainActivity.supportFragmentManager, "DialogLogout")
                 }
             }
         }

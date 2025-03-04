@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
@@ -14,6 +15,7 @@ import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
+import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.util.MyApplication
 import retrofit2.Call
 import retrofit2.Callback
@@ -224,6 +226,43 @@ class MypageViewModel: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<BaseResponse<List<CouponListResponse?>>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                }
+            })
+    }
+
+    fun useCoupon(activity: MainActivity, couponId: Long) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+        val viewModel = ViewModelProvider(activity)[SubscribeViewModel::class.java]
+
+        apiClient.apiService.useCoupon("Bearer ${tokenManager.getAccessToken()}", couponId)
+            .enqueue(object :
+                Callback<BaseResponse<String?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<String?>>,
+                    response: Response<BaseResponse<String?>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        getAvailableCouponList(activity)
+                        viewModel.getUserId(activity)
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
                 }
