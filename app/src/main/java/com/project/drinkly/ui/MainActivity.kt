@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.project.drinkly.R
 import com.project.drinkly.databinding.ActivityMainBinding
+import com.project.drinkly.ui.mypage.MypageFragment
 import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.store.StoreDetailFragment
 import com.project.drinkly.ui.store.StoreMapFragment
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.menu_mypage -> {
                     if(MyApplication.isLogin) {
                         supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainerView_main, SubscribeFragment())
+                            .replace(R.id.fragmentContainerView_main, MypageFragment())
                             .addToBackStack(null)
                             .commit()
                     } else {
