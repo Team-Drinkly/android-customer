@@ -41,6 +41,12 @@ class MypageQnaFragment : Fragment() {
     }
 
     fun initView() {
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMapButton(true)
+            hideMyLocationButton(true)
+        }
+
         binding.run {
             toolbar.run {
                 textViewTitle.text = "고객센터"
