@@ -10,6 +10,7 @@ import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.util.MyApplication
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -68,6 +69,9 @@ class SubscribeViewModel : ViewModel() {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<UserSubscribeDataResponse>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        MyApplication.isSubscribe = result?.payload?.isSubscribe == true
+                        MyApplication.isUsedToday = result?.payload?.subscribeInfo?.isUsedToday == true
 
                         userInfo.value = result?.payload
                     } else {
