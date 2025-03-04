@@ -36,6 +36,9 @@ class MypageAccountFragment : Fragment() {
                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                     override fun onClickYesButton() {
                         // 로그아웃
+                        TokenManager(mainActivity).deleteAccessToken()
+                        TokenManager(mainActivity).deleteRefreshToken()
+                        fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     }
                 })
 
