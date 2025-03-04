@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.drinkly.R
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.databinding.FragmentStoreDetailBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreImagePagerAdapter
 import com.project.drinkly.ui.store.adapter.StoreMenuImageAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
 import com.project.drinkly.util.MyApplication
 
 class StoreDetailFragment : Fragment() {
@@ -35,7 +38,7 @@ class StoreDetailFragment : Fragment() {
     ): View? {
         binding = FragmentStoreDetailBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(this)[StoreViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[StoreViewModel::class.java]
 
         storeMainImageAdapter =
             StoreImagePagerAdapter(mainActivity, listOf()).apply {
@@ -130,14 +133,30 @@ class StoreDetailFragment : Fragment() {
             }
 
             if(MyApplication.isSubscribe) {
-                buttonMembership.text = "멤버십 사용하기"
+                buttonMembership.run {
+                    text = "멤버십 사용하기"
+                    setOnClickListener {
+                        mainActivity.supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView_main, StoreMembershipSelectFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                }
                 if(MyApplication.isUsedToday) {
                     buttonMembership.isEnabled = false
                 } else {
                     buttonMembership.isEnabled = true
                 }
             } else {
-                buttonMembership.text = "멤버십 구독하러 가기"
+                buttonMembership.run {
+                    text = "멤버십 구독하러 가기"
+                    setOnClickListener {
+                        mainActivity.supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                }
             }
 
             toolbar.run {
