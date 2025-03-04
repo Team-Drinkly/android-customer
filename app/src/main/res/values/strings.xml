@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Drinkly</string>
+    <string name="app_name">드링클리</string>
 
     <!-- 온보딩 -->
     <string name="onboarding1_title">하루에 한 잔, 부담없이 즐기세요!</string>
@@ -10,6 +10,12 @@
     <string name="onboarding3_description">멤버십 구독으로 하루에 한 잔, 합리적인 가격으로\n다양한 제휴업체에 방문해보세요</string>
     <string name="onboarding4_title">간편한 멤버십 인증</string>
     <string name="onboarding4_description">원하는 멤버십 혜택을 선택한 후에\n매장 직원분께 보여드리면 인증 완료!</string>
+
+    <!-- 멤버십 안내사항 -->
+    <string name="membership_guide">- 메인 메뉴 1개를 필수로 주문해야 사용 가능합니다.\n- 테이블(4인 기준)당 멤버십 1회 사용이 가능합니다.\n- 멤버십은 하루에 1번만 사용 가능합니다.\n- 매일 정오(낮 12시)에 초기화 됩니다.</string>
+    <string name="membership_cancel_guide">- 결제 후 7일 이내에 결제 취소가 가능합니다.\n- 결제 이후 1번 이상 사용하면 취소가 불가능합니다.\n- 결제 후 7일 이내에 드링클리 앱 “마이페이지 > 구독관리 > 구독 취소하기” 를 통해 결제 취소가 가능합니다.\n- 그 외의 취소/환불 문의는 “마이페이지 > 고객센터 > 카카오톡 플러스친구 또는 대표 이메일을 통해 문의해주시면 신속하게 응답해드리겠습니다.</string>
+
+    <string name="membership_price">16,900원</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -15,6 +15,7 @@ import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreImagePagerAdapter
 import com.project.drinkly.ui.store.adapter.StoreMenuImageAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.util.MyApplication
 
 class StoreDetailFragment : Fragment() {
 
@@ -121,9 +122,28 @@ class StoreDetailFragment : Fragment() {
 
         viewModel.getStoreDetail(mainActivity, arguments?.getLong("storeId", 0)!!)
 
-        binding.toolbar.run {
-            buttonBack.setOnClickListener {
-                fragmentManager?.popBackStack()
+        binding.run {
+            if(!MyApplication.isLogin) {
+                buttonMembership.visibility = View.INVISIBLE
+            } else {
+                buttonMembership.visibility = View.VISIBLE
+            }
+
+            if(MyApplication.isSubscribe) {
+                buttonMembership.text = "멤버십 사용하기"
+                if(MyApplication.isUsedToday) {
+                    buttonMembership.isEnabled = false
+                } else {
+                    buttonMembership.isEnabled = true
+                }
+            } else {
+                buttonMembership.text = "멤버십 구독하러 가기"
+            }
+
+            toolbar.run {
+                buttonBack.setOnClickListener {
+                    fragmentManager?.popBackStack()
+                }
             }
         }
     }

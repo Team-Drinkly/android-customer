@@ -6,7 +6,10 @@ import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
+import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
+import com.project.drinkly.api.response.subscribe.UserIdResponse
+import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -53,6 +56,18 @@ interface ApiService {
     fun signUp(
         @Body parameters: SignUpRequest
     ): Call<BaseResponse<SignUpResponse>>
+
+    // 유저 ID 조회
+    @GET("/api/v1/store/m/temp")
+    fun getUserId(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<UserIdResponse>>
+
+    // 유저 정보 조회
+    @GET("/api/v1/member/profile/{memberId}")
+    fun getUserInfo(
+        @Path("memberId") memberId: Long
+    ): Call<BaseResponse<UserSubscribeDataResponse>>
 
     // 제휴업체 조회
     @GET("/api/v1/store/m/list")

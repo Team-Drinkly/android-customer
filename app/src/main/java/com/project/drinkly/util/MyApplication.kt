@@ -11,6 +11,11 @@ class MyApplication : Application() {
         var oauthId = 0
         var signUpPassAuthorization = false
 
+        // 유저 정보
+        var isSubscribe = false
+        var isUsedToday = false
+        var isLogin = false
+
         // 지도
         var latitude = ""
         var longitude = ""

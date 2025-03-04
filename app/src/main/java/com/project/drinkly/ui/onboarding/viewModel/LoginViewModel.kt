@@ -54,6 +54,8 @@ class LoginViewModel : ViewModel() {
                         if(result?.payload?.isRegistered == true) {
                             tokenManager.saveTokens(result.payload.accessToken, result.payload.refreshToken)
 
+                            MyApplication.isLogin = true
+
                             // 홈화면 이동
                             activity.supportFragmentManager.beginTransaction()
                                 .replace(R.id.fragmentContainerView_main, StoreMapFragment())
