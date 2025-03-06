@@ -14,6 +14,7 @@ import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.util.MyApplication
@@ -118,7 +119,9 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<Long?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
+                        val dialog = DialogEvent()
 
+                        dialog.show(activity.supportFragmentManager, "DialogEvent")
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<Long?>? = response.body()
