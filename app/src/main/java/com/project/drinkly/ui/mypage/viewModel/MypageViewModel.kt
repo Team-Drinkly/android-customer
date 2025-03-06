@@ -165,8 +165,10 @@ class MypageViewModel: ViewModel() {
                             var status = result?.payload?.get(c)?.status
                             var used = result?.payload?.get(c)?.used
                             var expirationDate = result?.payload?.get(c)?.expirationDate
+                            var title = result?.payload?.get(c)?.title.toString()
+                            var description = result?.payload?.get(c)?.description.toString()
 
-                            tempCouponInfoList.add(CouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!))
+                            tempCouponInfoList.add(CouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
                         }
 
                         availableCouponInfo.value = tempCouponInfoList
@@ -213,8 +215,10 @@ class MypageViewModel: ViewModel() {
                             var status = result?.payload?.get(c)?.status
                             var used = result?.payload?.get(c)?.used
                             var expirationDate = result?.payload?.get(c)?.expirationDate
+                            var title = result?.payload?.get(c)?.title.toString()
+                            var description = result?.payload?.get(c)?.description.toString()
 
-                            tempCouponInfoList.add(CouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!))
+                            tempCouponInfoList.add(CouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
                         }
 
                         usedCouponInfo.value = tempCouponInfoList

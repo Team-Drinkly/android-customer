@@ -46,8 +46,8 @@ class CouponAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.couponTitle.text = coupons[position].type
-        holder.couponDescription.text = coupons[position].type
+        holder.couponTitle.text = coupons[position].title
+        holder.couponDescription.text = coupons[position].description
         holder.couponExpiredDay.text = "유효기간: ${coupons[position].expirationDate}까지"
         if(coupons[position].used) {
             holder.isUsed.text = "사용\n완료"

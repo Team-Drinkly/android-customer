@@ -6,5 +6,7 @@ data class CouponListResponse(
     val type: String,
     val status: String,
     val used: Boolean,
-    val expirationDate: String
+    val expirationDate: String,
+    val title: String,
+    val description: String
 )
