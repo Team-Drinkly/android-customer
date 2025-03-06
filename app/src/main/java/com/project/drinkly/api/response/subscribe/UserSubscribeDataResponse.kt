@@ -9,6 +9,7 @@ data class UserSubscribeDataResponse(
 
 data class SubscribeInfo(
     val leftDays: Int?,
+    val startDate: String?,
     val expiredDate: String?,
     val isUsedToday: Boolean?,
     val usedCount: Int?,
