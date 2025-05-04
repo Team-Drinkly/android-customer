@@ -7,6 +7,7 @@ data class StoreDetailResponse(
     val storeMainImageUrl: String?,
     val storeDescription: String?,
     val isOpen: String,
+    val isAvailable: Boolean,
     val openingInfo: String,
     val openingHours: List<StoreOpeningHour>,
     val storeTel: String,
@@ -17,7 +18,8 @@ data class StoreDetailResponse(
     val latitude: String,
     val longitude: String,
     val availableDrinkImageUrls: List<StoreImageInfo>?,
-    val menuImageUrls: List<StoreImageInfo>?
+    val menuImageUrls: List<StoreImageInfo>?,
+    val isReady: Boolean
 )
 
 data class StoreOpeningHour(
