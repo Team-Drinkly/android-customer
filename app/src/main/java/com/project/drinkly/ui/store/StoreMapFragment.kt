@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
@@ -27,7 +26,6 @@ import com.project.drinkly.R
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.FragmentStoreMapBinding
 import com.project.drinkly.ui.MainActivity
-import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
@@ -36,9 +34,6 @@ import com.skydoves.balloon.Balloon
 import com.skydoves.balloon.BalloonAnimation
 import com.skydoves.balloon.BalloonSizeSpec
 import com.skydoves.balloon.showAlignStart
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
@@ -318,6 +313,21 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                             textViewStoreName.text = getStoreInfo[m].storeName
                             textViewStoreCall.text = getStoreInfo[m].storeTel
                             textViewStoreAvailableDrink.text = getStoreInfo[m].availableDrinks?.joinToString(",")
+
+                            when(getStoreInfo[m].isOpen) {
+                                "영업중" -> {
+                                    layoutStoreUnavailable.visibility = View.INVISIBLE
+                                }
+                                "영업종료" -> {
+                                    layoutStoreUnavailable.visibility = View.VISIBLE
+                                }
+                                "휴무일" -> {
+                                    layoutStoreUnavailable.visibility = View.VISIBLE
+                                }
+                                else -> {
+                                    layoutStoreUnavailable.visibility = View.INVISIBLE
+                                }
+                            }
 
                             layoutStoreList.setOnClickListener {
                                 // 제휴업체 - 세부 화면으로 전환

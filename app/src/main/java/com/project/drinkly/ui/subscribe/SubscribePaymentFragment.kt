@@ -6,19 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSubscribePaymentBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.store.StoreMapFragment
+import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.util.MyApplication
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 import kotlin.concurrent.fixedRateTimer
 
 class SubscribePaymentFragment : Fragment() {
 
     lateinit var binding: FragmentSubscribePaymentBinding
     lateinit var mainActivity: MainActivity
+    lateinit var viewModel: SubscribeViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,6 +33,15 @@ class SubscribePaymentFragment : Fragment() {
 
         binding = FragmentSubscribePaymentBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
+        viewModel = ViewModelProvider(requireActivity())[SubscribeViewModel::class.java]
+
+        viewModel.run {
+            userInfo.observe(viewLifecycleOwner) {
+                if(it?.isSubscribe == true) {
+                    binding.textViewSubscribeDay.text = "${it?.subscribeInfo?.startDate} ~ ${it?.subscribeInfo?.expiredDate}"
+                }
+            }
+        }
 
 
         return binding.root
@@ -52,12 +67,19 @@ class SubscribePaymentFragment : Fragment() {
                     text = "멤버십 구독 해지하기"
                     backgroundTintList = resources.getColorStateList(R.color.gray9)
 
+
                     setOnClickListener {
 
                     }
                 } else {
                     text = "멤버십 구독권 결제하기"
                     backgroundTintList = resources.getColorStateList(R.color.primary_50)
+
+                    val calendar = Calendar.getInstance() // 현재 날짜 가져오기
+                    val today = checkFormat(calendar)
+                    calendar.add(Calendar.DAY_OF_YEAR, 30) // 30일 추가
+
+                    textViewSubscribeDay.text = "$today ~ ${checkFormat(calendar)}"
 
                     setOnClickListener {
 
@@ -90,6 +112,13 @@ class SubscribePaymentFragment : Fragment() {
                 }
             }
         }
+    }
+
+    fun checkFormat(calendar: Calendar): String {
+
+        val dateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN) // 원하는 날짜 형식 지정
+        return "${dateFormat.format(calendar.time)}" // 변환된 날짜 반환
+
     }
 
 }

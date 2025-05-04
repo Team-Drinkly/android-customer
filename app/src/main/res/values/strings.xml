@@ -6,6 +6,10 @@
     <string name="copyRight">ⓒ Drinkly Corp. All Rights Reserved.</string>
     <string name="drinklyInfo">사업자 등록번호 : 754-25-01719 | 대표 : 변상우\nEmail : drinkly.team@gmail.com</string>
 
+    <!-- 이용 약관 -->
+    <string name="agreement1"><u>서비스 이용 약관 (필수)</u></string>
+    <string name="agreement2"><u>개인정보 수집 및 이용동의서 (필수)</u></string>
+
     <!-- 온보딩 -->
     <string name="onboarding1_title">하루에 한 잔, 부담없이 즐기세요!</string>
     <string name="onboarding1_description">바쁜 일상 속 술 한 잔의 여유를 느껴보세요\n</string>

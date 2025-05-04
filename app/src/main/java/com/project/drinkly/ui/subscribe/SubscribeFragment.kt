@@ -27,7 +27,7 @@ class SubscribeFragment : Fragment() {
 
         binding = FragmentSubscribeBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(this)[SubscribeViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[SubscribeViewModel::class.java]
 
         observeViewModel()
 

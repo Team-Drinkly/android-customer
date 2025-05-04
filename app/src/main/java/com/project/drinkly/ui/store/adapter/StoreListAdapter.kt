@@ -3,6 +3,7 @@ package com.project.drinkly.ui.store.adapter
 import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -50,6 +51,22 @@ class StoreListAdapter(
         holder.closeOrOpenTime.text = stores[position].openingInfo
         holder.storeCall.text = stores[position].storeTel
         holder.avaiableDrink.text = stores[position].availableDrinks?.joinToString(",")
+
+        when(stores[position].isOpen) {
+            "영업중" -> {
+                holder.layoutStoreUnavailable.visibility = View.INVISIBLE
+            }
+            "영업종료" -> {
+                holder.layoutStoreUnavailable.visibility = View.VISIBLE
+            }
+            "휴무일" -> {
+                holder.layoutStoreUnavailable.visibility = View.VISIBLE
+            }
+            else -> {
+                holder.layoutStoreUnavailable.visibility = View.INVISIBLE
+            }
+        }
+
         Glide.with(activity).load(stores[position].storeMainImageUrl).into(holder.storeImage)
     }
 
@@ -64,6 +81,7 @@ class StoreListAdapter(
         val storeCall = binding.textViewStoreCall
         val avaiableDrink = binding.textViewStoreAvailableDrink
         val storeImage = binding.imageViewStore
+        val layoutStoreUnavailable = binding.layoutStoreUnavailable
 
         init {
             binding.root.setOnClickListener {
