@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.firebase.messaging.FirebaseMessaging
 import com.project.drinkly.R
 import com.project.drinkly.databinding.ActivityMainBinding
 import com.project.drinkly.ui.mypage.MypageFragment
@@ -23,12 +24,14 @@ import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.SubscribeFragment
 import com.project.drinkly.util.MainUtil.setStatusBarTransparent
 import com.project.drinkly.util.MyApplication
+import com.project.drinkly.util.PreferenceUtil
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var sharedPreferenceManager: PreferenceUtil
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,8 +41,9 @@ class MainActivity : AppCompatActivity() {
 
         this.setStatusBarTransparent()
         getKeyHash()
+        MyApplication.preferences = PreferenceUtil(applicationContext)
 
-
+        setFCMToken()
         setBottomNavigationView()
 
 
@@ -161,5 +165,26 @@ class MainActivity : AppCompatActivity() {
     fun hideMyLocationButton(state: Boolean) {
         if (state) binding.buttonMyLocation.visibility =
             View.GONE else binding.buttonMyLocation.visibility = View.VISIBLE
+    }
+
+    fun setFCMToken() {
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d("FCM Token", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("FCM Token", "$token")
+            MyApplication.preferences.setFCMToken(token)
+            Log.d("FCM Token", "FCM 토큰 : ${MyApplication.preferences.getFCMToken()}")
+
+            if (this::sharedPreferenceManager.isInitialized) {
+                Log.d("FCM Token", "this::sharedPreferenceManager.isInitialized")
+                sharedPreferenceManager.setFCMToken(token)
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 class MyApplication : Application() {
     companion object {
 
-//        lateinit var preferences: PreferenceUtil
+        lateinit var preferences: PreferenceUtil
 
         // 회원가입 정보
         var oauthId = 0
