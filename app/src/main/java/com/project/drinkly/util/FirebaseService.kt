@@ -29,7 +29,8 @@ class FirebaseService : FirebaseMessagingService() {
 
         val title = message.data["title"] ?: "알림"
         val body = message.data["body"] ?: "내용 없음"
-        val type = message.data["type"] ?: "내용 없음" //PROMOTION, COUPON
+        val type = message.data["type"] ?: "PROMOTION" //PROMOTION, COUPON
+        val storeId = message.data["storeId"]?.toLong() ?: 0L
 
         Log.d(
             "FirebaseService",
@@ -37,7 +38,7 @@ class FirebaseService : FirebaseMessagingService() {
         )
 
         // 알림 표시
-        showNotification(title, body)
+        showNotification(title, body, type, storeId)
 
         // 데이터 메시지 처리
         if (message.data.isNotEmpty()) {
@@ -48,7 +49,8 @@ class FirebaseService : FirebaseMessagingService() {
     private fun showNotification(
         messageTitle: String,
         messageBody: String,
-        type: String
+        type: String,
+        storeId: Long
     ) {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val notificationID = (System.currentTimeMillis() / 7).toInt() // 고유 ID 지정
@@ -63,6 +65,8 @@ class FirebaseService : FirebaseMessagingService() {
         val intent = Intent(this, MainActivity::class.java)
             .apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                putExtra("type", type)
+                putExtra("storeId", storeId)
             }
 
         val pendingIntent = PendingIntent.getActivity(

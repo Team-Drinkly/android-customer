@@ -1,5 +1,6 @@
 package com.project.drinkly.ui
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         setFCMToken()
         setBottomNavigationView()
+        handleNotificationIntent(intent)
 
 
         window.apply {
@@ -55,8 +57,35 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun handleNotificationIntent(intent: Intent) {
+        when(intent.getStringExtra("type").toString()) {
+            "COUPON" -> {
+                if(intent.getLongExtra("storeId", 0) != 0L) {
+                    var nextFragment = StoreDetailFragment()
+
+                    val bundle = Bundle().apply { putLong("storeId", intent.getLongExtra("storeId", 0L)) }
+
+                    // 전달할 Fragment 생성
+                    nextFragment = StoreDetailFragment().apply {
+                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                    }
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
+            "PROMOTION" -> {
+
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent) // 새로운 Intent 설정
+
+        intent.let { handleNotificationIntent(it) } // 앱 실행 중 알림 클릭 처리
     }
 
     private fun setBottomNavigationView() {
