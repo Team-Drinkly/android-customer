@@ -67,7 +67,7 @@ class StoreMembershipSelectFragment : Fragment() {
 
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, nextFragment)
-                    .addToBackStack(null)
+                    .addToBackStack("membership")
                     .commit()
             }
         }

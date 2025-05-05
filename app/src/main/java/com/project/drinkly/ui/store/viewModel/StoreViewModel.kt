@@ -186,7 +186,18 @@ class StoreViewModel: ViewModel() {
                         val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH:mm", Locale.KOREAN) // 한국어 형식
                         val currentDate = Date() // 현재 시간 가져오기
 
-                        usedMembershipTime.value = dateFormat.format(currentDate).toString()
+                        when (result?.result?.code) {
+                            201 -> {
+                                usedMembershipTime.value = dateFormat.format(currentDate).toString()
+                            }
+                            400 -> {
+                                // 이미 멤버십을 사용한 경우
+
+                            }
+                            else -> {
+
+                            }
+                        }
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

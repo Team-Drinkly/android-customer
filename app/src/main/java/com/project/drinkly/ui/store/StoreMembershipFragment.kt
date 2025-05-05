@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentStoreMembershipBinding
@@ -18,6 +19,8 @@ class StoreMembershipFragment : Fragment() {
     lateinit var viewModel: StoreViewModel
 
     var isChecked = false
+
+    var isUsedMembership = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,10 +61,14 @@ class StoreMembershipFragment : Fragment() {
     fun observeViewModel() {
         viewModel.run {
             usedMembershipTime.observe(viewLifecycleOwner) {
-                binding.run {
-                    textViewTooltip.text = "$it 에 사용되었습니다"
-                    layoutCheckBox.visibility = View.GONE
-                    buttonUseMembership.isEnabled = false
+                if(it != null) {
+                    isUsedMembership = true
+
+                    binding.run {
+                        textViewTooltip.text = "$it 에 사용되었습니다"
+                        layoutCheckBox.visibility = View.GONE
+                        buttonUseMembership.isEnabled = false
+                    }
                 }
             }
         }
@@ -75,7 +82,11 @@ class StoreMembershipFragment : Fragment() {
             toolbar.run {
                 textViewTitle.text = "멤버십 사용"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    if(!isUsedMembership) {
+                        fragmentManager?.popBackStack()
+                    } else {
+                        fragmentManager?.popBackStack("membership", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    }
                 }
             }
         }
