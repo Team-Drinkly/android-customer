@@ -34,12 +34,13 @@ class StoreViewModel: ViewModel() {
     var storeInfo: MutableLiveData<MutableList<StoreListResponse>> = MutableLiveData()
     var storeDetailInfo: MutableLiveData<StoreDetailResponse> = MutableLiveData()
 
+    var isUsed: MutableLiveData<Boolean> = MutableLiveData()
+
     var usedMembershipTime: MutableLiveData<String> = MutableLiveData()
 
     fun getStoreList(activity: MainActivity, latitude: String, longitude: String, radius: Int, searchInput: String?) {
         val apiClient = ApiClient(activity)
 
-        var tempAvailableDrink = mutableListOf<String>()
         var tempStoreListInfo = mutableListOf<StoreListResponse>()
 
         apiClient.apiService.getStoreList(latitude, longitude, radius, searchInput)
@@ -56,19 +57,22 @@ class StoreViewModel: ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         for (s in 0 until (result?.payload?.size ?: 0)) {
+                            var tempAvailableDrink = mutableListOf<String>()
+                            
                             var storeId = result?.payload?.get(s)?.id
                             var storeName = result?.payload?.get(s)?.storeName
                             var storeMainImageUrl = result?.payload?.get(s)?.storeMainImageUrl
                             var latitude = result?.payload?.get(s)?.latitude
                             var longitude = result?.payload?.get(s)?.longitude
                             var isOpen = result?.payload?.get(s)?.isOpen
+                            var isAvailable = result?.payload?.get(s)?.isAvailable
                             var openingInfo = result?.payload?.get(s)?.openingInfo
                             var storeTel = result?.payload?.get(s)?.storeTel
                             var storeAddress = result?.payload?.get(s)?.storeAddress
                             for (available in 0 until (result?.payload?.get(s)?.availableDrinks?.size ?: 0)) {
                                 tempAvailableDrink.add(result?.payload?.get(s)?.availableDrinks?.get(available).toString())
                             }
-                            tempStoreListInfo.add(StoreListResponse(storeId!!, storeName, storeMainImageUrl, latitude, longitude, isOpen, openingInfo, storeTel, storeAddress, tempAvailableDrink))
+                            tempStoreListInfo.add(StoreListResponse(storeId!!, storeName, storeMainImageUrl, latitude, longitude, isOpen, isAvailable, openingInfo, storeTel, storeAddress, tempAvailableDrink))
                         }
 
                         storeInfo.value = tempStoreListInfo
@@ -124,6 +128,44 @@ class StoreViewModel: ViewModel() {
             })
     }
 
+    fun getUsedMembership(activity: MainActivity, storeId: Long) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.getUsedMembership("Bearer ${tokenManager.getAccessToken()}", storeId)
+            .enqueue(object :
+                Callback<BaseResponse<Boolean>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<Boolean>>,
+                    response: Response<BaseResponse<Boolean>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<Boolean>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        isUsed.value = result?.payload ?: false
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<Boolean>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        isUsed.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<Boolean>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                    isUsed.value = false
+                }
+            })
+    }
+
+
     fun useMembership(activity: MainActivity, storeId: Long, drinkName: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
@@ -144,7 +186,18 @@ class StoreViewModel: ViewModel() {
                         val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH:mm", Locale.KOREAN) // 한국어 형식
                         val currentDate = Date() // 현재 시간 가져오기
 
-                        usedMembershipTime.value = dateFormat.format(currentDate).toString()
+                        when (result?.result?.code) {
+                            201 -> {
+                                usedMembershipTime.value = dateFormat.format(currentDate).toString()
+                            }
+                            400 -> {
+                                // 이미 멤버십을 사용한 경우
+
+                            }
+                            else -> {
+
+                            }
+                        }
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

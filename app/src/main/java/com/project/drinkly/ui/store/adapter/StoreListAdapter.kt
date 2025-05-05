@@ -52,19 +52,10 @@ class StoreListAdapter(
         holder.storeCall.text = stores[position].storeTel
         holder.avaiableDrink.text = stores[position].availableDrinks?.joinToString(",")
 
-        when(stores[position].isOpen) {
-            "영업중" -> {
-                holder.layoutStoreUnavailable.visibility = View.INVISIBLE
-            }
-            "영업종료" -> {
-                holder.layoutStoreUnavailable.visibility = View.VISIBLE
-            }
-            "휴무일" -> {
-                holder.layoutStoreUnavailable.visibility = View.VISIBLE
-            }
-            else -> {
-                holder.layoutStoreUnavailable.visibility = View.INVISIBLE
-            }
+        if(stores[position].isAvailable == true) {
+            holder.layoutStoreUnavailable.visibility = View.INVISIBLE
+        } else {
+            holder.layoutStoreUnavailable.visibility = View.VISIBLE
         }
 
         Glide.with(activity).load(stores[position].storeMainImageUrl).into(holder.storeImage)

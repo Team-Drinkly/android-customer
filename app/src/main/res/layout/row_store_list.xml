@@ -12,8 +12,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_store"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
         android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,12 +72,13 @@
 
             <TextView
                 android:id="@+id/textView_store_closeOrOpenTime"
-                style="@style/body3"
-                android:layout_width="match_parent"
+                style="@style/caption1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:text="00:00 영업종료"
+                android:textAlignment="center"
                 android:textColor="@color/gray5" />
         </LinearLayout>
 
@@ -155,7 +156,7 @@
             style="@style/body2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이용 가능한\n요일이 아닙니다"
+            android:text="지금은 멤버십\n이용이 불가합니다"
             android:textColor="@color/gray3"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
