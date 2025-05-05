@@ -31,7 +31,7 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager_store_image"
                 android:layout_width="0dp"
-                android:layout_height="335dp"
+                android:layout_height="240dp"
                 android:scaleType="centerCrop"
                 android:layout_marginHorizontal="0.5dp"
                 app:layout_constraintEnd_toEndOf="parent"
