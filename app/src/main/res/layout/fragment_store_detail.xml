@@ -54,7 +54,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_regular"
                     android:lineSpacingExtra="10dp"
-                    android:text="가게 소개\n가게소개"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +94,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="가게 주소"
                         android:textColor="@color/gray1" />
                 </LinearLayout>
 
@@ -123,7 +121,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="영업중"
                         android:textColor="@color/gray1" />
 
                     <TextView
@@ -133,7 +130,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="00:00 영업종료"
                         android:textColor="@color/gray1" />
                 </LinearLayout>
 
@@ -161,7 +157,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="이용 가능한 요일"
                         android:textColor="@color/gray1" />
 
                     <TextView
@@ -171,7 +166,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="월,화"
                         android:textColor="@color/gray1" />
                 </LinearLayout>
 
@@ -199,7 +193,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="02-0000-0000"
                         android:textColor="@color/gray1" />
                 </LinearLayout>
 
@@ -227,7 +220,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="8dp"
-                        android:text="\@"
                         android:textColor="@color/gray1" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>

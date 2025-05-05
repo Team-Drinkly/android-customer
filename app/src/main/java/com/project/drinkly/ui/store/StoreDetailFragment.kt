@@ -49,7 +49,7 @@ class StoreDetailFragment : Fragment() {
     ): View? {
         binding = FragmentStoreDetailBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(requireActivity())[StoreViewModel::class.java]
+        viewModel = ViewModelProvider(this)[StoreViewModel::class.java]
 
         storeMainImageAdapter =
             StoreImagePagerAdapter(mainActivity, listOf()).apply {
@@ -99,12 +99,17 @@ class StoreDetailFragment : Fragment() {
 
                     // 가게 정보
                     textViewStoreDescription.text = getStoreDetailInfo?.storeDescription.toString()
-                    textViewStoreAddress.text = "${getStoreDetailInfo?.storeAddress}, ${getStoreDetailInfo?.storeDetailAddress}"
+
+                    if(getStoreDetailInfo?.storeDetailAddress?.isEmpty() == false) {
+                        textViewStoreAddress.text = "${getStoreDetailInfo?.storeAddress}, ${getStoreDetailInfo?.storeDetailAddress}"
+                    } else {
+                        textViewStoreAddress.text = "${getStoreDetailInfo?.storeAddress}"
+                    }
                     textViewStoreIsOpen.text = getStoreDetailInfo?.isOpen
                     textViewStoreCloseOrOpenTime.text = getStoreDetailInfo?.openingInfo
                     textViewStoreAvailableDaysValue.text = getStoreDetailInfo?.availableDays?.replace(" ", ",") ?: ""
                     textViewStoreCall.text = getStoreDetailInfo?.storeTel
-                    if(getStoreDetailInfo?.instagramUrl != null) {
+                    if(getStoreDetailInfo?.instagramUrl?.isEmpty() == false) {
                         textViewStoreInstagram.run {
                             text = "@${getStoreDetailInfo?.instagramUrl}"
                             setOnClickListener {
@@ -131,6 +136,8 @@ class StoreDetailFragment : Fragment() {
 
             isUsed.observe(viewLifecycleOwner) {
                 binding.run {
+                    buttonMembership.visibility = View.VISIBLE
+
                     if(it == true) {
                         buttonMembership.run {
                             isEnabled = false
@@ -216,13 +223,13 @@ class StoreDetailFragment : Fragment() {
         }
 
         viewModel.getStoreDetail(mainActivity, arguments?.getLong("storeId", 0)!!)
-        viewModel.getUsedMembership(mainActivity, arguments?.getLong("storeId", 0)!!)
 
         binding.run {
             if(!MyApplication.isLogin) {
                 buttonMembership.visibility = View.INVISIBLE
             } else {
-                buttonMembership.visibility = View.VISIBLE
+                viewModel.getUsedMembership(mainActivity, arguments?.getLong("storeId", 0)!!)
+                buttonMembership.visibility = View.INVISIBLE
             }
 
             toolbar.run {
