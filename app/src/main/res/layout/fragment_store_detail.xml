@@ -30,7 +30,7 @@
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager_store_image"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:scaleType="centerCrop"
                 android:layout_marginHorizontal="0.5dp"
@@ -38,191 +38,207 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout2"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/layout_store"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/card_background"
-                android:padding="14dp"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewPager_store_image">
 
-                <TextView
-                    android:id="@+id/textView_store_description"
-                    android:layout_width="0dp"
+                <include
+                    android:id="@+id/layout_coupon"
+                    layout="@layout/layout_store_coupon_simple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_store_info"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_regular"
-                    android:lineSpacingExtra="10dp"
-                    android:textSize="14sp"
+                    android:background="@color/card_background"
+                    android:padding="14dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/divider_store_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/gray8"
-                    app:layout_constraintEnd_toEndOf="@+id/textView_store_description"
-                    app:layout_constraintStart_toStartOf="@+id/textView_store_description"
-                    app:layout_constraintTop_toBottomOf="@+id/textView_store_description" />
-
-
-                <LinearLayout
-                    android:id="@+id/layout_store_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/divider_store_info"
-                    app:layout_constraintTop_toBottomOf="@+id/divider_store_info">
-
-                    <ImageView
-                        android:id="@+id/imageView_store_address"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_marker" />
+                    app:layout_constraintTop_toBottomOf="@+id/layout_store">
 
                     <TextView
-                        android:id="@+id/textView_store_address"
-                        style="@style/body3"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/textView_store_description"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/gray1" />
-                </LinearLayout>
+                        android:fontFamily="@font/pretendard_regular"
+                        android:lineSpacingExtra="10dp"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/layout_store_time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/layout_store_address"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_store_address">
+                    <View
+                        android:id="@+id/divider_store_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/gray8"
+                        app:layout_constraintEnd_toEndOf="@+id/textView_store_description"
+                        app:layout_constraintStart_toStartOf="@+id/textView_store_description"
+                        app:layout_constraintTop_toBottomOf="@+id/textView_store_description" />
 
-                    <ImageView
-                        android:id="@+id/imageView_store_time"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_time" />
 
-                    <TextView
-                        android:id="@+id/textView_store_isOpen"
-                        style="@style/SubTitle2"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layout_store_address"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/gray1" />
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/divider_store_info"
+                        app:layout_constraintTop_toBottomOf="@+id/divider_store_info">
 
-                    <TextView
-                        android:id="@+id/textView_store_closeOrOpenTime"
-                        style="@style/body3"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/imageView_store_address"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_marker" />
+
+                        <TextView
+                            android:id="@+id/textView_store_address"
+                            style="@style/body3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/gray1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_store_time"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/gray1" />
-                </LinearLayout>
+                        android:layout_marginTop="13dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/layout_store_address"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_store_address">
 
-                <LinearLayout
-                    android:id="@+id/layout_store_available_days"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/layout_store_time"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_store_time">
+                        <ImageView
+                            android:id="@+id/imageView_store_time"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_time" />
 
-                    <ImageView
-                        android:id="@+id/imageView_store_available_days"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_calendar" />
+                        <TextView
+                            android:id="@+id/textView_store_isOpen"
+                            style="@style/SubTitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/gray1" />
 
-                    <TextView
-                        android:id="@+id/textView_store_available_days_title"
-                        style="@style/body2"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/textView_store_closeOrOpenTime"
+                            style="@style/body3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/gray1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_store_available_days"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/gray1" />
+                        android:layout_marginTop="13dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/layout_store_time"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_store_time">
 
-                    <TextView
-                        android:id="@+id/textView_store_available_days_value"
-                        style="@style/body3"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/imageView_store_available_days"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_calendar" />
+
+                        <TextView
+                            android:id="@+id/textView_store_available_days_title"
+                            style="@style/body2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/gray1" />
+
+                        <TextView
+                            android:id="@+id/textView_store_available_days_value"
+                            style="@style/body3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/gray1" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_store_call"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/gray1" />
-                </LinearLayout>
+                        android:layout_marginTop="13dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/layout_store_available_days"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_store_available_days">
 
-                <LinearLayout
-                    android:id="@+id/layout_store_call"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/layout_store_available_days"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_store_available_days">
+                        <ImageView
+                            android:id="@+id/imageView_store_call"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_call" />
 
-                    <ImageView
-                        android:id="@+id/imageView_store_call"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_call" />
+                        <TextView
+                            android:id="@+id/textView_store_call"
+                            style="@style/body3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/gray1" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textView_store_call"
-                        style="@style/body3"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layout_store_instagram"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/gray1" />
-                </LinearLayout>
+                        android:layout_marginTop="13dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/layout_store_call"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_store_call">
 
-                <LinearLayout
-                    android:id="@+id/layout_store_instagram"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="13dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/layout_store_call"
-                    app:layout_constraintTop_toBottomOf="@+id/layout_store_call">
+                        <ImageView
+                            android:id="@+id/imageView_store_instagram"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            app:srcCompat="@drawable/ic_instagram" />
 
-                    <ImageView
-                        android:id="@+id/imageView_store_instagram"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center"
-                        app:srcCompat="@drawable/ic_instagram" />
-
-                    <TextView
-                        android:id="@+id/textView_store_instagram"
-                        style="@style/body3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="8dp"
-                        android:textColor="@color/gray1" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/textView_store_instagram"
+                            style="@style/body3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="8dp"
+                            android:textColor="@color/gray1" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView_available_drink"
@@ -235,7 +251,7 @@
                 android:textColor="@color/gray1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_store" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_available_drink"

@@ -15,6 +15,7 @@ import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
+import com.project.drinkly.api.response.coupon.StoreCouponResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.ui.MainActivity
@@ -33,6 +34,7 @@ class StoreViewModel: ViewModel() {
 
     var storeInfo: MutableLiveData<MutableList<StoreListResponse>> = MutableLiveData()
     var storeDetailInfo: MutableLiveData<StoreDetailResponse> = MutableLiveData()
+    var storeCouponInfo: MutableLiveData<StoreCouponResponse?> = MutableLiveData()
 
     var isUsed: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -88,6 +90,43 @@ class StoreViewModel: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<BaseResponse<List<StoreListResponse>>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                }
+            })
+    }
+
+    fun getStoreCoupon(activity: MainActivity, storeId: Long) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.getStoreCoupon("Bearer ${tokenManager.getAccessToken()}", storeId)
+            .enqueue(object :
+                Callback<BaseResponse<List<StoreCouponResponse>>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<List<StoreCouponResponse>>>,
+                    response: Response<BaseResponse<List<StoreCouponResponse>>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<List<StoreCouponResponse>>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        if(result?.payload?.size != 0) {
+                            storeCouponInfo.value = result?.payload?.get(0)
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<List<StoreCouponResponse>>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<List<StoreCouponResponse>>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
                 }

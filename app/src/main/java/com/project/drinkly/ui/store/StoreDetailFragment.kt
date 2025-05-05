@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.drinkly.R
+import com.project.drinkly.api.response.coupon.StoreCouponResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.databinding.FragmentStoreDetailBinding
 import com.project.drinkly.ui.MainActivity
@@ -42,6 +43,8 @@ class StoreDetailFragment : Fragment() {
     lateinit var storeAvaiableDrinkAdapter: StoreAvailableDrinkAdapter
 
     private var getStoreDetailInfo: StoreDetailResponse? = null
+    private var isUsedToday: Boolean? = null
+    private var couponInfo: StoreCouponResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +52,7 @@ class StoreDetailFragment : Fragment() {
     ): View? {
         binding = FragmentStoreDetailBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(this)[StoreViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[StoreViewModel::class.java]
 
         storeMainImageAdapter =
             StoreImagePagerAdapter(mainActivity, listOf()).apply {
@@ -79,6 +82,20 @@ class StoreDetailFragment : Fragment() {
                 adapter = storeAvaiableDrinkAdapter
                 layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             }
+
+            layoutCoupon.layoutCouponFrame.setOnClickListener {
+                when(couponInfo?.status) {
+                    "NONE" -> {
+                        // (쿠폰 다운로드 전) 쿠폰 다운로드
+                    }
+                    "AVAILABLE" -> {
+                        // (쿠폰 다운로드 후 사용 X) 쿠폰 사용 화면으로 이동
+                    }
+                    "USED" -> {
+                        // (쿠폰 사용 완료)
+                    }
+                }
+            }
         }
 
         return binding.root
@@ -93,6 +110,8 @@ class StoreDetailFragment : Fragment() {
         viewModel.run {
             storeDetailInfo.observe(viewLifecycleOwner) {
                 getStoreDetailInfo = it
+
+                checkButtonEnabled()
 
                 binding.run {
                     toolbar.textViewTitle.text = getStoreDetailInfo?.storeName.toString()
@@ -122,9 +141,9 @@ class StoreDetailFragment : Fragment() {
                     }
 
                     // 가게 이미지
-                    storeMainImageAdapter.updateList(
-                        listOf(getStoreDetailInfo?.storeMainImageUrl!!)
-                    )
+                    getStoreDetailInfo?.storeMainImageUrl?.let { imageUrl ->
+                        storeMainImageAdapter.updateList(listOf(imageUrl))
+                    }
 
                     storeMenuImageAdapter.updateList(
                         getStoreDetailInfo?.menuImageUrls?.map { it.imageUrl }
@@ -135,46 +154,90 @@ class StoreDetailFragment : Fragment() {
             }
 
             isUsed.observe(viewLifecycleOwner) {
+                isUsedToday = it
+
                 binding.run {
                     buttonMembership.visibility = View.VISIBLE
+                    checkButtonEnabled()
+                }
+            }
 
-                    if(it == true) {
-                        buttonMembership.run {
-                            isEnabled = false
-                            text = "멤버십 사용 완료"
-                        }
+            storeCouponInfo.observe(viewLifecycleOwner) {
+                couponInfo = it
+
+                binding.layoutCoupon.run {
+                    if(couponInfo == null) {
+                        layoutCouponFrame.visibility = View.GONE
                     } else {
-                        if(getStoreDetailInfo?.isAvailable == true) {
-                            if(MyApplication.isSubscribe) {
-                                buttonMembership.run {
-                                    text = "멤버십 사용하기"
-                                    setOnClickListener {
-                                        mainActivity.supportFragmentManager.beginTransaction()
-                                            .replace(R.id.fragmentContainerView_main, StoreMembershipSelectFragment())
-                                            .addToBackStack("membership")
-                                            .commit()
-                                    }
-                                }
-                            } else {
-                                buttonMembership.run {
-                                    text = "멤버십 구독하러 가기"
-                                    setOnClickListener {
-                                        mainActivity.supportFragmentManager.beginTransaction()
-                                            .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
-                                            .addToBackStack(null)
-                                            .commit()
-                                    }
+                        layoutCouponFrame.visibility = View.VISIBLE
+
+                        textViewCouponTitle.text = couponInfo?.title
+                        textViewCouponDescription.text = couponInfo?.description
+                        textViewCouponDate.text = "유효기간: ${couponInfo?.expirationDate}까지"
+
+                        when(couponInfo?.status) {
+                            // 쿠폰 다운로드 전
+                            "NONE" -> {
+                                textViewCouponDownload.visibility = View.INVISIBLE
+                                imageViewCouponDownload.visibility = View.VISIBLE
+                            }
+                            // 쿠폰 다운로드 후 사용 X
+                            "AVAILABLE" -> {
+                                textViewCouponDownload.text = "쿠폰\n사용"
+                                imageViewCouponDownload.visibility = View.INVISIBLE
+                            }
+                            // 쿠폰 사용 완료
+                            "USED" -> {
+                                textViewCouponDownload.text = "사용\n완료"
+                                imageViewCouponDownload.visibility = View.INVISIBLE
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun checkButtonEnabled() {
+        if(isUsedToday != null && getStoreDetailInfo != null) {
+            binding.run {
+                if(isUsedToday == true) {
+                    buttonMembership.run {
+                        isEnabled = false
+                        text = "멤버십 사용 완료"
+                    }
+                } else {
+                    if(getStoreDetailInfo?.isAvailable == true) {
+                        if(MyApplication.isSubscribe) {
+                            buttonMembership.run {
+                                text = "멤버십 사용하기"
+                                isEnabled = true
+                                setOnClickListener {
+                                    mainActivity.supportFragmentManager.beginTransaction()
+                                        .replace(R.id.fragmentContainerView_main, StoreMembershipSelectFragment())
+                                        .addToBackStack("membership")
+                                        .commit()
                                 }
                             }
                         } else {
-                            showToolTip()
-
                             buttonMembership.run {
-                                isEnabled = false
-                                text = "멤버십 사용 불가"
+                                text = "멤버십 구독하러 가기"
                                 setOnClickListener {
-                                    showToolTip()
+                                    mainActivity.supportFragmentManager.beginTransaction()
+                                        .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                                        .addToBackStack(null)
+                                        .commit()
                                 }
+                            }
+                        }
+                    } else {
+                        showToolTip()
+
+                        buttonMembership.run {
+                            isEnabled = false
+                            text = "멤버십 사용 불가"
+                            setOnClickListener {
+                                showToolTip()
                             }
                         }
                     }
@@ -185,8 +248,8 @@ class StoreDetailFragment : Fragment() {
 
     fun showToolTip() {
         val balloon = Balloon.Builder(mainActivity)
-//                .setWidth(BalloonSizeSpec.WRAP)
-            .setWidthRatio(0.6f) // sets width as 60% of the horizontal screen's size.
+                .setWidth(BalloonSizeSpec.WRAP)
+//            .setWidthRatio(0.6f) // sets width as 60% of the horizontal screen's size.
             .setHeight(BalloonSizeSpec.WRAP)
             .setText("지금은 멤버십 사용이 불가능한 시간이에요")
             .setTextColorResource(R.color.gray9)
@@ -215,25 +278,29 @@ class StoreDetailFragment : Fragment() {
     }
 
     fun initView() {
-
         mainActivity.run {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
         }
 
-        viewModel.getStoreDetail(mainActivity, arguments?.getLong("storeId", 0)!!)
+        viewModel.getStoreDetail(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
 
         binding.run {
+            layoutCoupon.layoutCouponFrame.visibility = View.GONE
+
             if(!MyApplication.isLogin) {
                 buttonMembership.visibility = View.INVISIBLE
             } else {
-                viewModel.getUsedMembership(mainActivity, arguments?.getLong("storeId", 0)!!)
+                viewModel.getUsedMembership(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
+                viewModel.getStoreCoupon(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
                 buttonMembership.visibility = View.INVISIBLE
             }
 
             toolbar.run {
                 buttonBack.setOnClickListener {
+                    viewModel.storeDetailInfo.removeObservers(viewLifecycleOwner)
+                    viewModel.storeDetailInfo.value = null
                     fragmentManager?.popBackStack()
                 }
             }

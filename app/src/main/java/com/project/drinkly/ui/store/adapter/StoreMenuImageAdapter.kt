@@ -47,7 +47,7 @@ class StoreMenuImageAdapter(
             .into(holder.storeMenuImage)
     }
 
-    override fun getItemCount() = images?.size!!
+    override fun getItemCount() = images?.size ?: 0
 
     inner class ViewHolder(val binding: RowStoreMenuImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
