@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp">
 
 
     <LinearLayout
@@ -25,9 +26,23 @@
                 android:id="@+id/view"
                 android:layout_width="13dp"
                 android:layout_height="0dp"
-                android:background="@drawable/background_coupon_left_pink"
+                android:background="@drawable/background_coupon_left_primary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView_store_name"
+                style="@style/caption2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="14dp"
+                android:textColor="@color/primary_50"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/view"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -36,13 +51,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="17dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="14dp"
-                android:text="쿠폰 제목"
+                android:minLines="1"
+                android:maxLines="1"
+                android:lines="1"
+                android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/view"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/textView_store_name" />
 
             <TextView
                 android:id="@+id/textView_coupon_description"
@@ -51,7 +69,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="14dp"
-                android:text="쿠폰 제목"
+                android:minLines="2"
+                android:maxLines="2"
+                android:lines="2"
+                android:ellipsize="end"
                 android:textColor="@color/gray6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textView_coupon_title"
@@ -62,7 +83,7 @@
                 style="@style/caption1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="유효기간: 2025-01-01까지"

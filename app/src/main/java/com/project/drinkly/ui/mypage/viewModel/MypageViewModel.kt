@@ -5,27 +5,23 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.project.drinkly.R
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.response.BaseResponse
-import com.project.drinkly.api.response.coupon.CouponListResponse
-import com.project.drinkly.api.response.login.LoginResponse
-import com.project.drinkly.api.response.store.StoreListResponse
+import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.DialogEvent
-import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
+import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
-import com.project.drinkly.util.MyApplication
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class MypageViewModel: ViewModel() {
 
-    var availableCouponInfo: MutableLiveData<MutableList<CouponListResponse>> = MutableLiveData()
-    var usedCouponInfo: MutableLiveData<MutableList<CouponListResponse>> = MutableLiveData()
+    var availableMembershipCouponInfo: MutableLiveData<MutableList<MembershipCouponListResponse>> = MutableLiveData()
+    var usedMembershipCouponInfo: MutableLiveData<MutableList<MembershipCouponListResponse>> = MutableLiveData()
 
     fun getUserId(activity: MainActivity) {
         val apiClient = ApiClient(activity)
@@ -83,8 +79,7 @@ class MypageViewModel: ViewModel() {
                         tokenManager.deleteAccessToken()
                         tokenManager.deleteRefreshToken()
 
-                        activity.fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-
+                        activity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String>? = response.body()
@@ -139,23 +134,23 @@ class MypageViewModel: ViewModel() {
             })
     }
 
-    fun getAvailableCouponList(activity: MainActivity) {
+    fun getAvailableMembershipCouponList(activity: MainActivity) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
 
-        var tempCouponInfoList = mutableListOf<CouponListResponse>()
+        var tempCouponInfoList = mutableListOf<MembershipCouponListResponse>()
 
-        apiClient.apiService.getAvailableCouponList("Bearer ${tokenManager.getAccessToken()}")
+        apiClient.apiService.getAvailableMembershipCouponList("Bearer ${tokenManager.getAccessToken()}")
             .enqueue(object :
-                Callback<BaseResponse<List<CouponListResponse?>>> {
+                Callback<BaseResponse<List<MembershipCouponListResponse?>>> {
                 override fun onResponse(
-                    call: Call<BaseResponse<List<CouponListResponse?>>>,
-                    response: Response<BaseResponse<List<CouponListResponse?>>>
+                    call: Call<BaseResponse<List<MembershipCouponListResponse?>>>,
+                    response: Response<BaseResponse<List<MembershipCouponListResponse?>>>
                 ) {
                     Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: BaseResponse<List<CouponListResponse?>>? = response.body()
+                        val result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         for (c in 0 until (result?.payload?.size ?: 0)) {
@@ -168,13 +163,13 @@ class MypageViewModel: ViewModel() {
                             var title = result?.payload?.get(c)?.title.toString()
                             var description = result?.payload?.get(c)?.description.toString()
 
-                            tempCouponInfoList.add(CouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
+                            tempCouponInfoList.add(MembershipCouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
                         }
 
-                        availableCouponInfo.value = tempCouponInfoList
+                        availableMembershipCouponInfo.value = tempCouponInfoList
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: BaseResponse<List<CouponListResponse?>>? = response.body()
+                        var result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
@@ -182,30 +177,30 @@ class MypageViewModel: ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<BaseResponse<List<CouponListResponse?>>>, t: Throwable) {
+                override fun onFailure(call: Call<BaseResponse<List<MembershipCouponListResponse?>>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
                 }
             })
     }
 
-    fun getUsedCouponList(activity: MainActivity) {
+    fun getUsedMembershipCouponList(activity: MainActivity) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
 
-        var tempCouponInfoList = mutableListOf<CouponListResponse>()
+        var tempCouponInfoList = mutableListOf<MembershipCouponListResponse>()
 
-        apiClient.apiService.getUsedCouponList("Bearer ${tokenManager.getAccessToken()}")
+        apiClient.apiService.getUsedMembershipCouponList("Bearer ${tokenManager.getAccessToken()}")
             .enqueue(object :
-                Callback<BaseResponse<List<CouponListResponse?>>> {
+                Callback<BaseResponse<List<MembershipCouponListResponse?>>> {
                 override fun onResponse(
-                    call: Call<BaseResponse<List<CouponListResponse?>>>,
-                    response: Response<BaseResponse<List<CouponListResponse?>>>
+                    call: Call<BaseResponse<List<MembershipCouponListResponse?>>>,
+                    response: Response<BaseResponse<List<MembershipCouponListResponse?>>>
                 ) {
                     Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
-                        val result: BaseResponse<List<CouponListResponse?>>? = response.body()
+                        val result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         for (c in 0 until (result?.payload?.size ?: 0)) {
@@ -218,13 +213,13 @@ class MypageViewModel: ViewModel() {
                             var title = result?.payload?.get(c)?.title.toString()
                             var description = result?.payload?.get(c)?.description.toString()
 
-                            tempCouponInfoList.add(CouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
+                            tempCouponInfoList.add(MembershipCouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
                         }
 
-                        usedCouponInfo.value = tempCouponInfoList
+                        usedMembershipCouponInfo.value = tempCouponInfoList
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
-                        var result: BaseResponse<List<CouponListResponse?>>? = response.body()
+                        var result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
@@ -232,7 +227,7 @@ class MypageViewModel: ViewModel() {
                     }
                 }
 
-                override fun onFailure(call: Call<BaseResponse<List<CouponListResponse?>>>, t: Throwable) {
+                override fun onFailure(call: Call<BaseResponse<List<MembershipCouponListResponse?>>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
                 }
@@ -257,7 +252,8 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<String?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        getAvailableCouponList(activity)
+
+                        getAvailableMembershipCouponList(activity)
                         viewModel.getUserId(activity)
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)

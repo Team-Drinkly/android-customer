@@ -4,18 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.project.drinkly.api.response.coupon.CouponListResponse
-import com.project.drinkly.api.response.store.StoreListResponse
-import com.project.drinkly.databinding.LayoutCouponBinding
-import com.project.drinkly.databinding.RowStoreListBinding
+import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
+import com.project.drinkly.databinding.LayoutMembershipCouponBinding
 import com.project.drinkly.ui.MainActivity
 
-class CouponAdapter(
+class MembershipCouponAdapter(
     private var activity: MainActivity,
-    private var coupons: List<CouponListResponse>
+    private var coupons: List<MembershipCouponListResponse>
 ) :
-    RecyclerView.Adapter<CouponAdapter.ViewHolder>() {
+    RecyclerView.Adapter<MembershipCouponAdapter.ViewHolder>() {
 
     private var onItemClickListener: ((Int) -> Unit)? = null
     private var context: Context? = null
@@ -25,7 +22,7 @@ class CouponAdapter(
         onItemClickListener = listener
     }
 
-    fun updateList(newCoupons: List<CouponListResponse>) {
+    fun updateList(newCoupons: List<MembershipCouponListResponse>) {
         coupons = newCoupons
         notifyDataSetChanged()
     }
@@ -40,7 +37,7 @@ class CouponAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         context = parent.context
         val binding =
-            LayoutCouponBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            LayoutMembershipCouponBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return ViewHolder(binding)
     }
@@ -59,7 +56,7 @@ class CouponAdapter(
     override fun getItemCount() = coupons.size
 
 
-    inner class ViewHolder(val binding: LayoutCouponBinding) :
+    inner class ViewHolder(val binding: LayoutMembershipCouponBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val couponTitle = binding.textViewCouponTitle
         val couponDescription = binding.textViewCouponDescription

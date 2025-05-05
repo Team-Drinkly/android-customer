@@ -4,7 +4,7 @@ import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
-import com.project.drinkly.api.response.coupon.CouponListResponse
+import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
@@ -13,16 +13,13 @@ import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -122,17 +119,15 @@ interface ApiService {
         @Query("type") type: String
     ): Call<BaseResponse<Long?>>
 
-    // 사용 전 쿠폰 조회
+    // 사용 전 멤버십 쿠폰 조회
     @GET("/api/v1/payment/m/coupons/available")
-    fun getAvailableCouponList(
+    fun getAvailableMembershipCouponList(
         @Header("Authorization") token: String
-    ): Call<BaseResponse<List<CouponListResponse?>>>
+    ): Call<BaseResponse<List<MembershipCouponListResponse?>>>
 
-    // 사용 완료 쿠폰 조회
+    // 사용 완료 멤버십 쿠폰 조회
     @GET("/api/v1/payment/m/coupons/used")
-    fun getUsedCouponList(
         @Header("Authorization") token: String
-    ): Call<BaseResponse<List<CouponListResponse?>>>
 
     // 쿠폰 사용
     @POST("/api/v1/payment/m/coupon-use")
