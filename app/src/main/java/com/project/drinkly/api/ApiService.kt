@@ -152,6 +152,13 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<BaseResponse<List<StoreCouponListResponse?>>>
 
+    // 쿠폰 다운로드
+    @POST("/api/v1/coupon/m/issue/{couponId}")
+    fun downloadCoupon(
+        @Header("Authorization") token: String,
+        @Path("couponId") couponId: Long
+    ): Call<BaseResponse<String?>>
+
     // 쿠폰 사용
     @POST("/api/v1/payment/m/coupon-use")
     fun useCoupon(

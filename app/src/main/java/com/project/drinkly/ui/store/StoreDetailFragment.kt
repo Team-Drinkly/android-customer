@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -87,6 +88,7 @@ class StoreDetailFragment : Fragment() {
                 when(couponInfo?.status) {
                     "NONE" -> {
                         // (쿠폰 다운로드 전) 쿠폰 다운로드
+                        viewModel.downloadCoupon(mainActivity, couponInfo?.id ?: 0L, arguments?.getLong("storeId", 0) ?: 0)
                     }
                     "AVAILABLE" -> {
                         // (쿠폰 다운로드 후 사용 X) 쿠폰 사용 화면으로 이동
@@ -184,11 +186,13 @@ class StoreDetailFragment : Fragment() {
                             // 쿠폰 다운로드 후 사용 X
                             "AVAILABLE" -> {
                                 textViewCouponDownload.text = "쿠폰\n사용"
+                                textViewCouponDownload.visibility = View.VISIBLE
                                 imageViewCouponDownload.visibility = View.INVISIBLE
                             }
                             // 쿠폰 사용 완료
                             "USED" -> {
                                 textViewCouponDownload.text = "사용\n완료"
+                                textViewCouponDownload.visibility = View.VISIBLE
                                 imageViewCouponDownload.visibility = View.INVISIBLE
                             }
                         }

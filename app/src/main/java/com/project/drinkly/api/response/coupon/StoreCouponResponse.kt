@@ -1,7 +1,7 @@
 package com.project.drinkly.api.response.coupon
 
 data class StoreCouponResponse(
-    val id: Int,
+    val id: Long,
     val memberId: Int,
     val status: String,
     val expirationDate: String,
