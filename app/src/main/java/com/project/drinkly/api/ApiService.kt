@@ -159,10 +159,17 @@ interface ApiService {
         @Path("couponId") couponId: Long
     ): Call<BaseResponse<String?>>
 
-    // 쿠폰 사용
+    // 멤버십 쿠폰 사용
     @POST("/api/v1/payment/m/coupon-use")
-    fun useCoupon(
+    fun useMembershipCoupon(
         @Header("Authorization") token: String,
         @Query("couponId") couponId: Long
+    ): Call<BaseResponse<String?>>
+
+    // 매장 쿠폰 사용
+    @PATCH("/api/v1/coupon/m/use/{couponId}")
+    fun useStoreCoupon(
+        @Header("Authorization") token: String,
+        @Path("couponId") couponId: Long
     ): Call<BaseResponse<String?>>
 }

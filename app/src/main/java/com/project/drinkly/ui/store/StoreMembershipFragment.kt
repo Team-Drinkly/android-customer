@@ -75,6 +75,8 @@ class StoreMembershipFragment : Fragment() {
     }
 
     fun initView() {
+        viewModel.usedMembershipTime.value = null
+
         binding.run {
             layoutCheckBox.visibility = View.VISIBLE
             textViewStoreName.text = arguments?.getString("storeName")

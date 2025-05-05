@@ -6,14 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentStoreCouponBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.store.viewModel.StoreViewModel
 
 class StoreCouponFragment : Fragment() {
 
     lateinit var binding : FragmentStoreCouponBinding
     lateinit var mainActivity: MainActivity
+    private val viewModel: StoreViewModel by lazy {
+        ViewModelProvider(this)[StoreViewModel::class.java]
+    }
 
     var isChecked = false
 
@@ -41,6 +46,7 @@ class StoreCouponFragment : Fragment() {
 
             buttonUseCoupon.setOnClickListener {
                 // 쿠폰 사용
+                viewModel.useStoreCoupon(mainActivity, arguments?.getLong("couponId") ?: 0L)
             }
         }
 
@@ -50,6 +56,23 @@ class StoreCouponFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initView()
+        observeViewModel()
+    }
+
+    fun observeViewModel() {
+        viewModel.run {
+            usedCouponTime.observe(viewLifecycleOwner) {
+                if(it != null) {
+                    isUsedCoupon = true
+
+                    binding.run {
+                        textViewTooltip.text = "$it 에 사용되었습니다"
+                        layoutCheckBox.visibility = View.GONE
+                        buttonUseCoupon.isEnabled = false
+                    }
+                }
+            }
+        }
     }
 
     fun initView() {

@@ -78,7 +78,7 @@ class MypageCouponUnuseFragment : Fragment() {
                     dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                         override fun onClickYesButton() {
                             // 쿠폰 사용
-                            viewModel.useCoupon(mainActivity, getMembershipCouponList[position].id)
+                            viewModel.useMembershipCoupon(mainActivity, getMembershipCouponList[position].id)
                         }
                     })
 

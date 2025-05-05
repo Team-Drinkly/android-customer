@@ -42,6 +42,7 @@ class StoreViewModel: ViewModel() {
     var isUsed: MutableLiveData<Boolean> = MutableLiveData()
 
     var usedMembershipTime: MutableLiveData<String> = MutableLiveData()
+    var usedCouponTime: MutableLiveData<String> = MutableLiveData()
 
     fun getStoreList(activity: MainActivity, latitude: String, longitude: String, radius: Int, searchInput: String?) {
         val apiClient = ApiClient(activity)
@@ -156,6 +157,44 @@ class StoreViewModel: ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         getStoreCoupon(activity, storeId)
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                }
+            })
+    }
+
+    fun useStoreCoupon(activity: MainActivity, couponId: Long) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.useStoreCoupon("Bearer ${tokenManager.getAccessToken()}", couponId)
+            .enqueue(object :
+                Callback<BaseResponse<String?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<String?>>,
+                    response: Response<BaseResponse<String?>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH:mm", Locale.KOREAN) // 한국어 형식
+                        val currentDate = Date() // 현재 시간 가져오기
+
+                        usedCouponTime.value = dateFormat.format(currentDate).toString()
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String?>? = response.body()

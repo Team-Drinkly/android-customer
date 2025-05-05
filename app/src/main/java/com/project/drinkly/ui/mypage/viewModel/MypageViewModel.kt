@@ -337,12 +337,12 @@ class MypageViewModel: ViewModel() {
             })
     }
 
-    fun useCoupon(activity: MainActivity, couponId: Long) {
+    fun useMembershipCoupon(activity: MainActivity, couponId: Long) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
         val viewModel = ViewModelProvider(activity)[SubscribeViewModel::class.java]
 
-        apiClient.apiService.useCoupon("Bearer ${tokenManager.getAccessToken()}", couponId)
+        apiClient.apiService.useMembershipCoupon("Bearer ${tokenManager.getAccessToken()}", couponId)
             .enqueue(object :
                 Callback<BaseResponse<String?>> {
                 override fun onResponse(
