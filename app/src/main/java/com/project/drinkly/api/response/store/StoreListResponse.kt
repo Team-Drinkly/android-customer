@@ -7,6 +7,7 @@ data class StoreListResponse(
     val latitude: String?,
     val longitude: String?,
     val isOpen: String?,
+    val isAvailable: Boolean?,
     val openingInfo: String?,
     val storeTel: String?,
     val storeAddress: String?,

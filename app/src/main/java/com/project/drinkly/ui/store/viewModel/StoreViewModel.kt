@@ -41,7 +41,6 @@ class StoreViewModel: ViewModel() {
     fun getStoreList(activity: MainActivity, latitude: String, longitude: String, radius: Int, searchInput: String?) {
         val apiClient = ApiClient(activity)
 
-        var tempAvailableDrink = mutableListOf<String>()
         var tempStoreListInfo = mutableListOf<StoreListResponse>()
 
         apiClient.apiService.getStoreList(latitude, longitude, radius, searchInput)
@@ -58,19 +57,22 @@ class StoreViewModel: ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         for (s in 0 until (result?.payload?.size ?: 0)) {
+                            var tempAvailableDrink = mutableListOf<String>()
+                            
                             var storeId = result?.payload?.get(s)?.id
                             var storeName = result?.payload?.get(s)?.storeName
                             var storeMainImageUrl = result?.payload?.get(s)?.storeMainImageUrl
                             var latitude = result?.payload?.get(s)?.latitude
                             var longitude = result?.payload?.get(s)?.longitude
                             var isOpen = result?.payload?.get(s)?.isOpen
+                            var isAvailable = result?.payload?.get(s)?.isAvailable
                             var openingInfo = result?.payload?.get(s)?.openingInfo
                             var storeTel = result?.payload?.get(s)?.storeTel
                             var storeAddress = result?.payload?.get(s)?.storeAddress
                             for (available in 0 until (result?.payload?.get(s)?.availableDrinks?.size ?: 0)) {
                                 tempAvailableDrink.add(result?.payload?.get(s)?.availableDrinks?.get(available).toString())
                             }
-                            tempStoreListInfo.add(StoreListResponse(storeId!!, storeName, storeMainImageUrl, latitude, longitude, isOpen, openingInfo, storeTel, storeAddress, tempAvailableDrink))
+                            tempStoreListInfo.add(StoreListResponse(storeId!!, storeName, storeMainImageUrl, latitude, longitude, isOpen, isAvailable, openingInfo, storeTel, storeAddress, tempAvailableDrink))
                         }
 
                         storeInfo.value = tempStoreListInfo
