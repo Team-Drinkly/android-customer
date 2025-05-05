@@ -18,6 +18,7 @@ import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.mypage.adapter.MembershipCouponAdapter
 import com.project.drinkly.ui.mypage.adapter.StoreCouponAdapter
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
+import com.project.drinkly.ui.store.StoreCouponFragment
 import com.project.drinkly.util.MyApplication
 
 class MypageCouponUnuseFragment : Fragment() {
@@ -93,6 +94,23 @@ class MypageCouponUnuseFragment : Fragment() {
             itemClickListener = object : StoreCouponAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     // 쿠폰 사용 화면
+                    val bundle = Bundle().apply {
+                        putString("storeName", getStoreCouponList[position].storeName.toString())
+                        putLong("couponId", getStoreCouponList[position].id ?: 0)
+                        putString("couponTitle", getStoreCouponList[position].title)
+                        putString("couponDescription", getStoreCouponList[position].description)
+                        putString("couponDate", getStoreCouponList[position].expirationDate)
+                    }
+
+                    // 전달할 Fragment 생성
+                    var nextFragment = StoreCouponFragment().apply {
+                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                    }
+
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .addToBackStack(null)
+                        .commit()
                 }
             }
         }

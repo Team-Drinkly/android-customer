@@ -47,6 +47,8 @@ class StoreDetailFragment : Fragment() {
     private var isUsedToday: Boolean? = null
     private var couponInfo: StoreCouponResponse? = null
 
+    private var hasShownTooltip = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,6 +94,23 @@ class StoreDetailFragment : Fragment() {
                     }
                     "AVAILABLE" -> {
                         // (쿠폰 다운로드 후 사용 X) 쿠폰 사용 화면으로 이동
+                        val bundle = Bundle().apply {
+                            putString("storeName", getStoreDetailInfo?.storeName.toString())
+                            putLong("couponId", couponInfo?.id ?: 0)
+                            putString("couponTitle", couponInfo?.title)
+                            putString("couponDescription", couponInfo?.description)
+                            putString("couponDate", couponInfo?.expirationDate)
+                        }
+
+                        // 전달할 Fragment 생성
+                        var nextFragment = StoreCouponFragment().apply {
+                            arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                        }
+
+                        mainActivity.supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView_main, nextFragment)
+                            .addToBackStack(null)
+                            .commit()
                     }
                     "USED" -> {
                         // (쿠폰 사용 완료)
@@ -108,6 +127,11 @@ class StoreDetailFragment : Fragment() {
         initView()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hasShownTooltip = false
+    }
+
     fun observeViewModel() {
         viewModel.run {
             storeDetailInfo.observe(viewLifecycleOwner) {
@@ -116,7 +140,7 @@ class StoreDetailFragment : Fragment() {
                 checkButtonEnabled()
 
                 binding.run {
-                    toolbar.textViewTitle.text = getStoreDetailInfo?.storeName.toString()
+                    toolbar.textViewTitle.text = getStoreDetailInfo?.storeName ?: ""
 
                     // 가게 정보
                     textViewStoreDescription.text = getStoreDetailInfo?.storeDescription.toString()
@@ -235,7 +259,10 @@ class StoreDetailFragment : Fragment() {
                             }
                         }
                     } else {
-                        showToolTip()
+                        if (!hasShownTooltip) {
+                            showToolTip()
+                            hasShownTooltip = true
+                        }
 
                         buttonMembership.run {
                             isEnabled = false
