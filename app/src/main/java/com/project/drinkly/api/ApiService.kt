@@ -101,6 +101,13 @@ interface ApiService {
         @Path("storeId") storeId: Long
     ): Call<BaseResponse<StoreDetailResponse>>
 
+    // 해당 매장 멤버십 사용 여부
+    @GET("/api/v1/store/m/free-drink/validate/{storeId}")
+    fun getUsedMembership(
+        @Header("Authorization") token: String,
+        @Path("storeId") storeId: Long
+    ): Call<BaseResponse<Boolean>>
+
     // 멤버십 사용
     @POST("/api/v1/store/m/free-drink")
     fun useMembership(
