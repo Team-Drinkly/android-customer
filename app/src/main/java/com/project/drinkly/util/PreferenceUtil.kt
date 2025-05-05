@@ -14,4 +14,14 @@ class PreferenceUtil(context: Context) {
 
     fun getFCMToken(): String? =
         preferences.getString("FCM_TOKEN", null)
+
+    fun setNotificationPermissionChecked(value: Boolean) {
+        val editor = preferences.edit()
+        editor.putBoolean("notification_permission_checked", value)
+        editor.apply()
+    }
+
+    fun isNotificationPermissionChecked(): Boolean {
+        return preferences.getBoolean("notification_permission_checked", false)
+    }
 }
