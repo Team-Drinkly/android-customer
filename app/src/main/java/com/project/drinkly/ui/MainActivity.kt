@@ -1,5 +1,6 @@
 package com.project.drinkly.ui
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import com.google.firebase.messaging.FirebaseMessaging
 import com.project.drinkly.R
 import com.project.drinkly.databinding.ActivityMainBinding
 import com.project.drinkly.ui.mypage.MypageFragment
@@ -23,12 +25,14 @@ import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.SubscribeFragment
 import com.project.drinkly.util.MainUtil.setStatusBarTransparent
 import com.project.drinkly.util.MyApplication
+import com.project.drinkly.util.PreferenceUtil
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var sharedPreferenceManager: PreferenceUtil
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,9 +42,11 @@ class MainActivity : AppCompatActivity() {
 
         this.setStatusBarTransparent()
         getKeyHash()
+        MyApplication.preferences = PreferenceUtil(applicationContext)
 
-
+        setFCMToken()
         setBottomNavigationView()
+        handleNotificationIntent(intent)
 
 
         window.apply {
@@ -51,8 +57,35 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun handleNotificationIntent(intent: Intent) {
+        when(intent.getStringExtra("type").toString()) {
+            "COUPON" -> {
+                if(intent.getLongExtra("storeId", 0) != 0L) {
+                    var nextFragment = StoreDetailFragment()
+
+                    val bundle = Bundle().apply { putLong("storeId", intent.getLongExtra("storeId", 0L)) }
+
+                    // 전달할 Fragment 생성
+                    nextFragment = StoreDetailFragment().apply {
+                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                    }
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
+            "PROMOTION" -> {
+
+            }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent) // 새로운 Intent 설정
+
+        intent.let { handleNotificationIntent(it) } // 앱 실행 중 알림 클릭 처리
     }
 
     private fun setBottomNavigationView() {
@@ -161,5 +194,26 @@ class MainActivity : AppCompatActivity() {
     fun hideMyLocationButton(state: Boolean) {
         if (state) binding.buttonMyLocation.visibility =
             View.GONE else binding.buttonMyLocation.visibility = View.VISIBLE
+    }
+
+    fun setFCMToken() {
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d("FCM Token", "Fetching FCM registration token failed", task.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("FCM Token", "$token")
+            MyApplication.preferences.setFCMToken(token)
+            Log.d("FCM Token", "FCM 토큰 : ${MyApplication.preferences.getFCMToken()}")
+
+            if (this::sharedPreferenceManager.isInitialized) {
+                Log.d("FCM Token", "this::sharedPreferenceManager.isInitialized")
+                sharedPreferenceManager.setFCMToken(token)
+            }
+        }
     }
 }

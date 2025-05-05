@@ -1,5 +1,8 @@
 package com.project.drinkly.ui.store
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -8,9 +11,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.kakao.sdk.auth.TokenManager
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
@@ -23,9 +29,11 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.project.drinkly.R
+import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.FragmentStoreMapBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
@@ -40,6 +48,9 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
     lateinit var binding: FragmentStoreMapBinding
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: StoreViewModel
+    private val loginViewModel: LoginViewModel by lazy {
+        ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+    }
 
     private lateinit var mapView: MapView
     private lateinit var naverMap: NaverMap
@@ -47,7 +58,10 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
     private val CURRENT_LOCATION_CODE = 200
     private val LOCATION_PERMISSTION_REQUEST_CODE: Int = 1000
+    private val NOTIFICATION_PERMISSTION_REQUEST_CODE: Int = 123
     private lateinit var locationSource: FusedLocationSource // 위치를 반환하는 구현체
+
+    private var didCheckNotificationPermission = false // 중복 방지용 플래그
 
     var getStoreInfo = mutableListOf<StoreListResponse>()
 
@@ -128,7 +142,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             .setPaddingVertical(8)
             .setMarginHorizontal(5)
             .setCornerRadius(8f)
-            .setBackgroundDrawableResource(R.drawable.background_tooltip)
+            .setBackgroundDrawableResource(R.drawable.background_tooltip_dialog_background)
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
 
@@ -164,15 +178,19 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             )
         } else {
             moveToCurrentLocation() // 권한이 이미 부여된 경우
+            if (!MyApplication.preferences.isNotificationPermissionChecked()) {
+                checkAndRequestNotificationPermission()
+            }
         }
     }
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         if (requestCode == LOCATION_PERMISSTION_REQUEST_CODE) {
             if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
                 if (locationSource.isActivated) {
@@ -181,10 +199,49 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                 } else {
                     Log.e("MapFragment", "위치 권한 거부됨")
                 }
+
+                if (!MyApplication.preferences.isNotificationPermissionChecked()) {
+                    checkAndRequestNotificationPermission()
+                }
+            }
+        }
+        else if (requestCode == NOTIFICATION_PERMISSTION_REQUEST_CODE) {
+            val allowed = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+
+            sendFcmToken(allowed)
+        }
+    }
+
+    fun checkAndRequestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val permissionCheck = ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSTION_REQUEST_CODE
+                )
             }
         } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            // Android 12 이하는 무조건 true
+            sendFcmToken(allowed = true)
         }
+    }
+
+    fun sendFcmToken(allowed: Boolean) {
+        MyApplication.preferences.setNotificationPermissionChecked(true)
+
+        val token = MyApplication.preferences.getFCMToken().toString()
+        val body = FcmTokenRequest(
+            MyApplication.userInfo?.memberId ?: 0,
+            allowed,
+            token,
+            "ANDROID"
+        )
+        loginViewModel.saveFcmToken(mainActivity, body)
     }
 
     override fun onStart() {

@@ -1,5 +1,6 @@
 package com.project.drinkly.api
 
+import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
@@ -19,12 +20,19 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+    // FCM 토큰 저장
+    @PATCH("/api/v1/member/signup/fcm")
+    fun saveFcmToken(
+        @Header("Authorization") token: String,
+        @Body parameters: FcmTokenRequest
+    ): Call<BaseResponse<String>>
     // OAuth로그인
     @POST("v1/member/oauth/MEMBER/{provider}")
     fun login(
