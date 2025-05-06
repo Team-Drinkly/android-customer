@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.project.drinkly.api.TokenManager
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSplashBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.util.MyApplication
 
 class SplashFragment : Fragment() {
 
@@ -30,9 +32,17 @@ class SplashFragment : Fragment() {
         }
 
         Handler().postDelayed({
-            mainActivity.supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView_main, LoginFragment())
-                .commit()
+            val tokenManager = TokenManager(mainActivity)
+            if(tokenManager.getAccessToken() != null) {
+                MyApplication.isLogin = true
+
+                // 홈화면 이동
+                mainActivity.setBottomNavigationHome()
+            } else {
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, LoginFragment())
+                    .commit()
+            }
         }, 3000)
 
         return binding.root
