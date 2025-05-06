@@ -234,6 +234,11 @@ class MainActivity : AppCompatActivity() {
             View.GONE else binding.bottomNavigationView.visibility = View.VISIBLE
     }
 
+    fun hideOrderHistoryButton(state: Boolean) {
+        if (state) binding.buttonOrderHistory.visibility =
+            View.GONE else binding.buttonOrderHistory.visibility = View.VISIBLE
+    }
+
     fun hideMapButton(state: Boolean) {
         if (state) binding.buttonList.visibility =
             View.GONE else binding.buttonList.visibility = View.VISIBLE

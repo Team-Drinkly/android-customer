@@ -79,6 +79,7 @@ class MypageFragment : Fragment() {
             hideBottomNavigation(false)
             hideMapButton(true)
             hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
         }
 
         binding.run {

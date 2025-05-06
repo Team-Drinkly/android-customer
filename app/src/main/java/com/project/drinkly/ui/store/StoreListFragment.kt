@@ -65,6 +65,7 @@ class StoreListFragment : Fragment() {
         mainActivity.run {
             hideBottomNavigation(false)
             hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
             hideMapButton(false)
         }
     }

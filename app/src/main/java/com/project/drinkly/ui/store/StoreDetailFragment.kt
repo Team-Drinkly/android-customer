@@ -299,7 +299,7 @@ class StoreDetailFragment : Fragment() {
             .setPaddingVertical(8)
             .setMarginVertical(10)
             .setCornerRadius(8f)
-            .setBackgroundDrawableResource(R.drawable.background_tootip_gray1)
+            .setBackgroundDrawableResource(R.drawable.background_tooltip_gray1)
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
 
@@ -315,6 +315,7 @@ class StoreDetailFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
         }
 
         if(!MyApplication.isLogin) {

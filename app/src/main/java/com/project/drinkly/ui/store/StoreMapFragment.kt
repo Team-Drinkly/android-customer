@@ -119,6 +119,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
         mainActivity.run {
             hideBottomNavigation(false)
             hideMyLocationButton(false)
+            hideOrderHistoryButton(true)
             hideMapButton(false)
         }
     }

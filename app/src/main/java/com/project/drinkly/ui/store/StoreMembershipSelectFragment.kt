@@ -97,13 +97,20 @@ class StoreMembershipSelectFragment : Fragment() {
     }
 
     fun initView() {
-        mainActivity.updateSubscriptionStatusIfNeeded(activity = mainActivity) { success ->
-            if (success) {
-                // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
-                Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+        mainActivity.run {
+            hideBottomNavigation(true)
+            hideMapButton(true)
+            hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
 
-            } else {
-                Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+            updateSubscriptionStatusIfNeeded(activity = mainActivity) { success ->
+                if (success) {
+                    // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
+                    Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+
+                } else {
+                    Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+                }
             }
         }
 

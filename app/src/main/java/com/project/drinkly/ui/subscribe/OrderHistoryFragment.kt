@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project.drinkly.R
-import com.project.drinkly.databinding.FragmentSubscribeCompleteBinding
+import com.project.drinkly.databinding.FragmentOrderHistoryBinding
 import com.project.drinkly.ui.MainActivity
 
-class SubscribeCompleteFragment : Fragment() {
+class OrderHistoryFragment : Fragment() {
 
-    lateinit var binding: FragmentSubscribeCompleteBinding
+    lateinit var binding: FragmentOrderHistoryBinding
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
@@ -19,12 +19,16 @@ class SubscribeCompleteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentSubscribeCompleteBinding.inflate(layoutInflater)
+        binding = FragmentOrderHistoryBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
-        initView()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initView()
     }
 
     fun initView() {
@@ -33,6 +37,15 @@ class SubscribeCompleteFragment : Fragment() {
             hideMapButton(true)
             hideMyLocationButton(true)
             hideOrderHistoryButton(true)
+        }
+
+        binding.run {
+            toolbar.run {
+                textViewTitle.text = "멤버십 사용 내역"
+                buttonBack.setOnClickListener {
+                    fragmentManager?.popBackStack()
+                }
+            }
         }
     }
 }
