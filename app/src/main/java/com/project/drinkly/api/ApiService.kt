@@ -32,6 +32,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body parameters: FcmTokenRequest
     ): Call<BaseResponse<String>>
+
+    // 토큰 재발급
+    @POST("/api/v1/member/reissue/MEMBER")
+    fun refreshToken(
+        @Header("RefreshToken") token: String
+    ): Call<BaseResponse<SignUpResponse>>
+
     // OAuth로그인
     @POST("v1/member/oauth/MEMBER/{provider}")
     fun login(

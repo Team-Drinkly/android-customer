@@ -1,6 +1,7 @@
 package com.project.drinkly.ui.onboarding.viewModel
 
 import android.util.Log
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +9,7 @@ import com.project.drinkly.BuildConfig
 import com.project.drinkly.R
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
+import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.response.BaseResponse
@@ -276,6 +278,13 @@ class LoginViewModel : ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    saveFcmToken(activity, body)
+                                }
+                            }
+                        }
                     }
                 }
 
