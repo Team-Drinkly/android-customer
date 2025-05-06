@@ -5,22 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.drinkly.R
-import com.project.drinkly.api.TokenManager
-import com.project.drinkly.api.response.coupon.CouponListResponse
-import com.project.drinkly.api.response.store.StoreListResponse
+import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
+import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.databinding.FragmentMypageCouponUnuseBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasicButton
-import com.project.drinkly.ui.mypage.adapter.CouponAdapter
+import com.project.drinkly.ui.mypage.adapter.MembershipCouponAdapter
+import com.project.drinkly.ui.mypage.adapter.StoreCouponAdapter
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
-import com.project.drinkly.ui.store.StoreDetailFragment
-import com.project.drinkly.ui.store.adapter.StoreListAdapter
+import com.project.drinkly.ui.store.StoreCouponFragment
 import com.project.drinkly.util.MyApplication
 
 class MypageCouponUnuseFragment : Fragment() {
@@ -29,8 +27,11 @@ class MypageCouponUnuseFragment : Fragment() {
     lateinit var mainActivity: MainActivity
     lateinit var viewModel: MypageViewModel
 
-    lateinit var couponListAdapter: CouponAdapter
-    var getCouponList = mutableListOf<CouponListResponse>()
+    lateinit var membershipCouponListAdapter: MembershipCouponAdapter
+    lateinit var storeCouponListAdapter: StoreCouponAdapter
+
+    var getMembershipCouponList = mutableListOf<MembershipCouponListResponse>()
+    var getStoreCouponList = mutableListOf<StoreCouponListResponse>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +46,13 @@ class MypageCouponUnuseFragment : Fragment() {
         observeViewModel()
 
         binding.run {
-            recyclerViewCoupon.apply {
-                adapter = couponListAdapter
+            recyclerViewMembershipCoupon.apply {
+                adapter = membershipCouponListAdapter
+                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            }
+
+            recyclerViewStoreCoupon.apply {
+                adapter = storeCouponListAdapter
                 layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             }
         }
@@ -58,22 +64,21 @@ class MypageCouponUnuseFragment : Fragment() {
         super.onResume()
 
         initView()
-        viewModel.getAvailableCouponList(mainActivity)
     }
 
     fun initAdapter() {
-        couponListAdapter = CouponAdapter(
+        membershipCouponListAdapter = MembershipCouponAdapter(
             mainActivity,
-            getCouponList
+            getMembershipCouponList
         ).apply {
-            itemClickListener = object : CouponAdapter.OnItemClickListener {
+            itemClickListener = object : MembershipCouponAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     val dialog = DialogBasicButton("구독권 쿠폰을 사용하시겠습니까?", "취소", "사용하기", R.color.primary_50)
 
                     dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                         override fun onClickYesButton() {
                             // 쿠폰 사용
-                            viewModel.useCoupon(mainActivity, getCouponList[position].id)
+                            viewModel.useMembershipCoupon(mainActivity, getMembershipCouponList[position].id)
                         }
                     })
 
@@ -81,21 +86,61 @@ class MypageCouponUnuseFragment : Fragment() {
                 }
             }
         }
+
+        storeCouponListAdapter = StoreCouponAdapter(
+            mainActivity,
+            getStoreCouponList,
+            false
+        ).apply {
+            itemClickListener = object : StoreCouponAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    // 쿠폰 사용 화면
+                    val bundle = Bundle().apply {
+                        putString("storeName", getStoreCouponList[position].storeName.toString())
+                        putLong("couponId", getStoreCouponList[position].id ?: 0)
+                        putString("couponTitle", getStoreCouponList[position].title)
+                        putString("couponDescription", getStoreCouponList[position].description)
+                        putString("couponDate", getStoreCouponList[position].expirationDate)
+                    }
+
+                    // 전달할 Fragment 생성
+                    var nextFragment = StoreCouponFragment().apply {
+                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                    }
+
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
+        }
     }
 
     fun observeViewModel() {
         viewModel.run {
-            availableCouponInfo.observe(viewLifecycleOwner) {
-                getCouponList = it
+            availableMembershipCouponInfo.observe(viewLifecycleOwner) {
+                getMembershipCouponList = it
 
-                binding.textViewCouponNumber.text = "${getCouponList.size}개"
+                binding.textViewCouponNumber.text = "${getMembershipCouponList.size + getStoreCouponList.size}개"
 
-                couponListAdapter.updateList(getCouponList)
+                membershipCouponListAdapter.updateList(getMembershipCouponList)
+            }
+
+            availableStoreCouponInfo.observe(viewLifecycleOwner) {
+                getStoreCouponList = it
+
+                binding.textViewCouponNumber.text = "${getMembershipCouponList.size + getStoreCouponList.size}개"
+
+                storeCouponListAdapter.updateList(getStoreCouponList)
             }
         }
     }
 
     fun initView() {
+        viewModel.getAvailableMembershipCouponList(mainActivity)
+        viewModel.getAvailableStoreCouponList(mainActivity)
+
         binding.run {
             textViewNickname.text = "${MyApplication.userNickName}님"
         }

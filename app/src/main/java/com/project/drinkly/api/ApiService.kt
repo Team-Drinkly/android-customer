@@ -4,7 +4,9 @@ import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
-import com.project.drinkly.api.response.coupon.CouponListResponse
+import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
+import com.project.drinkly.api.response.coupon.StoreCouponListResponse
+import com.project.drinkly.api.response.coupon.StoreCouponResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
@@ -13,16 +15,13 @@ import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
-import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PartMap
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -101,6 +100,13 @@ interface ApiService {
         @Path("storeId") storeId: Long
     ): Call<BaseResponse<StoreDetailResponse>>
 
+    // 제휴업체 쿠폰 조회
+    @GET("/api/v1/coupon/m/store/{storeId}")
+    fun getStoreCoupon(
+        @Header("Authorization") token: String,
+        @Path("storeId") storeId: Long
+    ): Call<BaseResponse<List<StoreCouponResponse>>>
+
     // 해당 매장 멤버십 사용 여부
     @GET("/api/v1/store/m/free-drink/validate/{storeId}")
     fun getUsedMembership(
@@ -122,22 +128,48 @@ interface ApiService {
         @Query("type") type: String
     ): Call<BaseResponse<Long?>>
 
-    // 사용 전 쿠폰 조회
+    // 사용 전 멤버십 쿠폰 조회
     @GET("/api/v1/payment/m/coupons/available")
-    fun getAvailableCouponList(
+    fun getAvailableMembershipCouponList(
         @Header("Authorization") token: String
-    ): Call<BaseResponse<List<CouponListResponse?>>>
+    ): Call<BaseResponse<List<MembershipCouponListResponse?>>>
 
-    // 사용 완료 쿠폰 조회
+    // 사용 완료 멤버십 쿠폰 조회
     @GET("/api/v1/payment/m/coupons/used")
-    fun getUsedCouponList(
+    fun getUsedMembershipCouponList(
         @Header("Authorization") token: String
-    ): Call<BaseResponse<List<CouponListResponse?>>>
+    ): Call<BaseResponse<List<MembershipCouponListResponse?>>>
 
-    // 쿠폰 사용
+    // 사용 전 매장 쿠폰 조회
+    @GET("/api/v1/coupon/m/available")
+    fun getAvailableStoreCouponList(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<List<StoreCouponListResponse?>>>
+
+    // 사용 완료 매장 쿠폰 조회
+    @GET("/api/v1/coupon/m/used")
+    fun getUsedStoreCouponList(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<List<StoreCouponListResponse?>>>
+
+    // 쿠폰 다운로드
+    @POST("/api/v1/coupon/m/issue/{couponId}")
+    fun downloadCoupon(
+        @Header("Authorization") token: String,
+        @Path("couponId") couponId: Long
+    ): Call<BaseResponse<String?>>
+
+    // 멤버십 쿠폰 사용
     @POST("/api/v1/payment/m/coupon-use")
-    fun useCoupon(
+    fun useMembershipCoupon(
         @Header("Authorization") token: String,
         @Query("couponId") couponId: Long
+    ): Call<BaseResponse<String?>>
+
+    // 매장 쿠폰 사용
+    @PATCH("/api/v1/coupon/m/use/{couponId}")
+    fun useStoreCoupon(
+        @Header("Authorization") token: String,
+        @Path("couponId") couponId: Long
     ): Call<BaseResponse<String?>>
 }

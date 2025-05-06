@@ -1,6 +1,6 @@
 package com.project.drinkly.api.response.coupon
 
-data class CouponListResponse(
+data class MembershipCouponListResponse(
     val id: Long,
     val memberId: Long,
     val type: String,

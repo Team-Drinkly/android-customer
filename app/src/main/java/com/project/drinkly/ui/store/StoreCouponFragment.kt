@@ -8,44 +8,45 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
-import com.project.drinkly.databinding.FragmentStoreMembershipBinding
+import com.project.drinkly.databinding.FragmentStoreCouponBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 
-class StoreMembershipFragment : Fragment() {
+class StoreCouponFragment : Fragment() {
 
-    lateinit var binding: FragmentStoreMembershipBinding
+    lateinit var binding : FragmentStoreCouponBinding
     lateinit var mainActivity: MainActivity
-    lateinit var viewModel: StoreViewModel
+    private val viewModel: StoreViewModel by lazy {
+        ViewModelProvider(this)[StoreViewModel::class.java]
+    }
 
     var isChecked = false
 
-    var isUsedMembership = false
+    var isUsedCoupon = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentStoreMembershipBinding.inflate(layoutInflater)
+        binding = FragmentStoreCouponBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(this)[StoreViewModel::class.java]
 
         binding.run {
             layoutCheckBox.setOnClickListener {
                 isChecked = !isChecked
                 if(isChecked) {
                     imageViewCheckBox.setImageResource(R.drawable.ic_checkcircle_checked)
-                    buttonUseMembership.isEnabled = true
+                    buttonUseCoupon.isEnabled = true
                 } else {
                     imageViewCheckBox.setImageResource(R.drawable.ic_checkcircle_unchecked)
-                    buttonUseMembership.isEnabled = false
+                    buttonUseCoupon.isEnabled = false
                 }
             }
 
-            buttonUseMembership.setOnClickListener {
-                // 멤버십 사용
-                viewModel.useMembership(mainActivity, arguments?.getLong("storeId") ?: 0, arguments?.getString("drinkName", "").toString())
+            buttonUseCoupon.setOnClickListener {
+                // 쿠폰 사용
+                viewModel.useStoreCoupon(mainActivity, arguments?.getLong("couponId") ?: 0L)
             }
         }
 
@@ -60,14 +61,18 @@ class StoreMembershipFragment : Fragment() {
 
     fun observeViewModel() {
         viewModel.run {
-            usedMembershipTime.observe(viewLifecycleOwner) {
+            usedCouponTime.observe(viewLifecycleOwner) {
                 if(it != null) {
-                    isUsedMembership = true
+                    isUsedCoupon = true
 
                     binding.run {
                         textViewTooltip.text = "$it 에 사용되었습니다"
                         layoutCheckBox.visibility = View.GONE
-                        buttonUseMembership.isEnabled = false
+                        buttonUseCoupon.run {
+                            isEnabled = false
+                            text = "쿠폰 사용 완료"
+                        }
+                        imageViewClick.visibility = View.GONE
                     }
                 }
             }
@@ -75,20 +80,26 @@ class StoreMembershipFragment : Fragment() {
     }
 
     fun initView() {
-        viewModel.usedMembershipTime.value = null
-
         binding.run {
             layoutCheckBox.visibility = View.VISIBLE
             textViewStoreName.text = arguments?.getString("storeName")
-            textViewAvaiableDrinkName.text = arguments?.getString("drinkName")
+            layoutCoupon.run {
+                textViewCouponTitle.text = arguments?.getString("couponTitle")
+                textViewCouponDescription.text = arguments?.getString("couponDescription")
+                textViewCouponDate.text = "유효기간: ${arguments?.getString("couponDate")}까지"
+            }
+
+            if(arguments?.getString("couponDescription").isNullOrEmpty()) {
+                layoutCouponDescription.visibility = View.GONE
+            } else {
+                layoutCouponDescription.visibility = View.VISIBLE
+                textViewCouponDescriptionValue.text = arguments?.getString("couponDescription")
+            }
+
             toolbar.run {
-                textViewTitle.text = "멤버십 사용"
+                textViewTitle.text = "쿠폰 사용"
                 buttonBack.setOnClickListener {
-                    if(!isUsedMembership) {
-                        fragmentManager?.popBackStack()
-                    } else {
-                        fragmentManager?.popBackStack("membership", FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                    }
+                    fragmentManager?.popBackStack()
                 }
             }
         }
