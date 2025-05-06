@@ -65,7 +65,7 @@ class LoginViewModel : ViewModel() {
                         if(result?.payload?.isRegistered == true) {
                             tokenManager.saveTokens(result.payload.accessToken, result.payload.refreshToken)
 
-                            viewModel.getUserId(activity)
+                            TokenUtil.getSubscribeInfo(activity)
 
                             MyApplication.isLogin = true
 
@@ -231,11 +231,15 @@ class LoginViewModel : ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
-                        viewModel.getUserId(activity)
+
+                        TokenUtil.getSubscribeInfo(activity)
+
+                        // 앱 다운로드 이벤트 쿠폰 발급
                         mypageViewModel.getCoupon(activity, "INITIAL")
 
                         MyApplication.isLogin = true
 
+                        // 홈화면 이동
                         activity.setBottomNavigationHome()
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -253,6 +257,7 @@ class LoginViewModel : ViewModel() {
                 }
             })
     }
+
     fun saveFcmToken(activity: MainActivity, body: FcmTokenRequest) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)

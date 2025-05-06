@@ -16,6 +16,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
+import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -83,6 +84,7 @@ class MypageViewModel: ViewModel() {
 
                         tokenManager.deleteAccessToken()
                         tokenManager.deleteRefreshToken()
+                        removeSubscriptionLastCheckedDate(activity)
 
                         activity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     } else {

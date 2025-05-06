@@ -13,6 +13,7 @@ import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
+import com.project.drinkly.api.response.subscribe.SubscribeInfoResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 import retrofit2.Call
@@ -91,6 +92,12 @@ interface ApiService {
     fun getUserInfo(
         @Path("memberId") memberId: Long
     ): Call<BaseResponse<UserSubscribeDataResponse>>
+
+    // 구독 상태 업데이트
+    @GET("/api/v1/member/n/subscribe-info")
+    fun getSubscribeInfo(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<SubscribeInfoResponse>>
 
     // 제휴업체 조회
     @GET("/api/v1/store/m/list")

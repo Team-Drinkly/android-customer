@@ -29,6 +29,7 @@ import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import com.naver.maps.map.util.FusedLocationSource
 import com.project.drinkly.R
+import com.project.drinkly.api.InfoManager
 import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.FragmentStoreMapBinding
@@ -236,7 +237,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
         val token = MyApplication.preferences.getFCMToken().toString()
         val body = FcmTokenRequest(
-            MyApplication.userInfo?.memberId ?: 0,
+            InfoManager(mainActivity).getUserId()?.toInt() ?: 0,
             allowed,
             token,
             "ANDROID"

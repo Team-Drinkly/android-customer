@@ -13,11 +13,7 @@ class MyApplication : Application() {
         var signUpPassAuthorization: Boolean? = null
 
         // 유저 정보
-        var isSubscribe = false
-        var isUsedToday = false
         var isLogin = false
-        var userNickName = ""
-        var userInfo : UserSubscribeDataResponse? = null
 
         // 지도
         var latitude = ""

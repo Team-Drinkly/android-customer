@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
+import com.project.drinkly.api.InfoManager
 import com.project.drinkly.databinding.FragmentSubscribeBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.MypageWithdrawalFragment
@@ -51,20 +52,14 @@ class SubscribeFragment : Fragment() {
 
     fun observeViewModel() {
         viewModel.run {
+            /*
             userInfo.observe(viewLifecycleOwner) {
                 binding.run {
-                    textViewNickname.text = "${it?.nickname}님"
-                    if(it?.isSubscribe == true) {
-                        layoutMembershipButton.visibility = View.GONE
-                        textViewExpirationDday.text = "D-${it.subscribeInfo?.leftDays}"
-                        textViewExpirationDay.text = "${it.subscribeInfo?.expiredDate} 만료"
-                        textViewMembershipUsedNumber.text = "${it.subscribeInfo?.usedCount}회"
-                    } else {
-                        layoutSubscribe.visibility = View.GONE
-                        layoutMembershipInfo.visibility = View.GONE
-                    }
+                   textViewMembershipUsedNumber.text = "${it.subscribeInfo?.usedCount}회"
                 }
             }
+
+             */
         }
     }
 
@@ -77,14 +72,20 @@ class SubscribeFragment : Fragment() {
 
         binding.run {
 
-            textViewNickname.text = "${MyApplication.userNickName}님"
-            if(MyApplication.isSubscribe) {
+            var infoManager = InfoManager(mainActivity)
+            textViewNickname.text = "${infoManager.getUserNickname()}"
+            if(infoManager.getIsSubscribe() == true) {
+                // 멤버십 사용 내역 조회
+
                 layoutMembershipButton.visibility = View.GONE
-                viewModel.getUserId(mainActivity)
+
+                textViewExpirationDday.text = "D-${infoManager.getSubscribeLeftDays()}"
+                textViewExpirationDay.text = "${infoManager.getExpiredDate()} 만료"
             } else {
                 layoutSubscribe.visibility = View.GONE
                 layoutMembershipInfo.visibility = View.GONE
             }
+
             toolbar.run {
                 textViewTitle.text = "구독"
             }
