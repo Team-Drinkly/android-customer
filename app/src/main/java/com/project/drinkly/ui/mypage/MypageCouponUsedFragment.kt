@@ -74,7 +74,8 @@ class MypageCouponUsedFragment : Fragment() {
 
         storeCouponListAdapter = StoreCouponAdapter(
             mainActivity,
-            getStoreCouponList
+            getStoreCouponList,
+            true
         )
     }
 

@@ -68,7 +68,11 @@ class StoreCouponFragment : Fragment() {
                     binding.run {
                         textViewTooltip.text = "$it 에 사용되었습니다"
                         layoutCheckBox.visibility = View.GONE
-                        buttonUseCoupon.isEnabled = false
+                        buttonUseCoupon.run {
+                            isEnabled = false
+                            text = "쿠폰 사용 완료"
+                        }
+                        imageViewClick.visibility = View.GONE
                     }
                 }
             }

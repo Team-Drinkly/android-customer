@@ -89,7 +89,8 @@ class MypageCouponUnuseFragment : Fragment() {
 
         storeCouponListAdapter = StoreCouponAdapter(
             mainActivity,
-            getStoreCouponList
+            getStoreCouponList,
+            false
         ).apply {
             itemClickListener = object : StoreCouponAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {

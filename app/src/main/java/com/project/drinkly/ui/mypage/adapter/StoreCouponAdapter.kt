@@ -11,7 +11,8 @@ import com.project.drinkly.ui.MainActivity
 
 class StoreCouponAdapter(
     private var activity: MainActivity,
-    private var coupons: List<StoreCouponListResponse>
+    private var coupons: List<StoreCouponListResponse>,
+    private var isUsed: Boolean
 ) :
     RecyclerView.Adapter<StoreCouponAdapter.ViewHolder>() {
 
@@ -49,6 +50,12 @@ class StoreCouponAdapter(
             textViewCouponTitle.text = coupons[position].title
             textViewCouponDescription.text = coupons[position].description
             textViewCouponDate.text = "유효기간: ${coupons[position].expirationDate}까지"
+
+            if(isUsed) {
+                textViewCouponDownload.text = "사용\n완료"
+            } else {
+                textViewCouponDownload.text = "쿠폰\n사용"
+            }
         }
     }
 
