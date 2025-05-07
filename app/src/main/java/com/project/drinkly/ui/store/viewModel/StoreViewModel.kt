@@ -45,7 +45,7 @@ class StoreViewModel: ViewModel() {
     var usedMembershipTime: MutableLiveData<String> = MutableLiveData()
     var usedCouponTime: MutableLiveData<String> = MutableLiveData()
 
-    fun getStoreList(activity: MainActivity, latitude: String, longitude: String, radius: Int, searchInput: String?) {
+    fun getStoreList(activity: MainActivity, latitude: String?, longitude: String?, radius: Int?, searchInput: String?) {
         val apiClient = ApiClient(activity)
 
         var tempStoreListInfo = mutableListOf<StoreListResponse>()
@@ -206,7 +206,7 @@ class StoreViewModel: ViewModel() {
                         val result: BaseResponse<String?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH:mm", Locale.KOREAN) // 한국어 형식
+                        val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH시 mm분", Locale.KOREAN) // 한국어 형식
                         val currentDate = Date() // 현재 시간 가져오기
 
                         usedCouponTime.value = dateFormat.format(currentDate).toString()
@@ -331,7 +331,7 @@ class StoreViewModel: ViewModel() {
                         val result: BaseResponse<String>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH:mm", Locale.KOREAN) // 한국어 형식
+                        val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH시 mm분", Locale.KOREAN) // 한국어 형식
                         val currentDate = Date() // 현재 시간 가져오기
 
                         when (result?.result?.code) {

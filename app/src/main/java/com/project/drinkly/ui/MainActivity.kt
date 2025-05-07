@@ -65,19 +65,21 @@ class MainActivity : AppCompatActivity() {
     private fun handleNotificationIntent(intent: Intent) {
         when(intent.getStringExtra("type").toString()) {
             "COUPON" -> {
-                if(intent.getLongExtra("storeId", 0) != 0L) {
-                    var nextFragment = StoreDetailFragment()
+                if(MyApplication.isLogin) {
+                    if(intent.getLongExtra("storeId", 0) != 0L) {
+                        var nextFragment = StoreDetailFragment()
 
-                    val bundle = Bundle().apply { putLong("storeId", intent.getLongExtra("storeId", 0L)) }
+                        val bundle = Bundle().apply { putLong("storeId", intent.getLongExtra("storeId", 0L)) }
 
-                    // 전달할 Fragment 생성
-                    nextFragment = StoreDetailFragment().apply {
-                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                        // 전달할 Fragment 생성
+                        nextFragment = StoreDetailFragment().apply {
+                            arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                        }
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView_main, nextFragment)
+                            .addToBackStack(null)
+                            .commit()
                     }
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView_main, nextFragment)
-                        .addToBackStack(null)
-                        .commit()
                 }
             }
             "PROMOTION" -> {

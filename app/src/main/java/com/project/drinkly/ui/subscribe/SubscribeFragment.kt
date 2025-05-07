@@ -58,7 +58,6 @@ class SubscribeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initView()
-        showToolTip()
     }
 
     fun observeViewModel() {
@@ -105,7 +104,14 @@ class SubscribeFragment : Fragment() {
             hideBottomNavigation(false)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(false)
+            if(InfoManager(mainActivity).getIsSubscribe() == true) {
+                hideOrderHistoryButton(false)
+                showToolTip()
+
+                viewModel.getOrderHistory(mainActivity)
+            } else {
+                hideOrderHistoryButton(true)
+            }
 
             binding.buttonOrderHistory.setOnClickListener {
                 mainActivity.supportFragmentManager.beginTransaction()
@@ -114,8 +120,6 @@ class SubscribeFragment : Fragment() {
                     .commit()
             }
         }
-
-        viewModel.getOrderHistory(mainActivity)
 
         binding.run {
 

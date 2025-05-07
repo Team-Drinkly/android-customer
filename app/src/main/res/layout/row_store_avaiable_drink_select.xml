@@ -11,6 +11,8 @@
         android:id="@+id/imageView_avaiable_drink"
         android:layout_width="0dp"
         android:layout_height="170dp"
+        android:layout_marginHorizontal="1.5dp"
+        android:layout_marginTop="1.5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

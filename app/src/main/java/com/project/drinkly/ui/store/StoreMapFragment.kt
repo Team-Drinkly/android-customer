@@ -62,7 +62,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
     private val NOTIFICATION_PERMISSTION_REQUEST_CODE: Int = 123
     private lateinit var locationSource: FusedLocationSource // 위치를 반환하는 구현체
 
-    private var didCheckNotificationPermission = false // 중복 방지용 플래그
+    var lastCameraPosition: LatLng? = null
 
     var getStoreInfo = mutableListOf<StoreListResponse>()
 
@@ -180,7 +180,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             )
         } else {
             moveToCurrentLocation() // 권한이 이미 부여된 경우
-            if (!MyApplication.preferences.isNotificationPermissionChecked()) {
+            if (!MyApplication.preferences.isNotificationPermissionChecked() && MyApplication.isLogin) {
                 checkAndRequestNotificationPermission()
             }
         }
@@ -202,7 +202,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                     Log.e("MapFragment", "위치 권한 거부됨")
                 }
 
-                if (!MyApplication.preferences.isNotificationPermissionChecked()) {
+                if (!MyApplication.preferences.isNotificationPermissionChecked() && MyApplication.isLogin) {
                     checkAndRequestNotificationPermission()
                 }
             }
@@ -316,6 +316,12 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
         // 확대/이동이 발생하면 다시 매장 데이터 로드
         naverMap.addOnCameraIdleListener {
+            val currentCenter = naverMap.cameraPosition.target
+
+            // 위치 변경 없으면 리턴
+            if (lastCameraPosition != null && lastCameraPosition == currentCenter) return@addOnCameraIdleListener
+
+            lastCameraPosition = currentCenter
             fetchStoresBasedOnMapView()
         }
 
@@ -341,7 +347,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                     var latitude = getStoreInfo[i].latitude?.toDouble()
                     var longitude = getStoreInfo[i].longitude?.toDouble()
                     marker.position = LatLng(latitude!!, longitude!!)
-                    if(getStoreInfo[i].isOpen == "영업 중") {
+                    if(getStoreInfo[i].isAvailable == true) {
                         marker.icon = OverlayImage.fromResource(R.drawable.ic_marker_enabled)
                     } else {
                         marker.icon = OverlayImage.fromResource(R.drawable.ic_marker_disabled)
@@ -373,19 +379,10 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                             textViewStoreCall.text = getStoreInfo[m].storeTel
                             textViewStoreAvailableDrink.text = getStoreInfo[m].availableDrinks?.joinToString(",")
 
-                            when(getStoreInfo[m].isOpen) {
-                                "영업중" -> {
-                                    layoutStoreUnavailable.visibility = View.INVISIBLE
-                                }
-                                "영업종료" -> {
-                                    layoutStoreUnavailable.visibility = View.VISIBLE
-                                }
-                                "휴무일" -> {
-                                    layoutStoreUnavailable.visibility = View.VISIBLE
-                                }
-                                else -> {
-                                    layoutStoreUnavailable.visibility = View.INVISIBLE
-                                }
+                            if(getStoreInfo[m].isAvailable == true) {
+                                layoutStoreUnavailable.visibility = View.INVISIBLE
+                            } else {
+                                layoutStoreUnavailable.visibility = View.VISIBLE
                             }
 
                             layoutStoreList.setOnClickListener {

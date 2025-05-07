@@ -13,11 +13,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageViewEventPopUp"
             android:layout_width="0dp"
             android:layout_height="350dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/img_event"
+            app:shapeAppearanceOverlay="@style/RoundSector20"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +29,7 @@
             android:id="@+id/buttonClose"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_close"
             app:layout_constraintEnd_toEndOf="@+id/imageViewEventPopUp"
