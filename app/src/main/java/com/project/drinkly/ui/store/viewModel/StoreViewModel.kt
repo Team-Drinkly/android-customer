@@ -45,7 +45,7 @@ class StoreViewModel: ViewModel() {
     var usedMembershipTime: MutableLiveData<String> = MutableLiveData()
     var usedCouponTime: MutableLiveData<String> = MutableLiveData()
 
-    fun getStoreList(activity: MainActivity, latitude: String, longitude: String, radius: Int, searchInput: String?) {
+    fun getStoreList(activity: MainActivity, latitude: String?, longitude: String?, radius: Int?, searchInput: String?) {
         val apiClient = ApiClient(activity)
 
         var tempStoreListInfo = mutableListOf<StoreListResponse>()

@@ -109,9 +109,9 @@ interface ApiService {
     // 제휴업체 조회
     @GET("/api/v1/store/m/list")
     fun getStoreList(
-        @Query("latitude") latitude: String,
-        @Query("longitude") longitude: String,
-        @Query("radius") radius: Int,
+        @Query("latitude") latitude: String?,
+        @Query("longitude") longitude: String?,
+        @Query("radius") radius: Int?,
         @Query("searchKeyword") searchKeyword: String?
     ): Call<BaseResponse<List<StoreListResponse>>>
 

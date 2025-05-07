@@ -62,7 +62,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
     private val NOTIFICATION_PERMISSTION_REQUEST_CODE: Int = 123
     private lateinit var locationSource: FusedLocationSource // 위치를 반환하는 구현체
 
-    private var didCheckNotificationPermission = false // 중복 방지용 플래그
+    var lastCameraPosition: LatLng? = null
 
     var getStoreInfo = mutableListOf<StoreListResponse>()
 
@@ -316,6 +316,12 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
         // 확대/이동이 발생하면 다시 매장 데이터 로드
         naverMap.addOnCameraIdleListener {
+            val currentCenter = naverMap.cameraPosition.target
+
+            // 위치 변경 없으면 리턴
+            if (lastCameraPosition != null && lastCameraPosition == currentCenter) return@addOnCameraIdleListener
+
+            lastCameraPosition = currentCenter
             fetchStoresBasedOnMapView()
         }
 
