@@ -134,12 +134,20 @@
         <item name="android:paddingVertical">18dp</item>
     </style>
 
-    <!-- 이미지 round style - 5dp -->
+    <!-- 이미지 round style -->
     <style name="RoundSector5">
         <item name="cornerSizeTopLeft">5dp</item>
         <item name="cornerSizeTopRight">5dp</item>
         <item name="cornerSizeBottomRight">5dp</item>
         <item name="cornerSizeBottomLeft">5dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
+    <style name="RoundSector20">
+        <item name="cornerSizeTopLeft">20dp</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+        <item name="cornerSizeBottomLeft">20dp</item>
         <item name="cornerFamily">rounded</item>
     </style>
 </resources>
