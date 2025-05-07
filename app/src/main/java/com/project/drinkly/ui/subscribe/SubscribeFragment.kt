@@ -115,6 +115,8 @@ class SubscribeFragment : Fragment() {
             }
         }
 
+        viewModel.getOrderHistory(mainActivity)
+
         binding.run {
 
             var infoManager = InfoManager(mainActivity)

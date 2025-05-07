@@ -13,6 +13,7 @@ import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
+import com.project.drinkly.api.response.subscribe.OrderHistoryResponse
 import com.project.drinkly.api.response.subscribe.SubscribeInfoResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
@@ -98,6 +99,12 @@ interface ApiService {
     fun getSubscribeInfo(
         @Header("Authorization") token: String
     ): Call<BaseResponse<SubscribeInfoResponse>>
+
+    // 멤버십 사용 내역 조회
+    @GET("/api/v1/store/m/free-drink")
+    fun getOrderHistory(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<OrderHistoryResponse>>
 
     // 제휴업체 조회
     @GET("/api/v1/store/m/list")
