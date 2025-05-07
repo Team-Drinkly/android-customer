@@ -66,9 +66,13 @@ class StoreMembershipFragment : Fragment() {
                     isUsedMembership = true
 
                     binding.run {
-                        textViewTooltip.text = "$it 에 사용되었습니다"
+                        textViewTooltip.text = "${it}에 사용되었습니다"
                         layoutCheckBox.visibility = View.GONE
-                        buttonUseMembership.isEnabled = false
+                        buttonUseMembership.run {
+                            isEnabled = false
+                            text = "멤버십 사용 완료"
+                        }
+                        imageViewClick.visibility = View.GONE
                     }
                 }
             }
@@ -99,6 +103,17 @@ class StoreMembershipFragment : Fragment() {
             layoutCheckBox.visibility = View.VISIBLE
             textViewStoreName.text = arguments?.getString("storeName")
             textViewAvaiableDrinkName.text = arguments?.getString("drinkName")
+
+            if(arguments?.getBoolean("isUsed") == true) {
+                textViewTooltip.text = "${arguments?.getString("usedDate")}에 사용되었습니다"
+                layoutCheckBox.visibility = View.GONE
+                buttonUseMembership.run {
+                    isEnabled = false
+                    text = "멤버십 사용 완료"
+                }
+                imageViewClick.visibility = View.GONE
+            }
+
             toolbar.run {
                 textViewTitle.text = "멤버십 사용"
                 buttonBack.setOnClickListener {
@@ -111,5 +126,4 @@ class StoreMembershipFragment : Fragment() {
             }
         }
     }
-
 }
