@@ -32,6 +32,7 @@ class SubscribeCompleteFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
         }
     }
 }

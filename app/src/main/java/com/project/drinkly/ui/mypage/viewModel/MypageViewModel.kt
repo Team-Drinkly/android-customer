@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
+import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponListResponse
@@ -15,6 +16,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
+import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,6 +84,7 @@ class MypageViewModel: ViewModel() {
 
                         tokenManager.deleteAccessToken()
                         tokenManager.deleteRefreshToken()
+                        removeSubscriptionLastCheckedDate(activity)
 
                         activity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     } else {
@@ -91,6 +94,13 @@ class MypageViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    withdrawal(activity, memberId)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -128,6 +138,13 @@ class MypageViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getCoupon(activity, couponType)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -178,6 +195,13 @@ class MypageViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getAvailableMembershipCouponList(activity)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -228,6 +252,13 @@ class MypageViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getUsedMembershipCouponList(activity)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -278,6 +309,13 @@ class MypageViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getAvailableStoreCouponList(activity)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -327,6 +365,13 @@ class MypageViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getUsedStoreCouponList(activity)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -340,7 +385,6 @@ class MypageViewModel: ViewModel() {
     fun useMembershipCoupon(activity: MainActivity, couponId: Long) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
-        val viewModel = ViewModelProvider(activity)[SubscribeViewModel::class.java]
 
         apiClient.apiService.useMembershipCoupon("Bearer ${tokenManager.getAccessToken()}", couponId)
             .enqueue(object :
@@ -355,15 +399,21 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<String?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-
-                        getAvailableMembershipCouponList(activity)
-                        viewModel.getUserId(activity)
+                        // 구독 상태 업데이트 API 호출
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    useMembershipCoupon(activity, couponId)
+                                }
+                            }
+                        }
 
                     }
                 }

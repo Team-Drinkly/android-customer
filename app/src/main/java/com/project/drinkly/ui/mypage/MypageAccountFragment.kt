@@ -1,6 +1,7 @@
 package com.project.drinkly.ui.mypage
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.dialog.DialogBasicButton
+import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
 
 class MypageAccountFragment : Fragment() {
 
@@ -38,6 +40,7 @@ class MypageAccountFragment : Fragment() {
                         // 로그아웃 기능 구현
                         TokenManager(mainActivity).deleteAccessToken()
                         TokenManager(mainActivity).deleteRefreshToken()
+                        removeSubscriptionLastCheckedDate(mainActivity)
                         fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     }
                 })
@@ -67,6 +70,17 @@ class MypageAccountFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
+
+            updateSubscriptionStatusIfNeeded(activity = mainActivity) { success ->
+                if (success) {
+                    // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
+                    Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+
+                } else {
+                    Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+                }
+            }
         }
 
         binding.run {

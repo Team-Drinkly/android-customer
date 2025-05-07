@@ -13,6 +13,8 @@ import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
+import com.project.drinkly.api.response.subscribe.OrderHistoryResponse
+import com.project.drinkly.api.response.subscribe.SubscribeInfoResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
 import retrofit2.Call
@@ -32,6 +34,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body parameters: FcmTokenRequest
     ): Call<BaseResponse<String>>
+
+    // 토큰 재발급
+    @POST("/api/v1/member/reissue/MEMBER")
+    fun refreshToken(
+        @Header("RefreshToken") token: String
+    ): Call<BaseResponse<SignUpResponse>>
+
     // OAuth로그인
     @POST("v1/member/oauth/MEMBER/{provider}")
     fun login(
@@ -84,6 +93,18 @@ interface ApiService {
     fun getUserInfo(
         @Path("memberId") memberId: Long
     ): Call<BaseResponse<UserSubscribeDataResponse>>
+
+    // 구독 상태 업데이트
+    @GET("/api/v1/member/n/subscribe-info")
+    fun getSubscribeInfo(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<SubscribeInfoResponse>>
+
+    // 멤버십 사용 내역 조회
+    @GET("/api/v1/store/m/free-drink")
+    fun getOrderHistory(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<OrderHistoryResponse>>
 
     // 제휴업체 조회
     @GET("/api/v1/store/m/list")

@@ -1,6 +1,7 @@
 package com.project.drinkly.ui.onboarding.viewModel
 
 import android.util.Log
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,6 +9,7 @@ import com.project.drinkly.BuildConfig
 import com.project.drinkly.R
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
+import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
 import com.project.drinkly.api.response.BaseResponse
@@ -63,7 +65,7 @@ class LoginViewModel : ViewModel() {
                         if(result?.payload?.isRegistered == true) {
                             tokenManager.saveTokens(result.payload.accessToken, result.payload.refreshToken)
 
-                            viewModel.getUserId(activity)
+                            TokenUtil.getSubscribeInfo(activity)
 
                             MyApplication.isLogin = true
 
@@ -229,11 +231,15 @@ class LoginViewModel : ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
-                        viewModel.getUserId(activity)
+
+                        TokenUtil.getSubscribeInfo(activity)
+
+                        // 앱 다운로드 이벤트 쿠폰 발급
                         mypageViewModel.getCoupon(activity, "INITIAL")
 
                         MyApplication.isLogin = true
 
+                        // 홈화면 이동
                         activity.setBottomNavigationHome()
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -251,6 +257,7 @@ class LoginViewModel : ViewModel() {
                 }
             })
     }
+
     fun saveFcmToken(activity: MainActivity, body: FcmTokenRequest) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
@@ -276,6 +283,13 @@ class LoginViewModel : ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    saveFcmToken(activity, body)
+                                }
+                            }
+                        }
                     }
                 }
 

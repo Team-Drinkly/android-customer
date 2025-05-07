@@ -15,14 +15,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.fragment.app.FragmentManager
 import com.google.firebase.messaging.FirebaseMessaging
 import com.project.drinkly.R
+import com.project.drinkly.api.TokenManager
+import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.databinding.ActivityMainBinding
 import com.project.drinkly.ui.mypage.MypageFragment
 import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.store.StoreDetailFragment
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.SubscribeFragment
+import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker
+import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
 import com.project.drinkly.util.MainUtil.setStatusBarTransparent
 import com.project.drinkly.util.MyApplication
 import com.project.drinkly.util.PreferenceUtil
@@ -101,10 +106,24 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.menu_subscribe -> {
                     if(MyApplication.isLogin) {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainerView_main, SubscribeFragment())
-                            .addToBackStack(null)
-                            .commit()
+                        updateSubscriptionStatusIfNeeded(activity = this) { success ->
+                            if (success) {
+                                // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
+                                Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+
+                                supportFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainerView_main, SubscribeFragment())
+                                    .addToBackStack(null)
+                                    .commit()
+                            } else {
+                                Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+
+                                TokenManager(this).deleteAccessToken()
+                                TokenManager(this).deleteRefreshToken()
+                                removeSubscriptionLastCheckedDate(this)
+                                fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                            }
+                        }
                     } else {
                         val bundle = Bundle().apply { putBoolean("isEnter", true) }
 
@@ -123,10 +142,24 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.menu_mypage -> {
                     if(MyApplication.isLogin) {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainerView_main, MypageFragment())
-                            .addToBackStack(null)
-                            .commit()
+                        updateSubscriptionStatusIfNeeded(activity = this) { success ->
+                            if (success) {
+                                // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
+                                Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+
+                                supportFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainerView_main, MypageFragment())
+                                    .addToBackStack(null)
+                                    .commit()
+                            } else {
+                                Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+
+                                TokenManager(this).deleteAccessToken()
+                                TokenManager(this).deleteRefreshToken()
+                                removeSubscriptionLastCheckedDate(this)
+                                fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                            }
+                        }
                     } else {
                         val bundle = Bundle().apply { putBoolean("isEnter", true) }
 
@@ -170,6 +203,21 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun updateSubscriptionStatusIfNeeded(activity: MainActivity, onComplete: (Boolean) -> Unit) {
+        if (!SubscriptionChecker.isSubscriptionCheckedToday(activity)) {
+            // 🔄 토큰 재발급 및 구독 정보 최신화
+            TokenUtil.refreshToken(activity) {
+                SubscriptionChecker.saveSubscriptionLastCheckedDate(activity)
+                Log.d("SubscriptionStatus", "✅ 구독 상태 최신화 & 날짜 저장")
+                onComplete(true)
+            }
+        } else {
+            Log.d("SubscriptionStatus", "☑️ 오늘 이미 구독 상태 체크됨")
+            onComplete(true)
+        }
+    }
+
+
     fun hideKeyboard() {
         val currentFocusView = currentFocus
         if (currentFocusView != null) {
@@ -184,6 +232,11 @@ class MainActivity : AppCompatActivity() {
     fun hideBottomNavigation(state: Boolean) {
         if (state) binding.bottomNavigationView.visibility =
             View.GONE else binding.bottomNavigationView.visibility = View.VISIBLE
+    }
+
+    fun hideOrderHistoryButton(state: Boolean) {
+        if (state) binding.buttonOrderHistory.visibility =
+            View.GONE else binding.buttonOrderHistory.visibility = View.VISIBLE
     }
 
     fun hideMapButton(state: Boolean) {

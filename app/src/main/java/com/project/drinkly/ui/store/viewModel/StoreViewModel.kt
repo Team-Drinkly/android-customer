@@ -14,6 +14,7 @@ import com.naver.maps.map.overlay.OverlayImage
 import com.project.drinkly.R
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
+import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.StoreCouponResponse
@@ -129,6 +130,13 @@ class StoreViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getStoreCoupon(activity, storeId)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -164,6 +172,13 @@ class StoreViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    downloadCoupon(activity, couponId, storeId)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -202,6 +217,13 @@ class StoreViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    useStoreCoupon(activity, couponId)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -272,6 +294,14 @@ class StoreViewModel: ViewModel() {
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         isUsed.value = false
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getUsedMembership(activity, storeId)
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -324,6 +354,13 @@ class StoreViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    useMembership(activity, storeId, drinkName)
+                                }
+                            }
+                        }
                     }
                 }
 

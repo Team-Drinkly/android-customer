@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.project.drinkly.R
+import com.project.drinkly.api.InfoManager
+import com.project.drinkly.api.TokenManager
 import com.project.drinkly.databinding.FragmentMypageBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
@@ -77,10 +79,11 @@ class MypageFragment : Fragment() {
             hideBottomNavigation(false)
             hideMapButton(true)
             hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
         }
 
         binding.run {
-            if(MyApplication.isSubscribe) {
+            if(InfoManager(mainActivity).getIsSubscribe() == true) {
                 buttonMembershipPayment.visibility = View.GONE
                 layoutSubscribe.visibility = View.VISIBLE
             } else {
@@ -88,7 +91,7 @@ class MypageFragment : Fragment() {
                 layoutSubscribe.visibility = View.GONE
             }
 
-            textViewNickname.text = "${MyApplication.userNickName}님"
+            textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}"
 
             toolbar.run {
                 textViewTitle.text = "마이페이지"

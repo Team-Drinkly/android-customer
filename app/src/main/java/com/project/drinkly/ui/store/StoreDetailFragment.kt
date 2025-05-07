@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.project.drinkly.R
+import com.project.drinkly.api.InfoManager
 import com.project.drinkly.api.response.coupon.StoreCouponResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.databinding.FragmentStoreDetailBinding
@@ -23,6 +24,7 @@ import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreImagePagerAdapter
 import com.project.drinkly.ui.store.adapter.StoreMenuImageAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.ui.subscribe.SubscribeFragment
 import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
@@ -236,7 +238,7 @@ class StoreDetailFragment : Fragment() {
                     }
                 } else {
                     if(getStoreDetailInfo?.isAvailable == true) {
-                        if(MyApplication.isSubscribe) {
+                        if(InfoManager(mainActivity).getIsSubscribe() == true) {
                             buttonMembership.run {
                                 text = "멤버십 사용하기"
                                 isEnabled = true
@@ -297,7 +299,7 @@ class StoreDetailFragment : Fragment() {
             .setPaddingVertical(8)
             .setMarginVertical(10)
             .setCornerRadius(8f)
-            .setBackgroundDrawableResource(R.drawable.background_tootip_gray1)
+            .setBackgroundDrawableResource(R.drawable.background_tooltip_gray1)
             .setBalloonAnimation(BalloonAnimation.ELASTIC)
             .build()
 
@@ -313,20 +315,31 @@ class StoreDetailFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
+            hideOrderHistoryButton(true)
+        }
+
+        if(!MyApplication.isLogin) {
+            binding.buttonMembership.visibility = View.INVISIBLE
+        } else {
+
+            mainActivity.updateSubscriptionStatusIfNeeded(activity = mainActivity) { success ->
+                if (success) {
+                    // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
+                    Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+
+                    viewModel.getUsedMembership(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
+                    viewModel.getStoreCoupon(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
+                    binding.buttonMembership.visibility = View.INVISIBLE
+                } else {
+                    Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+                }
+            }
         }
 
         viewModel.getStoreDetail(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
 
         binding.run {
             layoutCoupon.layoutCouponFrame.visibility = View.GONE
-
-            if(!MyApplication.isLogin) {
-                buttonMembership.visibility = View.INVISIBLE
-            } else {
-                viewModel.getUsedMembership(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
-                viewModel.getStoreCoupon(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
-                buttonMembership.visibility = View.INVISIBLE
-            }
 
             toolbar.run {
                 buttonBack.setOnClickListener {

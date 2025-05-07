@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.drinkly.api.InfoManager
 import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.databinding.FragmentMypageCouponUsedBinding
@@ -105,7 +106,7 @@ class MypageCouponUsedFragment : Fragment() {
         viewModel.getUsedStoreCouponList(mainActivity)
 
         binding.run {
-            textViewNickname.text = "${MyApplication.userNickName}님"
+            textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}"
         }
     }
 }
