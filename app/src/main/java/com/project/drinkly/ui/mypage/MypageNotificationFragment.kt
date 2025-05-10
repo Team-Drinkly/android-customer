@@ -38,6 +38,7 @@ class MypageNotificationFragment : Fragment() {
         binding.run {
             buttonNotificationOs.setOnClickListener {
                 // 앱 알림 설정 화면으로 이동
+                presentNotificationSetting(mainActivity)
             }
 
             switchNotification.setOnCheckedChangeListener { _, isChecked ->
@@ -63,13 +64,52 @@ class MypageNotificationFragment : Fragment() {
         }
 
         binding.run {
+            if(NotificationManagerCompat.from(mainActivity).areNotificationsEnabled()) {
+                layoutNotificationOs.visibility = View.GONE
+                layoutButtonNotification.alpha = 1f
+            } else {
+                layoutNotificationOs.visibility = View.VISIBLE
+                layoutButtonNotification.alpha = 0.6f
+                switchNotification.isChecked = false
+            }
 
             toolbar.run {
                 textViewTitle.text = "알림 설정"
                 buttonBack.setOnClickListener {
+                    viewModel.saveNotificationStatus(mainActivity)
                 }
             }
         }
     }
 
+    fun presentNotificationSetting(context: Context) {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationSettingOreo(context)
+        } else {
+            notificationSettingOreoLess(context)
+        }
+        try {
+            context.startActivity(intent)
+        }catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun notificationSettingOreo(context: Context): Intent {
+        return Intent().also { intent ->
+            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    }
+
+    fun notificationSettingOreoLess(context: Context): Intent {
+        return Intent().also { intent ->
+            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+            intent.putExtra("app_package", context.packageName)
+            intent.putExtra("app_uid", context.applicationInfo?.uid)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    }
 }
