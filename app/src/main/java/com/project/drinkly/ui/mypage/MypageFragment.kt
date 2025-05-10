@@ -57,6 +57,13 @@ class MypageFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
+            // 알림 설정
+            layoutButtonNotification.setOnClickListener {
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, MypageNotificationFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
             // 고객센터
             layoutButtonQna.setOnClickListener {
                 mainActivity.supportFragmentManager.beginTransaction()
