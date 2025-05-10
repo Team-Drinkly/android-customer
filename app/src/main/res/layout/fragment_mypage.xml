@@ -42,6 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/img_profile"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -102,208 +103,288 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginHorizontal="20dp"
-        android:padding="20dp"
-        android:background="@drawable/background_card_radius12"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_button_subscribe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
-            <ImageView
-                android:id="@+id/imageView_subscribe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_subscribe"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView_subscribe"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textAlignment="textStart"
-                android:text="구독 관리"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView_subscribe"
-                app:layout_constraintEnd_toStartOf="@+id/imageView_next_subscribe"
-                app:layout_constraintStart_toEndOf="@id/imageView_subscribe"
-                app:layout_constraintTop_toTopOf="@+id/imageView_subscribe" />
-
-            <ImageView
-                android:id="@+id/imageView_next_subscribe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_subscribe"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_subscribe" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/gray8"
-            app:layout_constraintStart_toStartOf="@+id/layout_button_subscribe"
-            app:layout_constraintEnd_toEndOf="@+id/layout_button_subscribe"
-            app:layout_constraintTop_toBottomOf="@+id/layout_button_subscribe"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_button_coupon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider">
-
-            <ImageView
-                android:id="@+id/imageView_coupon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_coupon"
+                android:layout_marginHorizontal="20dp"
+                android:background="@drawable/background_card_radius12"
+                android:padding="20dp"
+                android:layout_marginBottom="50dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView_coupon"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textAlignment="textStart"
-                android:text="내 쿠폰함"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView_coupon"
-                app:layout_constraintEnd_toStartOf="@+id/imageView_next_coupon"
-                app:layout_constraintStart_toEndOf="@id/imageView_coupon"
-                app:layout_constraintTop_toTopOf="@+id/imageView_coupon" />
-
-            <ImageView
-                android:id="@+id/imageView_next_coupon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_coupon"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_coupon" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/gray8"
-            app:layout_constraintStart_toStartOf="@+id/layout_button_coupon"
-            app:layout_constraintEnd_toEndOf="@+id/layout_button_coupon"
-            app:layout_constraintTop_toBottomOf="@+id/layout_button_coupon"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_button_account"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider2">
-
-            <ImageView
-                android:id="@+id/imageView_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_account"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textView_account"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textAlignment="textStart"
-                android:text="계정 관리"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView_account"
-                app:layout_constraintEnd_toStartOf="@+id/imageView_next_account"
-                app:layout_constraintStart_toEndOf="@id/imageView_account"
-                app:layout_constraintTop_toTopOf="@+id/imageView_account" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_button_subscribe"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/imageView_next_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_account"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_account" />
+                    <ImageView
+                        android:id="@+id/imageView_subscribe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_subscribe"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_subscribe"
+                        style="@style/body1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="구독 관리"
+                        android:textColor="@color/gray3"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView_subscribe"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView_next_subscribe"
+                        app:layout_constraintStart_toEndOf="@id/imageView_subscribe"
+                        app:layout_constraintTop_toTopOf="@+id/imageView_subscribe" />
+
+                    <ImageView
+                        android:id="@+id/imageView_next_subscribe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_subscribe"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView_subscribe" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/gray8"
+                    app:layout_constraintEnd_toEndOf="@+id/layout_button_subscribe"
+                    app:layout_constraintStart_toStartOf="@+id/layout_button_subscribe"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_button_subscribe" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_button_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider">
+
+                    <ImageView
+                        android:id="@+id/imageView_coupon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_coupon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_coupon"
+                        style="@style/body1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="내 쿠폰함"
+                        android:textColor="@color/gray3"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView_coupon"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView_next_coupon"
+                        app:layout_constraintStart_toEndOf="@id/imageView_coupon"
+                        app:layout_constraintTop_toTopOf="@+id/imageView_coupon" />
+
+                    <ImageView
+                        android:id="@+id/imageView_next_coupon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_coupon"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView_coupon" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/gray8"
+                    app:layout_constraintEnd_toEndOf="@+id/layout_button_coupon"
+                    app:layout_constraintStart_toStartOf="@+id/layout_button_coupon"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_button_coupon" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_button_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider2">
+
+                    <ImageView
+                        android:id="@+id/imageView_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_account"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_account"
+                        style="@style/body1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="계정 관리"
+                        android:textColor="@color/gray3"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView_account"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView_next_account"
+                        app:layout_constraintStart_toEndOf="@id/imageView_account"
+                        app:layout_constraintTop_toTopOf="@+id/imageView_account" />
+
+                    <ImageView
+                        android:id="@+id/imageView_next_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_account"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView_account" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/divider3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/gray8"
+                    app:layout_constraintEnd_toEndOf="@+id/layout_button_account"
+                    app:layout_constraintStart_toStartOf="@+id/layout_button_account"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_button_account" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_button_notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider3">
+
+                    <ImageView
+                        android:id="@+id/imageView_notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_notification"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_notification"
+                        style="@style/body1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="알림 설정"
+                        android:textColor="@color/gray3"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView_notification"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView_next_notification"
+                        app:layout_constraintStart_toEndOf="@id/imageView_notification"
+                        app:layout_constraintTop_toTopOf="@+id/imageView_notification" />
+
+                    <ImageView
+                        android:id="@+id/imageView_next_notification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_notification"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView_notification" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/divider4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/gray8"
+                    app:layout_constraintEnd_toEndOf="@+id/layout_button_notification"
+                    app:layout_constraintStart_toStartOf="@+id/layout_button_notification"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_button_notification" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_button_qna"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/divider4">
+
+                    <ImageView
+                        android:id="@+id/imageView_qna"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_qna"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_qna"
+                        style="@style/body1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="고객센터"
+                        android:textColor="@color/gray3"
+                        android:textAlignment="textStart"
+                        app:layout_constraintBottom_toBottomOf="@+id/imageView_qna"
+                        app:layout_constraintEnd_toStartOf="@+id/imageView_next_qna"
+                        app:layout_constraintStart_toEndOf="@id/imageView_qna"
+                        app:layout_constraintTop_toTopOf="@+id/imageView_qna" />
+
+                    <ImageView
+                        android:id="@+id/imageView_next_qna"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView_qna"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/textView_qna" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/gray8"
-            app:layout_constraintStart_toStartOf="@+id/layout_button_account"
-            app:layout_constraintEnd_toEndOf="@+id/layout_button_account"
-            app:layout_constraintTop_toBottomOf="@+id/layout_button_account"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_button_qna"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider3">
-
-            <ImageView
-                android:id="@+id/imageView_qna"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_qna"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView_qna"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:textAlignment="textStart"
-                android:text="고객센터"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView_qna"
-                app:layout_constraintEnd_toStartOf="@+id/imageView_next_qna"
-                app:layout_constraintStart_toEndOf="@id/imageView_qna"
-                app:layout_constraintTop_toTopOf="@+id/imageView_qna" />
-
-            <ImageView
-                android:id="@+id/imageView_next_qna"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right"
-                app:layout_constraintBottom_toBottomOf="@+id/textView_qna"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/textView_qna" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
