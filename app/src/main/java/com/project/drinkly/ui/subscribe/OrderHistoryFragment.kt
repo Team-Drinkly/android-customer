@@ -60,6 +60,16 @@ class OrderHistoryFragment : Fragment() {
     fun initAdapter() {
         getOrderHistory = (viewModel.orderHistory.value?.drinksHistory ?: emptyList<OrderHistory>()).toMutableList()
 
+        binding.run {
+            if(getOrderHistory.size == 0) {
+                layoutEmpty.visibility = View.VISIBLE
+                recyclerViewOrderHistory.visibility = View.GONE
+            } else {
+                layoutEmpty.visibility = View.GONE
+                recyclerViewOrderHistory.visibility = View.VISIBLE
+            }
+        }
+
         orderHistoryAdapter = OrderHistoryAdapter(
             mainActivity,
             getOrderHistory
