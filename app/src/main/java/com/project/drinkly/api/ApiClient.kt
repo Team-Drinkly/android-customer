@@ -37,14 +37,14 @@ class ApiClient(val context: Context) {
         .cookieJar(JavaNetCookieJar(CookieManager()))
         .build()
 
-    val retrofit =
+    var retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.SERVER_URL)
             .client(getUnsafeOkHttpClient().build()) //SSL 우회
             .addConverterFactory(GsonConverterFactory.create(gson)) // lenient한 Gson 추가
             .build()
 
-    val apiService = retrofit.create(ApiService::class.java)
+    var apiService = retrofit.create(ApiService::class.java)
 
 
     /**
@@ -75,6 +75,7 @@ class ApiClient(val context: Context) {
         builder.hostnameVerifier { hostname, session -> true }
         builder.addInterceptor(interceptor)
         builder.addInterceptor(logger)
+        builder.authenticator(TokenAuthenticator(context))
         builder.cookieJar(JavaNetCookieJar(CookieManager()))
         builder.connectTimeout(100, TimeUnit.SECONDS)
         builder.readTimeout(100, TimeUnit.SECONDS)
@@ -82,4 +83,18 @@ class ApiClient(val context: Context) {
 
         return builder
     }
+
+    fun createSyncClient(): ApiClient {
+        val builder = getUnsafeOkHttpClient()
+            .authenticator(TokenAuthenticator(context))
+        return ApiClient(context).apply {
+            retrofit = Retrofit.Builder()
+                .baseUrl(BuildConfig.SERVER_URL)
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build()
+            apiService = retrofit.create(ApiService::class.java)
+        }
+    }
+
 }
