@@ -22,6 +22,15 @@ class DialogEvent() : DialogFragment() {
 
     private var confirmDialogInterface: PopUpDialogInterface? = null
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,12 +52,12 @@ class DialogEvent() : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        val window = dialog?.window
-        if (window != null) {
-            val params = window.attributes
-            params.width = ViewGroup.LayoutParams.MATCH_PARENT
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            window.attributes = params
+        dialog?.window?.apply {
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+            // 포커스 잃었을 때 깜빡이거나 깨지는 현상 방지
+            clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
