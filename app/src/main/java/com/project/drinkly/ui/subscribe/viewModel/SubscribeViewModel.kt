@@ -59,6 +59,9 @@ class SubscribeViewModel : ViewModel() {
                                     getSubscribeInfo(activity)
                                 }
                             }
+                            else -> {
+                                activity.goToLogin()
+                            }
                         }
                     }
                 }
@@ -66,6 +69,8 @@ class SubscribeViewModel : ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<OrderHistoryResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }

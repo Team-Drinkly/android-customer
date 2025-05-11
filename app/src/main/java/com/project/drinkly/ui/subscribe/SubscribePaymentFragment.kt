@@ -116,10 +116,7 @@ class SubscribePaymentFragment : Fragment() {
             } else {
                 Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
 
-                TokenManager(mainActivity).deleteAccessToken()
-                TokenManager(mainActivity).deleteRefreshToken()
-                removeSubscriptionLastCheckedDate(mainActivity)
-                fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                mainActivity.goToLogin()
             }
         }
 

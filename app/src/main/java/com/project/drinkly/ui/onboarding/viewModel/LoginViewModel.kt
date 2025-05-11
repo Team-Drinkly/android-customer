@@ -97,6 +97,8 @@ class LoginViewModel : ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<LoginResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -196,7 +198,9 @@ class LoginViewModel : ViewModel() {
                         val result: BaseResponse<CheckNicknameDuplicateResponse>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        isUsableNickName.value = result?.payload?.isExist == false
+                        when(result?.result?.code) {
+                            in 200..299 -> isUsableNickName.value = result?.payload?.isExist == false
+                        }
 
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -211,6 +215,8 @@ class LoginViewModel : ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<CheckNicknameDuplicateResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -218,8 +224,7 @@ class LoginViewModel : ViewModel() {
     fun signUp(activity: MainActivity, nickname: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
-        val viewModel = ViewModelProvider(activity)[SubscribeViewModel::class.java]
-        val mypageViewModel = ViewModelProvider(activity)[MypageViewModel::class.java]
+        val viewModel = ViewModelProvider(activity)[MypageViewModel::class.java]
 
         apiClient.apiService.signUp(SignUpRequest(MyApplication.oauthId, nickname))
             .enqueue(object :
@@ -234,17 +239,22 @@ class LoginViewModel : ViewModel() {
                         val result: BaseResponse<SignUpResponse>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
+                        when(result?.result?.code) {
+                            in 200..299 -> {
+                                tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
 
-                        TokenUtil.getSubscribeInfo(activity)
+                                TokenUtil.getSubscribeInfo(activity)
 
-                        // 앱 다운로드 이벤트 쿠폰 발급
-                        mypageViewModel.getCoupon(activity, "INITIAL")
+                                // 앱 다운로드 이벤트 쿠폰 발급
+                                viewModel.getCoupon(activity, "INITIAL")
+                                viewModel.checkReserve(activity)
 
-                        MyApplication.isLogin = true
+                                MyApplication.isLogin = true
 
-                        // 홈화면 이동
-                        activity.setBottomNavigationHome()
+                                // 홈화면 이동
+                                activity.setBottomNavigationHome()
+                            }
+                        }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<SignUpResponse>? = response.body()
@@ -258,6 +268,8 @@ class LoginViewModel : ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<SignUpResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -300,6 +312,8 @@ class LoginViewModel : ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<String>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }

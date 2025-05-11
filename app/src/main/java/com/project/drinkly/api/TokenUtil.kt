@@ -42,10 +42,7 @@ object TokenUtil {
                             }
 
                             400 -> {
-                                tokenManager.deleteAccessToken()
-                                tokenManager.deleteRefreshToken()
-                                removeSubscriptionLastCheckedDate(activity)
-                                activity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                                activity.goToLogin()
                             }
 
                             else -> {
@@ -54,11 +51,15 @@ object TokenUtil {
                         }
                     } else {
                         Log.e("TokenUtil", "재발급 실패: ${response.errorBody()?.string()}")
+
+                        activity.goToLogin()
                     }
                 }
 
                 override fun onFailure(call: Call<BaseResponse<SignUpResponse>>, t: Throwable) {
                     Log.e("TokenUtil", "onFailure: ${t.message}")
+
+                    activity.goToLogin()
                 }
             })
     }
