@@ -34,6 +34,7 @@ import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.FragmentStoreMapBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.util.MyApplication
@@ -121,6 +122,29 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             hideMyLocationButton(false)
             hideOrderHistoryButton(true)
             hideMapButton(false)
+        }
+
+        checkNotificationInfo()
+    }
+
+    fun checkNotificationInfo() {
+        val storeId = mainActivity.getPendingPushStoreId()
+        storeId?.let {
+            if(MyApplication.isLogin) {
+                var nextFragment = StoreDetailFragment()
+
+                val bundle = Bundle().apply { putLong("storeId", it) }
+
+                // 전달할 Fragment 생성
+                nextFragment = StoreDetailFragment().apply {
+                    arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                }
+
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, nextFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
     }
 
