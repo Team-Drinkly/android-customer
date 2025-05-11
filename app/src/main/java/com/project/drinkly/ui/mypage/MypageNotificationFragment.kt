@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModelProvider
@@ -35,15 +36,12 @@ class MypageNotificationFragment : Fragment() {
         binding = FragmentMypageNotificationBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        observeViewModel()
+
         binding.run {
             buttonNotificationOs.setOnClickListener {
                 // 앱 알림 설정 화면으로 이동
                 presentNotificationSetting(mainActivity)
-            }
-
-            switchNotification.setOnCheckedChangeListener { _, isChecked ->
-                // 알림 상태 변경
-
             }
         }
 
@@ -55,6 +53,14 @@ class MypageNotificationFragment : Fragment() {
         initView()
     }
 
+    fun observeViewModel() {
+        viewModel.run {
+            notificationStatus.observe(viewLifecycleOwner) {
+                binding.switchNotification.isChecked = it
+            }
+        }
+    }
+
     fun initView() {
         mainActivity.run {
             hideBottomNavigation(true)
@@ -62,6 +68,8 @@ class MypageNotificationFragment : Fragment() {
             hideMyLocationButton(true)
             hideOrderHistoryButton(true)
         }
+
+        viewModel.getNotificationStatus(mainActivity)
 
         binding.run {
             if(NotificationManagerCompat.from(mainActivity).areNotificationsEnabled()) {
@@ -76,9 +84,17 @@ class MypageNotificationFragment : Fragment() {
             toolbar.run {
                 textViewTitle.text = "알림 설정"
                 buttonBack.setOnClickListener {
-                    viewModel.saveNotificationStatus(mainActivity)
+                    viewModel.saveNotificationStatus(mainActivity, switchNotification.isChecked)
+                    mainActivity.supportFragmentManager.popBackStack()
                 }
             }
+
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    viewModel.saveNotificationStatus(mainActivity, switchNotification.isChecked)
+                    mainActivity.supportFragmentManager.popBackStack()
+                }
+            })
         }
     }
 

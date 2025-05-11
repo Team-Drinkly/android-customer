@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.api.ApiClient
+import com.project.drinkly.api.InfoManager
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
+import com.project.drinkly.api.response.user.NotificationStatusResponse
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
@@ -28,6 +30,8 @@ class MypageViewModel: ViewModel() {
 
     var availableStoreCouponInfo: MutableLiveData<MutableList<StoreCouponListResponse>> = MutableLiveData()
     var usedStoreCouponInfo: MutableLiveData<MutableList<StoreCouponListResponse>> = MutableLiveData()
+
+    var notificationStatus: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getUserId(activity: MainActivity) {
         val apiClient = ApiClient(activity)
@@ -111,6 +115,98 @@ class MypageViewModel: ViewModel() {
             })
     }
 
+    fun getNotificationStatus(activity: MainActivity) {
+        val apiClient = ApiClient(activity)
+        val infoManager = InfoManager(activity)
+
+        apiClient.apiService.getNotificationStatus(infoManager.getUserId() ?: 0)
+            .enqueue(object :
+                Callback<BaseResponse<NotificationStatusResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<NotificationStatusResponse>>,
+                    response: Response<BaseResponse<NotificationStatusResponse>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<NotificationStatusResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        when(result?.result?.code) {
+                            in 200..299 -> notificationStatus.value = result?.payload?.alarmStatus
+                            else -> activity.goToLogin()
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<NotificationStatusResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getNotificationStatus(activity)
+                                }
+                            }
+
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<NotificationStatusResponse>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
+                }
+            })
+    }
+
+    fun saveNotificationStatus(activity: MainActivity, alarmStatus: Boolean) {
+        val apiClient = ApiClient(activity)
+        val infoManager = InfoManager(activity)
+
+        apiClient.apiService.saveNotificationStatus(alarmStatus, infoManager.getUserId() ?: 0)
+            .enqueue(object :
+                Callback<BaseResponse<NotificationStatusResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<NotificationStatusResponse>>,
+                    response: Response<BaseResponse<NotificationStatusResponse>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<NotificationStatusResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<NotificationStatusResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    saveNotificationStatus(activity, alarmStatus)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<NotificationStatusResponse>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                }
+            })
+    }
     fun getCoupon(activity: MainActivity, couponType: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)

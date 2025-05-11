@@ -47,7 +47,7 @@ class LoginViewModel : ViewModel() {
     fun login(activity: MainActivity, provider: String, token: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
-        val viewModel = ViewModelProvider(activity)[SubscribeViewModel::class.java]
+        val viewModel = ViewModelProvider(activity)[MypageViewModel::class.java]
 
         apiClient.apiService.login(provider,token)
             .enqueue(object :
@@ -62,22 +62,27 @@ class LoginViewModel : ViewModel() {
                         val result: BaseResponse<LoginResponse>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        if(result?.payload?.isRegistered == true) {
-                            tokenManager.saveTokens(result.payload.accessToken, result.payload.refreshToken)
+                        when(result?.result?.code) {
+                            in 200..299 -> {
+                                if(result?.payload?.isRegistered == true) {
+                                    tokenManager.saveTokens(result.payload.accessToken, result.payload.refreshToken)
 
-                            TokenUtil.getSubscribeInfo(activity)
+                                    TokenUtil.getSubscribeInfo(activity)
 
-                            MyApplication.isLogin = true
+                                    MyApplication.isLogin = true
+                                    viewModel.saveNotificationStatus(activity, true)
 
-                            // 홈화면 이동
-                            activity.setBottomNavigationHome()
-                        } else {
-                            MyApplication.oauthId = result?.payload?.oauthId!!
-                            // 회원가입 화면 이동
-                            activity.supportFragmentManager.beginTransaction()
-                                .replace(R.id.fragmentContainerView_main, SignUpAgreementFragment())
-                                .addToBackStack(null)
-                                .commit()
+                                    // 홈화면 이동
+                                    activity.setBottomNavigationHome()
+                                } else {
+                                    MyApplication.oauthId = result?.payload?.oauthId!!
+                                    // 회원가입 화면 이동
+                                    activity.supportFragmentManager.beginTransaction()
+                                        .replace(R.id.fragmentContainerView_main, SignUpAgreementFragment())
+                                        .addToBackStack(null)
+                                        .commit()
+                                }
+                            }
                         }
 
                     } else {
@@ -86,7 +91,6 @@ class LoginViewModel : ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
-
                     }
                 }
 
