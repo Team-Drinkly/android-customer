@@ -85,7 +85,20 @@ class MypageCouponUsedFragment : Fragment() {
             usedMembershipCouponInfo.observe(viewLifecycleOwner) {
                 getMembershipCouponList = it
 
-                binding.textViewCouponNumber.text = "${getMembershipCouponList.size + (getStoreCouponList?.size ?: 0)}개"
+                var couponSize = getMembershipCouponList.size + (getStoreCouponList.size ?: 0)
+                binding.run {
+                    textViewCouponNumber.text = "${couponSize}개"
+
+                    if(couponSize == 0) {
+                        layoutEmpty.visibility = View.VISIBLE
+                        recyclerViewMembershipCoupon.visibility = View.GONE
+                        recyclerViewStoreCoupon.visibility = View.GONE
+                    } else {
+                        layoutEmpty.visibility = View.GONE
+                        recyclerViewMembershipCoupon.visibility = View.VISIBLE
+                        recyclerViewStoreCoupon.visibility = View.VISIBLE
+                    }
+                }
 
                 membershipCouponListAdapter.updateList(getMembershipCouponList)
             }
@@ -93,7 +106,20 @@ class MypageCouponUsedFragment : Fragment() {
             usedStoreCouponInfo.observe(viewLifecycleOwner) {
                 getStoreCouponList = it
 
-                binding.textViewCouponNumber.text = "${getMembershipCouponList.size + (getStoreCouponList?.size ?: 0)}개"
+                var couponSize = getMembershipCouponList.size + (getStoreCouponList.size ?: 0)
+                binding.run {
+                    textViewCouponNumber.text = "${couponSize}개"
+
+                    if(couponSize == 0) {
+                        layoutEmpty.visibility = View.VISIBLE
+                        recyclerViewMembershipCoupon.visibility = View.GONE
+                        recyclerViewStoreCoupon.visibility = View.GONE
+                    } else {
+                        layoutEmpty.visibility = View.GONE
+                        recyclerViewMembershipCoupon.visibility = View.VISIBLE
+                        recyclerViewStoreCoupon.visibility = View.VISIBLE
+                    }
+                }
 
                 storeCouponListAdapter.updateList(getStoreCouponList)
             }
@@ -106,7 +132,7 @@ class MypageCouponUsedFragment : Fragment() {
         viewModel.getUsedStoreCouponList(mainActivity)
 
         binding.run {
-            textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}"
+            textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}님"
         }
     }
 }
