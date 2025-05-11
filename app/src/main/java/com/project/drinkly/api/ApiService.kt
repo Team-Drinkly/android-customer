@@ -156,6 +156,12 @@ interface ApiService {
         @Body parameters: UseMembershipRequest
     ): Call<BaseResponse<String>>
 
+    // 사전 예약자 확인
+    @GET("/api/v1/member/n/reserve")
+    fun checkReserve(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<Boolean>>
+
     // 쿠폰 발급
     @POST("/api/v1/payment/m/coupon-issue")
     fun getCoupon(
