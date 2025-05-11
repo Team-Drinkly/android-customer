@@ -17,6 +17,7 @@ import com.project.drinkly.api.response.subscribe.OrderHistoryResponse
 import com.project.drinkly.api.response.subscribe.SubscribeInfoResponse
 import com.project.drinkly.api.response.subscribe.UserIdResponse
 import com.project.drinkly.api.response.subscribe.UserSubscribeDataResponse
+import com.project.drinkly.api.response.user.NotificationStatusResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -88,6 +89,11 @@ interface ApiService {
         @Header("member-id") memberId: Long
     ): Call<BaseResponse<String>>
 
+    // 알림 상태 조회
+    @GET("/api/v1/member/profile/{memberId}/alarm-status")
+    fun getNotificationStatus(
+        @Path("memberId") memberId: Long
+    ): Call<BaseResponse<NotificationStatusResponse>>
     // 유저 정보 조회
     @GET("/api/v1/member/profile/{memberId}")
     fun getUserInfo(
