@@ -94,6 +94,14 @@ interface ApiService {
     fun getNotificationStatus(
         @Path("memberId") memberId: Long
     ): Call<BaseResponse<NotificationStatusResponse>>
+
+    // 알림 설정
+    @PATCH("/api/v1/member/profile/{memberId}/alarm-status")
+    fun saveNotificationStatus(
+        @Header("Alarm-Status") alarmStatus: Boolean,
+        @Path("memberId") memberId: Long
+    ): Call<BaseResponse<NotificationStatusResponse>>
+
     // 유저 정보 조회
     @GET("/api/v1/member/profile/{memberId}")
     fun getUserInfo(

@@ -84,9 +84,17 @@ class MypageNotificationFragment : Fragment() {
             toolbar.run {
                 textViewTitle.text = "알림 설정"
                 buttonBack.setOnClickListener {
-                    viewModel.saveNotificationStatus(mainActivity)
+                    viewModel.saveNotificationStatus(mainActivity, switchNotification.isChecked)
+                    mainActivity.supportFragmentManager.popBackStack()
                 }
             }
+
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    viewModel.saveNotificationStatus(mainActivity, switchNotification.isChecked)
+                    mainActivity.supportFragmentManager.popBackStack()
+                }
+            })
         }
     }
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.databinding.FragmentMypageAccountBinding
@@ -15,12 +16,16 @@ import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.dialog.DialogBasicButton
+import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
 
 class MypageAccountFragment : Fragment() {
 
     lateinit var binding: FragmentMypageAccountBinding
     lateinit var mainActivity: MainActivity
+    private val viewModel: MypageViewModel by lazy {
+        ViewModelProvider(requireActivity())[MypageViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +47,7 @@ class MypageAccountFragment : Fragment() {
                         TokenManager(mainActivity).deleteRefreshToken()
                         removeSubscriptionLastCheckedDate(mainActivity)
                         fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                        viewModel.saveNotificationStatus(mainActivity, false)
                     }
                 })
 
