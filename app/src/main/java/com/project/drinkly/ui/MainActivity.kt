@@ -21,7 +21,9 @@ import com.project.drinkly.R
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.databinding.ActivityMainBinding
+import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.mypage.MypageFragment
+import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.store.StoreDetailFragment
 import com.project.drinkly.ui.store.StoreMapFragment
@@ -39,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var sharedPreferenceManager: PreferenceUtil
 
+    private var pendingPushStoreId: Long? = null
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         setBottomNavigationView()
         handleNotificationIntent(intent)
 
-
         window.apply {
             //상태바 아이콘(true: 검정 / false: 흰색)
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = false
@@ -65,21 +68,9 @@ class MainActivity : AppCompatActivity() {
     private fun handleNotificationIntent(intent: Intent) {
         when(intent.getStringExtra("type").toString()) {
             "COUPON" -> {
-                if(MyApplication.isLogin) {
-                    if(intent.getLongExtra("storeId", 0) != 0L) {
-                        var nextFragment = StoreDetailFragment()
-
-                        val bundle = Bundle().apply { putLong("storeId", intent.getLongExtra("storeId", 0L)) }
-
-                        // 전달할 Fragment 생성
-                        nextFragment = StoreDetailFragment().apply {
-                            arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
-                        }
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.fragmentContainerView_main, nextFragment)
-                            .addToBackStack(null)
-                            .commit()
-                    }
+                val storeId = intent.getLongExtra("storeId", 0L)
+                if (storeId != 0L) {
+                    pendingPushStoreId = storeId
                 }
             }
             "PROMOTION" -> {
@@ -193,6 +184,12 @@ class MainActivity : AppCompatActivity() {
     // ✅ HomeFragment에 들어오면 Bottom Navigation을 "Home"으로 설정하는 함수
     fun setBottomNavigationHome() {
         binding.bottomNavigationView.selectedItemId = R.id.menu_home
+    }
+
+    fun getPendingPushStoreId(): Long? {
+        val temp = pendingPushStoreId
+        pendingPushStoreId = null // 한 번 사용했으면 초기화
+        return temp
     }
 
     @RequiresApi(Build.VERSION_CODES.P)

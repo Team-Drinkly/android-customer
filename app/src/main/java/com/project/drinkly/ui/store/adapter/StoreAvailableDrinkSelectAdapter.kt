@@ -47,17 +47,19 @@ class StoreAvailableDrinkSelectAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Glide.with(activity).load(avaiableDrinks?.get(position)?.imageUrl)
-            .into(holder.availableDrinkImage)
-        holder.avaiableDrinkName.text = avaiableDrinks?.get(position)?.description
+        with(holder.binding) {
+            Glide.with(activity).load(avaiableDrinks?.get(position)?.imageUrl)
+                .into(imageViewAvaiableDrink)
+            textViewAvaiableDrink.text = avaiableDrinks?.get(position)?.description
 
-        // 선택된 아이템의 배경 변경
-        if (position == selectedPosition) {
-            holder.itemView.setBackgroundResource(R.drawable.background_primary_radius5)
-            holder.avaiableDrinkName.setBackgroundResource(R.drawable.background_primary_radius5)
-        } else {
-            holder.itemView.setBackgroundResource(0) // 기본 배경색
-            holder.avaiableDrinkName.setBackgroundResource(R.drawable.background_card_radius10)
+            // 선택된 아이템의 배경 변경
+            if (position == selectedPosition) {
+                backgroundAvaiableDrink.setBackgroundResource(R.drawable.background_gray5_top_radius10)
+                textViewAvaiableDrink.setBackgroundResource(R.drawable.background_primary50_bottom_radius10)
+            } else {
+                backgroundAvaiableDrink.setBackgroundResource(R.drawable.background_gray6_top_radius10)
+                textViewAvaiableDrink.setBackgroundResource(R.drawable.background_card_bottom_radius10)
+            }
         }
 
         // 클릭 이벤트
@@ -79,7 +81,6 @@ class StoreAvailableDrinkSelectAdapter(
 
     inner class ViewHolder(val binding: RowStoreAvaiableDrinkSelectBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val availableDrinkImage = binding.imageViewAvaiableDrink
-        val avaiableDrinkName = binding.textViewAvaiableDrink
+
     }
 }
