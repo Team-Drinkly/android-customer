@@ -120,10 +120,7 @@ class MainActivity : AppCompatActivity() {
                             } else {
                                 Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
 
-                                TokenManager(this).deleteAccessToken()
-                                TokenManager(this).deleteRefreshToken()
-                                removeSubscriptionLastCheckedDate(this)
-                                fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                                goToLogin()
                             }
                         }
                     } else {
@@ -156,10 +153,7 @@ class MainActivity : AppCompatActivity() {
                             } else {
                                 Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
 
-                                TokenManager(this).deleteAccessToken()
-                                TokenManager(this).deleteRefreshToken()
-                                removeSubscriptionLastCheckedDate(this)
-                                fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                                goToLogin()
                             }
                         }
                     } else {
@@ -181,6 +175,19 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    fun goToLogin() {
+        MyApplication.isLogin = false
+
+        TokenManager(this).deleteAccessToken()
+        TokenManager(this).deleteRefreshToken()
+        removeSubscriptionLastCheckedDate(this)
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainerView_main, LoginFragment())
+            .commit()
     }
 
     // ✅ HomeFragment에 들어오면 Bottom Navigation을 "Home"으로 설정하는 함수

@@ -43,11 +43,9 @@ class MypageAccountFragment : Fragment() {
                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                     override fun onClickYesButton() {
                         // 로그아웃 기능 구현
-                        TokenManager(mainActivity).deleteAccessToken()
-                        TokenManager(mainActivity).deleteRefreshToken()
-                        removeSubscriptionLastCheckedDate(mainActivity)
-                        fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                         viewModel.saveNotificationStatus(mainActivity, false)
+
+                        mainActivity.goToLogin()
                     }
                 })
 
@@ -85,6 +83,8 @@ class MypageAccountFragment : Fragment() {
 
                 } else {
                     Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+
+                    mainActivity.goToLogin()
                 }
             }
         }

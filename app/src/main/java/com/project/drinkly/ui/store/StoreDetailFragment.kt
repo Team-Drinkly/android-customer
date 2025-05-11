@@ -332,6 +332,8 @@ class StoreDetailFragment : Fragment() {
                     binding.buttonMembership.visibility = View.INVISIBLE
                 } else {
                     Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+
+                    mainActivity.goToLogin()
                 }
             }
         }

@@ -77,7 +77,6 @@ class StoreListFragment : Fragment() {
         ).apply {
             itemClickListener = object : StoreListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
-//                    viewModel.getStoreDetail(mainActivity, getStoreList[position].id)
                     // 제휴업체 - 세부 화면으로 전환
                     var nextFragment = StoreDetailFragment()
 

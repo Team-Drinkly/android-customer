@@ -1,5 +1,6 @@
 package com.project.drinkly.api
 
+import android.content.Context
 import android.util.Log
 import androidx.fragment.app.FragmentManager
 import com.project.drinkly.api.ApiClient
@@ -41,19 +42,24 @@ object TokenUtil {
                             }
 
                             400 -> {
-                                tokenManager.deleteAccessToken()
-                                tokenManager.deleteRefreshToken()
-                                removeSubscriptionLastCheckedDate(activity)
-                                activity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                                activity.goToLogin()
+                            }
+
+                            else -> {
+                                retryRequest()
                             }
                         }
                     } else {
                         Log.e("TokenUtil", "재발급 실패: ${response.errorBody()?.string()}")
+
+                        activity.goToLogin()
                     }
                 }
 
                 override fun onFailure(call: Call<BaseResponse<SignUpResponse>>, t: Throwable) {
                     Log.e("TokenUtil", "onFailure: ${t.message}")
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -107,5 +113,24 @@ object TokenUtil {
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
                 }
             })
+    }
+
+    fun syncRefreshToken(context: Context): String? {
+        val apiClient = ApiClient(context).createSyncClient()
+        val tokenManager = TokenManager(context)
+        val refreshToken = tokenManager.getRefreshToken() ?: return null
+
+        return try {
+            val response = apiClient.apiService.refreshToken("Bearer $refreshToken").execute()
+            if (response.isSuccessful) {
+                val result = response.body()?.payload
+                tokenManager.saveTokens(result?.accessToken.toString(), result?.refreshToken.toString())
+                result?.accessToken
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            null
+        }
     }
 }

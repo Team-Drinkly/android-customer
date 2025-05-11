@@ -101,6 +101,8 @@ class OrderHistoryFragment : Fragment() {
 
                 } else {
                     Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+
+                    mainActivity.goToLogin()
                 }
             }
         }

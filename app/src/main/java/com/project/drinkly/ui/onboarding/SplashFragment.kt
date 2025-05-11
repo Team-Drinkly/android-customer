@@ -47,6 +47,8 @@ class SplashFragment : Fragment() {
                         mainActivity.setBottomNavigationHome()
                     } else {
                         Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
+
+                        mainActivity.goToLogin()
                     }
                 }
             } else {

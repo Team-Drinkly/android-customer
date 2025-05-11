@@ -51,7 +51,7 @@ class MypageViewModel: ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
 
-                        withdrawal(activity, result?.payload?.memberId!!)
+                        withdrawal(activity)
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<UserIdResponse>? = response.body()
@@ -69,11 +69,12 @@ class MypageViewModel: ViewModel() {
             })
     }
 
-    fun withdrawal(activity: MainActivity, memberId: Long) {
+    fun withdrawal(activity: MainActivity) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
+        val infoManager = InfoManager(activity)
 
-        apiClient.apiService.withdrawal(memberId)
+        apiClient.apiService.withdrawal(infoManager.getUserId() ?: 0)
             .enqueue(object :
                 Callback<BaseResponse<String>> {
                 override fun onResponse(
@@ -86,11 +87,9 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<String>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        tokenManager.deleteAccessToken()
-                        tokenManager.deleteRefreshToken()
-                        removeSubscriptionLastCheckedDate(activity)
-
-                        activity.supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                        if(result?.result?.code == 200) {
+                            activity.goToLogin()
+                        }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String>? = response.body()
@@ -101,7 +100,7 @@ class MypageViewModel: ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    withdrawal(activity, memberId)
+                                    withdrawal(activity)
                                 }
                             }
                         }
@@ -224,9 +223,15 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<Long?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        val dialog = DialogEvent()
+                        when(result?.result?.code) {
+                            in 200..299 -> {
+                                if(couponType == "INITIAL") {
+                                    val dialog = DialogEvent()
 
-                        dialog.show(activity.supportFragmentManager, "DialogEvent")
+                                    dialog.show(activity.supportFragmentManager, "DialogEvent")
+                                }
+                            }
+                        }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<Long?>? = response.body()
@@ -247,6 +252,7 @@ class MypageViewModel: ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<Long?>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                    activity.goToLogin()
                 }
             })
     }
@@ -270,20 +276,24 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        for (c in 0 until (result?.payload?.size ?: 0)) {
-                            var couponId = result?.payload?.get(c)?.id
-                            var memberId = result?.payload?.get(c)?.memberId
-                            var type = result?.payload?.get(c)?.type
-                            var status = result?.payload?.get(c)?.status
-                            var used = result?.payload?.get(c)?.used
-                            var expirationDate = result?.payload?.get(c)?.expirationDate
-                            var title = result?.payload?.get(c)?.title.toString()
-                            var description = result?.payload?.get(c)?.description.toString()
+                        when(result?.result?.code) {
+                            in 200..299 -> {
+                                for (c in 0 until (result?.payload?.size ?: 0)) {
+                                    var couponId = result?.payload?.get(c)?.id
+                                    var memberId = result?.payload?.get(c)?.memberId
+                                    var type = result?.payload?.get(c)?.type
+                                    var status = result?.payload?.get(c)?.status
+                                    var used = result?.payload?.get(c)?.used
+                                    var expirationDate = result?.payload?.get(c)?.expirationDate
+                                    var title = result?.payload?.get(c)?.title.toString()
+                                    var description = result?.payload?.get(c)?.description.toString()
 
-                            tempCouponInfoList.add(MembershipCouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
+                                    tempCouponInfoList.add(MembershipCouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
+                                }
+
+                                availableMembershipCouponInfo.value = tempCouponInfoList
+                            }
                         }
-
-                        availableMembershipCouponInfo.value = tempCouponInfoList
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
@@ -304,6 +314,8 @@ class MypageViewModel: ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<List<MembershipCouponListResponse?>>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -327,20 +339,24 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        for (c in 0 until (result?.payload?.size ?: 0)) {
-                            var couponId = result?.payload?.get(c)?.id
-                            var memberId = result?.payload?.get(c)?.memberId
-                            var type = result?.payload?.get(c)?.type
-                            var status = result?.payload?.get(c)?.status
-                            var used = result?.payload?.get(c)?.used
-                            var expirationDate = result?.payload?.get(c)?.expirationDate
-                            var title = result?.payload?.get(c)?.title.toString()
-                            var description = result?.payload?.get(c)?.description.toString()
+                        when(result?.result?.code) {
+                            in 200..299 -> {
+                                for (c in 0 until (result?.payload?.size ?: 0)) {
+                                    var couponId = result?.payload?.get(c)?.id
+                                    var memberId = result?.payload?.get(c)?.memberId
+                                    var type = result?.payload?.get(c)?.type
+                                    var status = result?.payload?.get(c)?.status
+                                    var used = result?.payload?.get(c)?.used
+                                    var expirationDate = result?.payload?.get(c)?.expirationDate
+                                    var title = result?.payload?.get(c)?.title.toString()
+                                    var description = result?.payload?.get(c)?.description.toString()
 
-                            tempCouponInfoList.add(MembershipCouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
+                                    tempCouponInfoList.add(MembershipCouponListResponse(couponId!!, memberId!!, type!!, status!!, used!!, expirationDate!!, title, description))
+                                }
+
+                                usedMembershipCouponInfo.value = tempCouponInfoList
+                            }
                         }
-
-                        usedMembershipCouponInfo.value = tempCouponInfoList
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<List<MembershipCouponListResponse?>>? = response.body()
@@ -361,6 +377,8 @@ class MypageViewModel: ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<List<MembershipCouponListResponse?>>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -385,19 +403,23 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<List<StoreCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        for (c in 0 until (result?.payload?.size ?: 0)) {
-                            var couponId = result?.payload?.get(c)?.id ?: 0
-                            var memberId = result?.payload?.get(c)?.memberId ?: 0
-                            var status = result?.payload?.get(c)?.status ?: "AVAILABLE"
-                            var expirationDate = result?.payload?.get(c)?.expirationDate.toString()
-                            var title = result?.payload?.get(c)?.title.toString()
-                            var description = result?.payload?.get(c)?.description.toString()
-                            var storeName = result?.payload?.get(c)?.storeName.toString()
+                        when(result?.result?.code) {
+                           in 200..299 -> {
+                               for (c in 0 until (result?.payload?.size ?: 0)) {
+                                   var couponId = result?.payload?.get(c)?.id ?: 0
+                                   var memberId = result?.payload?.get(c)?.memberId ?: 0
+                                   var status = result?.payload?.get(c)?.status ?: "AVAILABLE"
+                                   var expirationDate = result?.payload?.get(c)?.expirationDate.toString()
+                                   var title = result?.payload?.get(c)?.title.toString()
+                                   var description = result?.payload?.get(c)?.description.toString()
+                                   var storeName = result?.payload?.get(c)?.storeName.toString()
 
-                            tempCouponInfoList.add(StoreCouponListResponse(couponId, memberId, status, expirationDate, title, description, storeName))
+                                   tempCouponInfoList.add(StoreCouponListResponse(couponId, memberId, status, expirationDate, title, description, storeName))
+                               }
+
+                               availableStoreCouponInfo.value = tempCouponInfoList
+                           }
                         }
-
-                        availableStoreCouponInfo.value = tempCouponInfoList
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<List<StoreCouponListResponse?>>? = response.body()
@@ -418,6 +440,8 @@ class MypageViewModel: ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<List<StoreCouponListResponse?>>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -441,19 +465,23 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<List<StoreCouponListResponse?>>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        for (c in 0 until (result?.payload?.size ?: 0)) {
-                            var couponId = result?.payload?.get(c)?.id ?: 0
-                            var memberId = result?.payload?.get(c)?.memberId ?: 0
-                            var status = result?.payload?.get(c)?.status ?: "AVAILABLE"
-                            var expirationDate = result?.payload?.get(c)?.expirationDate.toString()
-                            var title = result?.payload?.get(c)?.title.toString()
-                            var description = result?.payload?.get(c)?.description.toString()
-                            var storeName = result?.payload?.get(c)?.storeName.toString()
+                        when(result?.result?.code) {
+                            in 200..299 -> {
+                                for (c in 0 until (result?.payload?.size ?: 0)) {
+                                    var couponId = result?.payload?.get(c)?.id ?: 0
+                                    var memberId = result?.payload?.get(c)?.memberId ?: 0
+                                    var status = result?.payload?.get(c)?.status ?: "AVAILABLE"
+                                    var expirationDate = result?.payload?.get(c)?.expirationDate.toString()
+                                    var title = result?.payload?.get(c)?.title.toString()
+                                    var description = result?.payload?.get(c)?.description.toString()
+                                    var storeName = result?.payload?.get(c)?.storeName.toString()
 
-                            tempCouponInfoList.add(StoreCouponListResponse(couponId, memberId, status, expirationDate, title, description, storeName))
+                                    tempCouponInfoList.add(StoreCouponListResponse(couponId, memberId, status, expirationDate, title, description, storeName))
+                                }
+
+                                usedStoreCouponInfo.value = tempCouponInfoList
+                            }
                         }
-
-                        usedStoreCouponInfo.value = tempCouponInfoList
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<List<StoreCouponListResponse?>>? = response.body()
@@ -474,6 +502,8 @@ class MypageViewModel: ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<List<StoreCouponListResponse?>>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -495,7 +525,18 @@ class MypageViewModel: ViewModel() {
                         val result: BaseResponse<String?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        // 구독 상태 업데이트 API 호출
+                        when(result?.result?.code) {
+                            in 200..299 -> {
+                                // 구독 상태 업데이트 API 호출
+                                TokenUtil.refreshToken(activity) {
+                                    getAvailableMembershipCouponList(activity)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String?>? = response.body()
@@ -509,6 +550,10 @@ class MypageViewModel: ViewModel() {
                                     useMembershipCoupon(activity, couponId)
                                 }
                             }
+
+                            else -> {
+                                activity.goToLogin()
+                            }
                         }
 
                     }
@@ -517,6 +562,8 @@ class MypageViewModel: ViewModel() {
                 override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
