@@ -206,6 +206,55 @@ class MypageViewModel: ViewModel() {
                 }
             })
     }
+
+    fun checkReserve(activity: MainActivity) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.checkReserve("Bearer ${tokenManager.getAccessToken()}")
+            .enqueue(object :
+                Callback<BaseResponse<Boolean>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<Boolean>>,
+                    response: Response<BaseResponse<Boolean>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<Boolean>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        when(result?.result?.code) {
+                            in 200 .. 299 -> {
+                                if(result?.payload == true) {
+                                    getCoupon(activity, "RESERVE")
+                                }
+                            }
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<Boolean>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    checkReserve(activity)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<Boolean>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                }
+            })
+    }
+
     fun getCoupon(activity: MainActivity, couponType: String) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
