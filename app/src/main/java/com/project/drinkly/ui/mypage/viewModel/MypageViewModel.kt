@@ -51,7 +51,7 @@ class MypageViewModel: ViewModel() {
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
 
-                        withdrawal(activity, result?.payload?.memberId!!)
+                        withdrawal(activity)
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<UserIdResponse>? = response.body()
@@ -69,11 +69,12 @@ class MypageViewModel: ViewModel() {
             })
     }
 
-    fun withdrawal(activity: MainActivity, memberId: Long) {
+    fun withdrawal(activity: MainActivity) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
+        val infoManager = InfoManager(activity)
 
-        apiClient.apiService.withdrawal(memberId)
+        apiClient.apiService.withdrawal(infoManager.getUserId() ?: 0)
             .enqueue(object :
                 Callback<BaseResponse<String>> {
                 override fun onResponse(
@@ -99,7 +100,7 @@ class MypageViewModel: ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    withdrawal(activity, memberId)
+                                    withdrawal(activity)
                                 }
                             }
                         }

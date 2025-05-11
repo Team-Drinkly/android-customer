@@ -51,7 +51,7 @@ class MypageWithdrawalFragment : Fragment() {
                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                     override fun onClickYesButton() {
                         // 회원탈퇴
-                        viewModel.getUserId(mainActivity)
+                        viewModel.withdrawal(mainActivity)
                     }
                 })
 
