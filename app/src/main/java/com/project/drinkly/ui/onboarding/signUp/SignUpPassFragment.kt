@@ -54,7 +54,7 @@ class SignUpPassFragment : Fragment() {
         } else if(MyApplication.signUpPassAuthorization == false) {
             MyApplication.signUpPassAuthorization = null
 
-            val dialog = DialogBasic("이미 가입한 회원입니다.\n가입된 계정으로 로그인해주세요.")
+            val dialog = DialogBasic("이미 가입된 계정이 있어요.\n기존 계정으로 로그인해주세요.")
 
             dialog.setBasicDialogInterface(object : BasicDialogInterface {
                 override fun onClickYesButton() {
