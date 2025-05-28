@@ -51,5 +51,16 @@ class StoreImagePagerAdapter(
     inner class ViewHolder(val binding: RowStoreImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val storeImage = binding.imageViewStore
+
+        init {
+            binding.root.setOnClickListener {
+                itemClickListener?.onItemClick(adapterPosition)
+
+                // 클릭 리스너 호출
+                onItemClickListener?.invoke(position)
+
+                true
+            }
+        }
     }
 }
