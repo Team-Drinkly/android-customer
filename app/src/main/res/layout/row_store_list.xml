@@ -134,7 +134,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
-                android:text="이용 가능한 주류"
                 android:textColor="@color/gray3" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
