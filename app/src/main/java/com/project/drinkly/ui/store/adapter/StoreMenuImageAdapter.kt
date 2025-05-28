@@ -52,5 +52,16 @@ class StoreMenuImageAdapter(
     inner class ViewHolder(val binding: RowStoreMenuImageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val storeMenuImage = binding.imageViewStoreMenu
+
+        init {
+            binding.root.setOnClickListener {
+                itemClickListener?.onItemClick(adapterPosition)
+
+                // 클릭 리스너 호출
+                onItemClickListener?.invoke(position)
+
+                true
+            }
+        }
     }
 }

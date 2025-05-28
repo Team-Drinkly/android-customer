@@ -64,12 +64,32 @@ class StoreDetailFragment : Fragment() {
             StoreImagePagerAdapter(mainActivity, listOf()).apply {
                 itemClickListener = object : StoreImagePagerAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
-                        // 메뉴판 확대 기능
 
                     }
                 }
             }
-        storeMenuImageAdapter = StoreMenuImageAdapter(mainActivity, listOf())
+        storeMenuImageAdapter = StoreMenuImageAdapter(mainActivity, listOf()).apply {
+            itemClickListener = object : StoreMenuImageAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    // 메뉴판 확대 기능
+                    Log.d("##", "click")
+                    val imageUrls = getStoreDetailInfo?.menuImageUrls?.map { it.imageUrl } ?: emptyList()
+                    val bundle = Bundle().apply {
+                        putString("storeName", getStoreDetailInfo?.storeName.toString())
+                    }
+
+                    // 전달할 Fragment 생성
+                    var nextFragment = MenuFullscreenFragment(imageUrls, position).apply {
+                        arguments = bundle
+                    }
+
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
+        }
         storeAvaiableDrinkAdapter = StoreAvailableDrinkAdapter(mainActivity, listOf())
 
         observeViewModel()
