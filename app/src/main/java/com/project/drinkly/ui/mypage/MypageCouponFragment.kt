@@ -65,7 +65,7 @@ class MypageCouponFragment : Fragment() {
         for (i in 0 until mTabLayout.tabCount) {
             val tab = (mTabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
             val p = tab.layoutParams as ViewGroup.MarginLayoutParams
-            p.setMargins(20, 8, 20, 8)
+            p.setMargins(4, 4, 4, 4)
             tab.requestLayout()
         }
     }
@@ -102,7 +102,7 @@ class MypageCouponFragment : Fragment() {
 }
 
 class TemplateCategoryVPAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
-    override fun getItemCount(): Int = 2  // 일반, 기간, 반복 총 3개의 탭
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
