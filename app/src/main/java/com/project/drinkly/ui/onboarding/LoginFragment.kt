@@ -23,6 +23,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.onboarding.signUp.SignUpAgreementFragment
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class LoginFragment : Fragment() {
@@ -44,6 +45,7 @@ class LoginFragment : Fragment() {
         } else if (token != null) {
             Log.i(TAG, "카카오계정으로 로그인 성공 ${token.accessToken}")
             // 로그인 기능 구현
+            mixpanel.track("click_login_kakao", null)
             viewModel.login(mainActivity, "KAKAO", token.accessToken.toString())
         }
     }
@@ -64,6 +66,7 @@ class LoginFragment : Fragment() {
         binding.run {
             buttonSeek.setOnClickListener {
                 // 제휴업체 둘러보기
+                mixpanel.track("click_onboarding_lookaround", null)
                 mainActivity.setBottomNavigationHome()
             }
 
@@ -86,6 +89,7 @@ class LoginFragment : Fragment() {
                         } else if (token != null) {
                             Log.i(TAG, "카카오톡으로 로그인 성공 ${token.accessToken}")
                             // 로그인 기능 구현
+                            mixpanel.track("click_login_kakao", null)
                             viewModel.login(mainActivity, "KAKAO", token.accessToken.toString())
                         }
                     }
