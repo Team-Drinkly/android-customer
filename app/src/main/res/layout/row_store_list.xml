@@ -14,12 +14,12 @@
         android:id="@+id/imageView_store"
         android:layout_width="110dp"
         android:layout_height="110dp"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/RoundSector5"
-        app:srcCompat="@drawable/img_onboarding1" />
+        app:srcCompat="@drawable/img_store_main_basic" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -134,6 +134,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/gray3" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
