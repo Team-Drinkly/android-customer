@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.drinkly.R
 import com.project.drinkly.databinding.RowStoreImageBinding
 
 class StoreImagePagerAdapter(
@@ -42,11 +43,15 @@ class StoreImagePagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Glide.with(activity).load(images?.get(position))
-            .into(holder.storeImage)
+        if(images != null) {
+            Glide.with(activity).load(images?.get(position))
+                .into(holder.storeImage)
+        } else {
+            holder.storeImage.setImageResource(R.drawable.img_store_main_basic)
+        }
     }
 
-    override fun getItemCount() = images?.size!!
+    override fun getItemCount() = images?.size ?: 1
 
     inner class ViewHolder(val binding: RowStoreImageBinding) :
         RecyclerView.ViewHolder(binding.root) {

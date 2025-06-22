@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.project.drinkly.R
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.RowStoreListBinding
 import com.project.drinkly.ui.MainActivity
@@ -58,7 +59,11 @@ class StoreListAdapter(
             holder.layoutStoreUnavailable.visibility = View.VISIBLE
         }
 
-        Glide.with(activity).load(stores[position].storeMainImageUrl).into(holder.storeImage)
+        if(stores[position].storeMainImageUrl.isNullOrEmpty()) {
+            holder.storeImage.setImageResource(R.drawable.img_store_main_basic)
+        } else {
+            Glide.with(activity).load(stores[position].storeMainImageUrl).into(holder.storeImage)
+        }
     }
 
     override fun getItemCount() = stores.size
