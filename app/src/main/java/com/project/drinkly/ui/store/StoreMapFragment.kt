@@ -1,6 +1,7 @@
 package com.project.drinkly.ui.store
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -12,8 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.kakao.sdk.auth.TokenManager
@@ -129,6 +132,8 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             hideMapButton(false)
         }
 
+        checkPermissionsAndSendToMixpanel(mainActivity)
+
         checkNotificationInfo()
     }
 
@@ -226,9 +231,14 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
                 if (locationSource.isActivated) {
                     Log.d("MapFragment", "위치 권한 승인됨")
+
+                    mixpanel.people.set("location_permission", "Granted")
+
                     moveToCurrentLocation() // 권한 승인 후 위치 이동
                 } else {
                     Log.e("MapFragment", "위치 권한 거부됨")
+
+                    mixpanel.people.set("location_permission", "Denied")
                 }
 
                 if (!MyApplication.preferences.isNotificationPermissionChecked() && MyApplication.isLogin) {
@@ -238,6 +248,16 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
         }
         else if (requestCode == NOTIFICATION_PERMISSTION_REQUEST_CODE) {
             val allowed = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+
+            if (allowed) {
+                Log.d("MapFragment", "🔔 알림 권한 허용됨")
+
+                mixpanel.people.set("notification_permission", "Granted")
+            } else {
+                Log.d("MapFragment", "🔕 알림 권한 거부됨")
+
+                mixpanel.people.set("notification_permission", "Denied")
+            }
 
             sendFcmToken(allowed)
         }
@@ -260,6 +280,20 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             // Android 12 이하는 무조건 true
             sendFcmToken(allowed = true)
         }
+    }
+
+    fun checkPermissionsAndSendToMixpanel(context: Context) {
+        // ✅ 알림 권한 체크
+        val isNotificationAllowed = NotificationManagerCompat.from(context).areNotificationsEnabled()
+        mixpanel.people.set("notification_permission", if (isNotificationAllowed) "Granted" else "Denied")
+
+        // ✅ 위치 권한 체크
+        val isLocationAllowed = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        mixpanel.people.set("location_permission", if (isLocationAllowed) "Granted" else "Denied")
     }
 
     fun sendFcmToken(allowed: Boolean) {
