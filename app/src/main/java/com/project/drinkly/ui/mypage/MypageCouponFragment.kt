@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentMypageCouponBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import kotlin.concurrent.fixedRateTimer
 
 class MypageCouponFragment : Fragment() {
@@ -107,10 +108,14 @@ class TemplateCategoryVPAdapter(fragment: Fragment) : FragmentStateAdapter(fragm
     override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> {
+                mixpanel.track("click_coupon_tab_before", null)
+
                 // 사용 전 쿠폰에 해당하는 Fragment
                 MypageCouponUnuseFragment()
             }
             1 -> {
+                mixpanel.track("click_coupon_tab_after", null)
+
                 // 사용 완료 쿠폰에 해당하는 Fragment
                 MypageCouponUsedFragment()
             }

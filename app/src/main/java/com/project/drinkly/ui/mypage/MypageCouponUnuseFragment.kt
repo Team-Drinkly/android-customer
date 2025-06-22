@@ -20,6 +20,7 @@ import com.project.drinkly.ui.mypage.adapter.MembershipCouponAdapter
 import com.project.drinkly.ui.mypage.adapter.StoreCouponAdapter
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.store.StoreCouponFragment
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class MypageCouponUnuseFragment : Fragment() {
@@ -74,10 +75,14 @@ class MypageCouponUnuseFragment : Fragment() {
         ).apply {
             itemClickListener = object : MembershipCouponAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    mixpanel.track("click_coupon_subscribe", null)
+
                     val dialog = DialogBasicButton("구독권 쿠폰을 사용하시겠습니까?", "취소", "사용하기", R.color.primary_50)
 
                     dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                         override fun onClickYesButton() {
+                            mixpanel.track("click_coupon_subscribe_confirm", null)
+
                             // 쿠폰 사용
                             viewModel.useMembershipCoupon(mainActivity, getMembershipCouponList[position].id)
                         }
@@ -95,6 +100,8 @@ class MypageCouponUnuseFragment : Fragment() {
         ).apply {
             itemClickListener = object : StoreCouponAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    mixpanel.track("click_coupon_select", null)
+
                     // 쿠폰 사용 화면
                     val bundle = Bundle().apply {
                         putString("storeName", getStoreCouponList[position].storeName.toString())

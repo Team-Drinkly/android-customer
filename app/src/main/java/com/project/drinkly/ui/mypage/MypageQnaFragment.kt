@@ -28,7 +28,7 @@ class MypageQnaFragment : Fragment() {
         binding.run {
             buttonKakao.setOnClickListener {
                 mixpanel.track("click_mypage_customer_kakao_center", null)
-                
+
                 // 드링클리 카카오톡 채널
                 var intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://pf.kakao.com/_kWSGn"))
                 startActivity(intent)
