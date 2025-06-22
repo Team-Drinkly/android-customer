@@ -12,6 +12,7 @@ import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentStoreMembershipBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class StoreMembershipFragment : Fragment() {
 
@@ -34,6 +35,8 @@ class StoreMembershipFragment : Fragment() {
 
         binding.run {
             layoutCheckBox.setOnClickListener {
+                mixpanel.track("click_membership_notice", null)
+
                 isChecked = !isChecked
                 if(isChecked) {
                     imageViewCheckBox.setImageResource(R.drawable.ic_checkcircle_checked)
@@ -45,6 +48,8 @@ class StoreMembershipFragment : Fragment() {
             }
 
             buttonUseMembership.setOnClickListener {
+                mixpanel.track("click_membership_use", null)
+
                 // 멤버십 사용
                 viewModel.useMembership(mainActivity, arguments?.getLong("storeId") ?: 0, arguments?.getString("drinkName", "").toString())
             }
