@@ -202,6 +202,8 @@ class StoreDetailFragment : Fragment() {
                         textViewStoreInstagram.run {
                             text = "@${getStoreDetailInfo?.instagramUrl}"
                             setOnClickListener {
+                                mixpanel.track("move_detail_to_instagram", null)
+
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
                                     Uri.parse("https://www.instagram.com/${getStoreDetailInfo?.instagramUrl}")
