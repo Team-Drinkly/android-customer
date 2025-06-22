@@ -28,6 +28,7 @@ import com.project.drinkly.ui.store.adapter.StoreMenuImageAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.ui.subscribe.SubscribeFragment
 import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
@@ -112,6 +113,8 @@ class StoreDetailFragment : Fragment() {
             layoutCoupon.layoutCouponFrame.setOnClickListener {
                 when (couponInfo?.status) {
                     "NONE" -> {
+                        mixpanel.track("click_detail_coupon_download", null)
+
                         // (쿠폰 다운로드 전) 쿠폰 다운로드
                         viewModel.downloadCoupon(
                             mainActivity,
@@ -121,6 +124,8 @@ class StoreDetailFragment : Fragment() {
                     }
 
                     "AVAILABLE" -> {
+                        mixpanel.track("move_detail_to_coupon_use", null)
+
                         // (쿠폰 다운로드 후 사용 X) 쿠폰 사용 화면으로 이동
                         val bundle = Bundle().apply {
                             putString("storeName", getStoreDetailInfo?.storeName.toString())
@@ -291,6 +296,8 @@ class StoreDetailFragment : Fragment() {
                                 text = "멤버십 사용하기"
                                 isEnabled = true
                                 setOnClickListener {
+                                    mixpanel.track("move_select_to_membership_use", null)
+
                                     mainActivity.supportFragmentManager.beginTransaction()
                                         .replace(
                                             R.id.fragmentContainerView_main,
@@ -304,6 +311,8 @@ class StoreDetailFragment : Fragment() {
                             buttonMembership.run {
                                 text = "멤버십 구독하러 가기"
                                 setOnClickListener {
+                                    mixpanel.track("move_select_to_subscribe", null)
+
                                     mainActivity.supportFragmentManager.beginTransaction()
                                         .replace(
                                             R.id.fragmentContainerView_main,
