@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -144,6 +145,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView_membership_guide_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@color/gray8"
+                app:layout_constraintStart_toStartOf="@+id/layout_membership_guide"
+                app:layout_constraintEnd_toEndOf="@+id/layout_membership_guide"
+                app:layout_constraintTop_toBottomOf="@+id/layout_membership_guide"
+                app:layout_constraintBottom_toTopOf="@+id/layout_caution"/>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_caution"

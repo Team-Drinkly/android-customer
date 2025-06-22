@@ -43,13 +43,6 @@ class OrderHistoryFragment : Fragment() {
 
         initAdapter()
 
-        binding.run {
-            recyclerViewOrderHistory.apply {
-                adapter = orderHistoryAdapter
-                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            }
-        }
-
         return binding.root
     }
 
@@ -59,46 +52,48 @@ class OrderHistoryFragment : Fragment() {
     }
 
     fun initAdapter() {
-        getOrderHistory = (viewModel.orderHistory.value?.drinksHistory ?: emptyList<OrderHistory>()).toMutableList()
+        getOrderHistory = (viewModel.orderHistory.value?.drinksHistory ?: emptyList()).toMutableList()
 
         binding.run {
-            if(getOrderHistory.size == 0) {
+            if(getOrderHistory.isEmpty()) {
                 layoutEmpty.visibility = View.VISIBLE
                 recyclerViewOrderHistory.visibility = View.GONE
             } else {
                 layoutEmpty.visibility = View.GONE
                 recyclerViewOrderHistory.visibility = View.VISIBLE
             }
-        }
 
-        orderHistoryAdapter = OrderHistoryAdapter(
-            mainActivity,
-            getOrderHistory
-        ).apply {
-            itemClickListener = object : OrderHistoryAdapter.OnItemClickListener {
-                override fun onItemClick(position: Int) {
-                    mixpanel.track("click_subscribe_history_detail", null)
+            orderHistoryAdapter = OrderHistoryAdapter(mainActivity, getOrderHistory).apply {
+                itemClickListener = object : OrderHistoryAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int) {
+                        mixpanel.track("click_subscribe_history_detail", null)
 
-                    val bundle = Bundle().apply {
-                        putString("storeName", getOrderHistory[position].storeName.toString())
-                        putString("drinkName", getOrderHistory[position].providedDrink.toString())
-                        putString("usedDate", getOrderHistory[position].usageDate)
-                        putBoolean("isUsed", true)
+                        val bundle = Bundle().apply {
+                            putString("storeName", getOrderHistory[position].storeName.toString())
+                            putString("drinkName", getOrderHistory[position].providedDrink.toString())
+                            putString("usedDate", getOrderHistory[position].usageDate)
+                            putBoolean("isUsed", true)
+                        }
+
+                        val nextFragment = StoreMembershipFragment().apply {
+                            arguments = bundle
+                        }
+
+                        mainActivity.supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView_main, nextFragment)
+                            .addToBackStack("membership")
+                            .commit()
                     }
-
-                    // 전달할 Fragment 생성
-                    var nextFragment = StoreMembershipFragment().apply {
-                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
-                    }
-
-                    mainActivity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView_main, nextFragment)
-                        .addToBackStack("membership")
-                        .commit()
                 }
+            }
+
+            recyclerViewOrderHistory.apply {
+                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                adapter = orderHistoryAdapter
             }
         }
     }
+
 
     fun initView() {
         mainActivity.run {
