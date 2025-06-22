@@ -20,6 +20,7 @@ import com.project.drinkly.ui.store.StoreMembershipFragment
 import com.project.drinkly.ui.store.adapter.StoreListAdapter
 import com.project.drinkly.ui.subscribe.adapter.OrderHistoryAdapter
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class OrderHistoryFragment : Fragment() {
 
@@ -76,6 +77,8 @@ class OrderHistoryFragment : Fragment() {
         ).apply {
             itemClickListener = object : OrderHistoryAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    mixpanel.track("click_subscribe_history_detail", null)
+
                     val bundle = Bundle().apply {
                         putString("storeName", getOrderHistory[position].storeName.toString())
                         putString("drinkName", getOrderHistory[position].providedDrink.toString())
