@@ -69,13 +69,15 @@ class MainActivity : AppCompatActivity() {
     private fun handleNotificationIntent(intent: Intent) {
         when(intent.getStringExtra("type").toString()) {
             "COUPON" -> {
+                mixpanel.track("click_push_alarm_coupon", null)
+
                 val storeId = intent.getLongExtra("storeId", 0L)
                 if (storeId != 0L) {
                     pendingPushStoreId = storeId
                 }
             }
             "PROMOTION" -> {
-
+                mixpanel.track("click_push_alarm_promotion", null)
             }
         }
     }
