@@ -34,7 +34,7 @@
     <ImageView
         android:id="@+id/imageView_onboarding"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
         android:layout_marginTop="30dp"
         android:src="@drawable/img_onboarding1"
         app:layout_constraintEnd_toEndOf="@+id/textView_onboarding_description"
