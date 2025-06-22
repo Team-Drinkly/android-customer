@@ -13,8 +13,11 @@ import com.project.drinkly.api.InfoManager
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.databinding.FragmentSubscribePaymentBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
+import com.project.drinkly.ui.dialog.DialogBasicButton
+import com.project.drinkly.ui.mypage.MypageCouponFragment
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
@@ -90,11 +93,14 @@ class SubscribePaymentFragment : Fragment() {
 
                             setOnClickListener {
 
-                                val dialog = DialogBasic("결제 기능 준비 중입니다.\n빠른 시일 내에 업데이트 될 예정입니다!")
+                                val dialog = DialogBasicButton("결제 기능 준비 중입니다.\n빠른 시일 내에 업데이트 될 예정입니다!", "네", "쿠폰 확인", R.color.primary_50)
 
-                                dialog.setBasicDialogInterface(object : BasicDialogInterface {
+                                dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                                     override fun onClickYesButton() {
-
+                                        mainActivity.supportFragmentManager.beginTransaction()
+                                            .replace(R.id.fragmentContainerView_main, MypageCouponFragment())
+                                            .addToBackStack(null)
+                                            .commit()
                                     }
                                 })
 
