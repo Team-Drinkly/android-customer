@@ -13,6 +13,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class MypageFragment : Fragment() {
@@ -30,6 +31,8 @@ class MypageFragment : Fragment() {
 
         binding.run {
             buttonMembershipPayment.setOnClickListener {
+                mixpanel.track("move_mypage_to_subscribe", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
                     .addToBackStack(null)
@@ -38,6 +41,8 @@ class MypageFragment : Fragment() {
 
             // 구독 관리
             layoutButtonSubscribe.setOnClickListener {
+                mixpanel.track("click_mypage_subscribe", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
                     .addToBackStack(null)
@@ -45,6 +50,8 @@ class MypageFragment : Fragment() {
             }
             // 내 쿠폰함
             layoutButtonCoupon.setOnClickListener {
+                mixpanel.track("click_mypage_mycoupon", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, MypageCouponFragment())
                     .addToBackStack(null)
@@ -52,6 +59,8 @@ class MypageFragment : Fragment() {
             }
             // 계정 관리
             layoutButtonAccount.setOnClickListener {
+                mixpanel.track("click_mypage_account", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, MypageAccountFragment())
                     .addToBackStack(null)
@@ -59,6 +68,8 @@ class MypageFragment : Fragment() {
             }
             // 알림 설정
             layoutButtonNotification.setOnClickListener {
+                mixpanel.track("click_mypage_alarm", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, MypageNotificationFragment())
                     .addToBackStack(null)
@@ -66,6 +77,8 @@ class MypageFragment : Fragment() {
             }
             // 고객센터
             layoutButtonQna.setOnClickListener {
+                mixpanel.track("click_mypage_customer", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, MypageQnaFragment())
                     .addToBackStack(null)

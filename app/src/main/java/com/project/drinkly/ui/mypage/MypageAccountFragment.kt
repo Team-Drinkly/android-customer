@@ -18,6 +18,7 @@ import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class MypageAccountFragment : Fragment() {
 
@@ -38,10 +39,14 @@ class MypageAccountFragment : Fragment() {
         binding.run {
             // 로그아웃
             layoutButtonLogout.setOnClickListener {
+                mixpanel.track("click_mypage_logout", null)
+
                 val dialog = DialogBasicButton("로그아웃 하시겠습니까?", "취소", "로그아웃", R.color.primary_50)
 
                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                     override fun onClickYesButton() {
+                        mixpanel.track("click_mypage_logout_confirm", null)
+
                         // 로그아웃 기능 구현
                         viewModel.saveNotificationStatus(mainActivity, false)
 
