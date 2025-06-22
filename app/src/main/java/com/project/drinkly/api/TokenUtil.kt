@@ -10,6 +10,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.response.subscribe.SubscribeInfoResponse
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,6 +82,11 @@ object TokenUtil {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<SubscribeInfoResponse>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        mixpanel.identify(result?.payload?.memberId?.toString(), true)
+                        mixpanel.people.set("membership_status", "${result?.payload?.isSubscribe == true}")
+                        mixpanel.people.set("\$name", result?.payload?.nickname ?: "")
+                        mixpanel.people.set("platform", "Android")
 
                         var infoManager = InfoManager(activity)
 

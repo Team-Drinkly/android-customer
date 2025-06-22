@@ -29,6 +29,7 @@ import com.project.drinkly.ui.onboarding.signUp.SignUpNickNameFragment
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -64,6 +65,8 @@ class LoginViewModel : ViewModel() {
 
                         when(result?.result?.code) {
                             in 200..299 -> {
+                                mixpanel.identify(result?.payload?.oauthId?.toString(), true)
+
                                 if(result?.payload?.isRegistered == true) {
                                     tokenManager.saveTokens(result.payload.accessToken, result.payload.refreshToken)
 
@@ -241,6 +244,9 @@ class LoginViewModel : ViewModel() {
 
                         when(result?.result?.code) {
                             in 200..299 -> {
+                                mixpanel.people.set("\$name", nickname)
+                                mixpanel.people.set("platform", "Android")
+
                                 tokenManager.saveTokens(result?.payload?.accessToken.toString(), result?.payload?.refreshToken.toString())
 
                                 TokenUtil.getSubscribeInfo(activity)
