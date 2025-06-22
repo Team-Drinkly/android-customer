@@ -87,16 +87,17 @@
                         android:src="@drawable/ic_subscribe_bedge" />
                 </LinearLayout>
 
-                <Button
+                <TextView
                     android:id="@+id/button_membership_payment"
                     style="@style/body2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
+                    android:background="@drawable/background_primary50_radius10"
                     android:paddingVertical="6dp"
+                    android:paddingHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:text="드링클리 구독하기"
-                    app:cornerRadius="10dp" />
+                    android:textColor="@color/gray1" />
 
             </LinearLayout>
 
