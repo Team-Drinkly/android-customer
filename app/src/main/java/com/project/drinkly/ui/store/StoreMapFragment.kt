@@ -362,8 +362,6 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             storeInfo.observe(viewLifecycleOwner) {
                 getStoreInfo = it
 
-                Log.d("DrinklyLog", "store info : $storeInfo")
-
                 markers.clear()
 
                 for (i in 0 until (getStoreInfo.size ?: 0)) {
@@ -381,12 +379,13 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
 
                 for (m in 0 until markers.size) {
-                    markers[m].map = naverMap
+
+                    var makerIndex = m
+                    markers[makerIndex].map = naverMap
 
                     // 마커 클릭한 경우
-                    markers[m].setOnClickListener {
+                    markers[makerIndex].setOnClickListener {
                         // 마커 변경
-
                         binding.bottomSheetStoreList.layoutStoreList.visibility = View.VISIBLE
                         mainActivity.run {
                             hideBottomNavigation(true)
@@ -395,15 +394,21 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                         }
 
                         binding.bottomSheetStoreList.run {
-                            Glide.with(mainActivity).load(getStoreInfo[m].storeMainImageUrl)
-                                .into(imageViewStore)
-                            textViewStoreIsOpen.text = getStoreInfo[m].isOpen
-                            textViewStoreCloseOrOpenTime.text = getStoreInfo[m].openingInfo
-                            textViewStoreName.text = getStoreInfo[m].storeName
-                            textViewStoreCall.text = getStoreInfo[m].storeTel
-                            textViewStoreAvailableDrink.text = getStoreInfo[m].availableDrinks?.joinToString(",")
+                            val storeInfo = getStoreInfo[makerIndex]
 
-                            if(getStoreInfo[m].isAvailable == true) {
+                            if(storeInfo.storeMainImageUrl.isNullOrEmpty()) {
+                                imageViewStore.setImageResource(R.drawable.img_store_main_basic)
+                            } else {
+                                Glide.with(mainActivity).load(storeInfo.storeMainImageUrl)
+                                    .into(imageViewStore)
+                            }
+                            textViewStoreIsOpen.text = storeInfo.isOpen
+                            textViewStoreCloseOrOpenTime.text = storeInfo.openingInfo
+                            textViewStoreName.text = storeInfo.storeName
+                            textViewStoreCall.text = storeInfo.storeTel
+                            textViewStoreAvailableDrink.text = storeInfo.availableDrinks?.joinToString(",")
+
+                            if(storeInfo.isAvailable == true) {
                                 layoutStoreUnavailable.visibility = View.INVISIBLE
                             } else {
                                 layoutStoreUnavailable.visibility = View.VISIBLE
@@ -411,14 +416,13 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
                             layoutStoreList.setOnClickListener {
                                 // 제휴업체 - 세부 화면으로 전환
-//                                viewModel.getStoreDetail(mainActivity, getStoreInfo[m].id)
                                 var nextFragment = StoreDetailFragment()
 
-                                val bundle = Bundle().apply { putLong("storeId", getStoreInfo[m].id) }
+                                val bundle = Bundle().apply { putLong("storeId", storeInfo.id) }
 
                                 // 전달할 Fragment 생성
                                 nextFragment = StoreDetailFragment().apply {
-                                    arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                                    arguments = bundle
                                 }
                                 mainActivity.supportFragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainerView_main, nextFragment)
@@ -428,7 +432,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                         }
 
                         // 클릭한 마커의 위치로 카메라 이동
-                        val cameraUpdate = CameraUpdate.scrollTo((LatLng(markers[m].position.latitude, markers[m].position.longitude))).animate(
+                        val cameraUpdate = CameraUpdate.scrollTo((LatLng(markers[makerIndex].position.latitude, markers[makerIndex].position.longitude))).animate(
                             CameraAnimation.Easing
                         )
                         naverMap.moveCamera(cameraUpdate)
@@ -439,7 +443,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                     // 지도 클릭한 경우
                     naverMap.setOnMapClickListener { pointF, latLng ->
                         for (i in 0 until markers.size) {
-                            if(getStoreInfo[i].isOpen == "영업 중") {
+                            if(getStoreInfo[i].isAvailable == true) {
                                 markers[i].icon =
                                     OverlayImage.fromResource(R.drawable.ic_marker_enabled)
                             } else {

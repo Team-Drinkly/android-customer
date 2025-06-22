@@ -1,6 +1,7 @@
 package com.project.drinkly.ui.store
 
 import android.content.Intent
+import android.graphics.Paint
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -72,7 +73,6 @@ class StoreDetailFragment : Fragment() {
             itemClickListener = object : StoreMenuImageAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     // 메뉴판 확대 기능
-                    Log.d("##", "click")
                     val imageUrls = getStoreDetailInfo?.menuImageUrls?.map { it.imageUrl } ?: emptyList()
                     val bundle = Bundle().apply {
                         putString("storeName", getStoreDetailInfo?.storeName.toString())
@@ -172,7 +172,12 @@ class StoreDetailFragment : Fragment() {
                     toolbar.textViewTitle.text = getStoreDetailInfo?.storeName ?: ""
 
                     // 가게 정보
-                    textViewStoreDescription.text = getStoreDetailInfo?.storeDescription ?: ""
+                    if(getStoreDetailInfo?.storeDescription.isNullOrEmpty()) {
+                        textViewStoreDescription.visibility = View.GONE
+                        dividerStoreInfo.visibility = View.GONE
+                    } else {
+                        textViewStoreDescription.text = getStoreDetailInfo?.storeDescription
+                    }
 
                     if (getStoreDetailInfo?.storeDetailAddress?.isEmpty() == false) {
                         textViewStoreAddress.text =
@@ -188,6 +193,7 @@ class StoreDetailFragment : Fragment() {
                     textViewStoreCall.text = getStoreDetailInfo?.storeTel
                     if (getStoreDetailInfo?.instagramUrl?.isEmpty() == false) {
                         layoutStoreInstagram.visibility = View.VISIBLE
+                        textViewStoreInstagram.paintFlags = textViewStoreInstagram.paintFlags or Paint.UNDERLINE_TEXT_FLAG
                         textViewStoreInstagram.run {
                             text = "@${getStoreDetailInfo?.instagramUrl}"
                             setOnClickListener {
@@ -205,11 +211,19 @@ class StoreDetailFragment : Fragment() {
                     // 가게 이미지
                     getStoreDetailInfo?.storeMainImageUrl?.let { imageUrl ->
                         storeMainImageAdapter.updateList(listOf(imageUrl))
-                    }
+                    } ?: storeMainImageAdapter.updateList(null)
 
-                    storeMenuImageAdapter.updateList(
-                        getStoreDetailInfo?.menuImageUrls?.map { it.imageUrl }
-                    )
+                    if(getStoreDetailInfo?.menuImageUrls?.isEmpty() == true) {
+                        textViewMenu.visibility = View.GONE
+                        recyclerViewMenu.visibility = View.GONE
+                    } else {
+                        textViewMenu.visibility = View.VISIBLE
+                        recyclerViewMenu.visibility = View.VISIBLE
+
+                        storeMenuImageAdapter.updateList(
+                            getStoreDetailInfo?.menuImageUrls?.map { it.imageUrl }
+                        )
+                    }
 
                     storeAvaiableDrinkAdapter.updateList(getStoreDetailInfo?.availableDrinkImageUrls)
                 }
