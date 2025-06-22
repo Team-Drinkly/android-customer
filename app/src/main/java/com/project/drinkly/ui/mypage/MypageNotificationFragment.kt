@@ -19,6 +19,7 @@ import com.project.drinkly.databinding.FragmentMypageNotificationBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class MypageNotificationFragment : Fragment() {
 
@@ -42,6 +43,10 @@ class MypageNotificationFragment : Fragment() {
             buttonNotificationOs.setOnClickListener {
                 // 앱 알림 설정 화면으로 이동
                 presentNotificationSetting(mainActivity)
+            }
+
+            switchNotification.setOnCheckedChangeListener { _, isChecked ->
+                mixpanel.track("click_mypage_alarm_toggle", null)
             }
         }
 

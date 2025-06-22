@@ -1,6 +1,7 @@
 package com.project.drinkly.ui.store
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -12,8 +13,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.kakao.sdk.auth.TokenManager
@@ -37,6 +40,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
@@ -90,6 +94,8 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
             // 버튼 클릭 시 현재 위치로 이동
             mainActivity.binding.buttonMyLocation.setOnClickListener {
+                mixpanel.track("click_home_gps", null)
+
                 checkLocationPermission()
             }
 
@@ -99,6 +105,8 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
         mainActivity.binding.buttonList.run {
             setImageResource(R.drawable.ic_list)
             setOnClickListener {
+                mixpanel.track("click_home_listmap", null)
+
                 // 제휴업체 - 리스트 화면으로 전환
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, StoreListFragment())
@@ -123,6 +131,8 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             hideOrderHistoryButton(true)
             hideMapButton(false)
         }
+
+        checkPermissionsAndSendToMixpanel(mainActivity)
 
         checkNotificationInfo()
     }
@@ -221,9 +231,14 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
                 if (locationSource.isActivated) {
                     Log.d("MapFragment", "위치 권한 승인됨")
+
+                    mixpanel.people.set("location_permission", "Granted")
+
                     moveToCurrentLocation() // 권한 승인 후 위치 이동
                 } else {
                     Log.e("MapFragment", "위치 권한 거부됨")
+
+                    mixpanel.people.set("location_permission", "Denied")
                 }
 
                 if (!MyApplication.preferences.isNotificationPermissionChecked() && MyApplication.isLogin) {
@@ -233,6 +248,16 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
         }
         else if (requestCode == NOTIFICATION_PERMISSTION_REQUEST_CODE) {
             val allowed = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+
+            if (allowed) {
+                Log.d("MapFragment", "🔔 알림 권한 허용됨")
+
+                mixpanel.people.set("notification_permission", "Granted")
+            } else {
+                Log.d("MapFragment", "🔕 알림 권한 거부됨")
+
+                mixpanel.people.set("notification_permission", "Denied")
+            }
 
             sendFcmToken(allowed)
         }
@@ -255,6 +280,20 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             // Android 12 이하는 무조건 true
             sendFcmToken(allowed = true)
         }
+    }
+
+    fun checkPermissionsAndSendToMixpanel(context: Context) {
+        // ✅ 알림 권한 체크
+        val isNotificationAllowed = NotificationManagerCompat.from(context).areNotificationsEnabled()
+        mixpanel.people.set("notification_permission", if (isNotificationAllowed) "Granted" else "Denied")
+
+        // ✅ 위치 권한 체크
+        val isLocationAllowed = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        mixpanel.people.set("location_permission", if (isLocationAllowed) "Granted" else "Denied")
     }
 
     fun sendFcmToken(allowed: Boolean) {
@@ -385,6 +424,8 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
                     // 마커 클릭한 경우
                     markers[makerIndex].setOnClickListener {
+                        mixpanel.track("click_home_map_pin", null)
+
                         // 마커 변경
                         binding.bottomSheetStoreList.layoutStoreList.visibility = View.VISIBLE
                         mainActivity.run {
@@ -415,6 +456,8 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                             }
 
                             layoutStoreList.setOnClickListener {
+                                mixpanel.track("move_map_to_detail", null)
+
                                 // 제휴업체 - 세부 화면으로 전환
                                 var nextFragment = StoreDetailFragment()
 

@@ -12,6 +12,7 @@ import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentStoreCouponBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class StoreCouponFragment : Fragment() {
 
@@ -35,6 +36,8 @@ class StoreCouponFragment : Fragment() {
 
         binding.run {
             layoutCheckBox.setOnClickListener {
+                mixpanel.track("click_coupon_notice", null)
+
                 isChecked = !isChecked
                 if(isChecked) {
                     imageViewCheckBox.setImageResource(R.drawable.ic_checkcircle_checked)
@@ -46,6 +49,8 @@ class StoreCouponFragment : Fragment() {
             }
 
             buttonUseCoupon.setOnClickListener {
+                mixpanel.track("click_coupon_use", null)
+
                 // 쿠폰 사용
                 viewModel.useStoreCoupon(mainActivity, arguments?.getLong("couponId") ?: 0L)
             }

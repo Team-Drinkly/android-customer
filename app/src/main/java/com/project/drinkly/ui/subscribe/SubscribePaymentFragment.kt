@@ -21,6 +21,7 @@ import com.project.drinkly.ui.mypage.MypageCouponFragment
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -79,7 +80,17 @@ class SubscribePaymentFragment : Fragment() {
 
 
                             setOnClickListener {
+                                mixpanel.track("click_subscribe_cancel", null)
 
+                                val dialog = DialogBasic("멤버십 쿠폰을 사용한 경우에는\n구독 해지가 불가능합니다.")
+
+                                dialog.setBasicDialogInterface(object : BasicDialogInterface {
+                                    override fun onClickYesButton() {
+
+                                    }
+                                })
+
+                                dialog.show(mainActivity.supportFragmentManager, "DialogSubscribe")
                             }
                         } else {
                             text = "멤버십 구독권 결제하기"
@@ -92,11 +103,14 @@ class SubscribePaymentFragment : Fragment() {
                             textViewSubscribeDay.text = "$today ~ ${checkFormat(calendar)}"
 
                             setOnClickListener {
+                                mixpanel.track("click_subscribe_payment_prepare", null)
 
                                 val dialog = DialogBasicButton("결제 기능 준비 중입니다.\n빠른 시일 내에 업데이트 될 예정입니다!", "네", "쿠폰 확인", R.color.primary_50)
 
                                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                                     override fun onClickYesButton() {
+                                        mixpanel.track("move_subscribe_to_coupon", null)
+
                                         mainActivity.supportFragmentManager.beginTransaction()
                                             .replace(R.id.fragmentContainerView_main, MypageCouponFragment())
                                             .addToBackStack(null)

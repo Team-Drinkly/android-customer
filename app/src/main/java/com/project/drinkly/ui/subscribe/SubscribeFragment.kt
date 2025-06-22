@@ -17,6 +17,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.MypageWithdrawalFragment
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
@@ -44,6 +45,8 @@ class SubscribeFragment : Fragment() {
 
         binding.run {
             buttonSubscribeMembership.setOnClickListener {
+                mixpanel.track("click_subscribe_main", null)
+
                 // 구독권 결제 화면으로 이동
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
@@ -114,6 +117,8 @@ class SubscribeFragment : Fragment() {
             }
 
             binding.buttonOrderHistory.setOnClickListener {
+                mixpanel.track("click_subscribe_history", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, OrderHistoryFragment())
                     .addToBackStack(null)

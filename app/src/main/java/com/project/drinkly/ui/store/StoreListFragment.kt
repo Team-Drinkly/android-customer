@@ -14,6 +14,7 @@ import com.project.drinkly.databinding.FragmentStoreListBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.adapter.StoreListAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class StoreListFragment : Fragment() {
@@ -48,7 +49,9 @@ class StoreListFragment : Fragment() {
         mainActivity.binding.buttonList.run {
             setImageResource(R.drawable.ic_map)
             setOnClickListener {
-                // 제휴업체 - 리스트 화면으로 전환
+                mixpanel.track("click_home_listmap", null)
+
+                // 제휴업체 - 지도 화면으로 전환
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, StoreMapFragment())
                     .addToBackStack(null)
@@ -77,6 +80,8 @@ class StoreListFragment : Fragment() {
         ).apply {
             itemClickListener = object : StoreListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    mixpanel.track("move_list_to_detail", null)
+
                     // 제휴업체 - 세부 화면으로 전환
                     var nextFragment = StoreDetailFragment()
 

@@ -14,6 +14,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class MypageWithdrawalFragment : Fragment() {
 
@@ -45,11 +46,15 @@ class MypageWithdrawalFragment : Fragment() {
             }
 
             buttonWithdrawal.setOnClickListener {
+                mixpanel.track("click_mypage_signout", null)
+
                 // 계정 탈퇴
                 val dialog = DialogBasicButton("드링클리 계정을 탈퇴하시겠습니까?", "취소", "계정 탈퇴", R.color.red)
 
                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                     override fun onClickYesButton() {
+                        mixpanel.track("click_mypage_signout_confirm", null)
+                        
                         // 회원탈퇴
                         viewModel.withdrawal(mainActivity)
                     }

@@ -13,6 +13,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.store.StoreMapFragment
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class SignUpPassFragment : Fragment() {
@@ -30,6 +31,8 @@ class SignUpPassFragment : Fragment() {
 
         binding.run {
             buttonNext.setOnClickListener {
+                mixpanel.track("click_signup2", null)
+
                 // 패스 본인인증
                 val passIntent = Intent(mainActivity, PassWebActivity::class.java)
                 startActivity(passIntent)

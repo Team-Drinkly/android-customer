@@ -34,6 +34,8 @@ android {
         buildConfigField("String", "MAP_API_KEY", "\"${properties["map_client_id"]}\"")
 //        buildConfigField("String", "SERVER_URL", properties.getProperty("SERVER_URL"))
 
+        buildConfigField("String", "MIXPANEL_KEY", "\"${properties["mixpanel_token"]}\"")
+
         manifestPlaceholders["kakao_native_key"] = kakaoNativeKey
     }
 
@@ -98,4 +100,7 @@ dependencies {
     // 네이버 지도
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("com.naver.maps:map-sdk:3.19.1")
+
+    // mixpanel
+    implementation("com.mixpanel.android:mixpanel-android:7.+")
 }

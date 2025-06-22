@@ -20,6 +20,7 @@ import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkSelectAdapter
 import com.project.drinkly.ui.store.adapter.StoreListAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class StoreMembershipSelectFragment : Fragment() {
@@ -55,6 +56,8 @@ class StoreMembershipSelectFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mixpanel.track("move_select_to_use", null)
+
                 val bundle = Bundle().apply {
                     putString("storeName", getStoreDetailInfo?.storeName.toString())
                     putLong("storeId", getStoreDetailInfo?.storeId ?: 0)

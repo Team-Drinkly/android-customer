@@ -16,6 +16,7 @@ import com.project.drinkly.databinding.FragmentSignUpNicknameBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.store.StoreMapFragment
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class SignUpNickNameFragment : Fragment() {
 
@@ -69,6 +70,8 @@ class SignUpNickNameFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mixpanel.track("click_signup3", null)
+
                 viewModel.signUp(mainActivity, editTextNickname.text.toString())
             }
         }

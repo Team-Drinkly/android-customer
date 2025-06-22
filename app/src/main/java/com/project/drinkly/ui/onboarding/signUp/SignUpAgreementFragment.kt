@@ -11,6 +11,7 @@ import android.widget.ImageView
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSignUpAgreementBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class SignUpAgreementFragment : Fragment() {
 
@@ -63,6 +64,8 @@ class SignUpAgreementFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mixpanel.track("click_signup1", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, SignUpPassFragment())
                     .addToBackStack(null)

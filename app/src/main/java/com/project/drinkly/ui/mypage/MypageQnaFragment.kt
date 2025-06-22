@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentMypageQnaBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class MypageQnaFragment : Fragment() {
 
@@ -26,6 +27,8 @@ class MypageQnaFragment : Fragment() {
 
         binding.run {
             buttonKakao.setOnClickListener {
+                mixpanel.track("click_mypage_customer_kakao_center", null)
+
                 // 드링클리 카카오톡 채널
                 var intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://pf.kakao.com/_kWSGn"))
                 startActivity(intent)

@@ -30,6 +30,7 @@ import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.SubscribeFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MainUtil.setStatusBarTransparent
 import com.project.drinkly.util.MyApplication
 import com.project.drinkly.util.PreferenceUtil
@@ -68,13 +69,15 @@ class MainActivity : AppCompatActivity() {
     private fun handleNotificationIntent(intent: Intent) {
         when(intent.getStringExtra("type").toString()) {
             "COUPON" -> {
+                mixpanel.track("click_push_alarm_coupon", null)
+
                 val storeId = intent.getLongExtra("storeId", 0L)
                 if (storeId != 0L) {
                     pendingPushStoreId = storeId
                 }
             }
             "PROMOTION" -> {
-
+                mixpanel.track("click_push_alarm_promotion", null)
             }
         }
     }
@@ -90,6 +93,8 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_home -> {
+                    mixpanel.track("click_tab_home", null)
+
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainerView_main, StoreMapFragment())
                         .addToBackStack(null)
@@ -103,6 +108,8 @@ class MainActivity : AppCompatActivity() {
                             if (success) {
                                 // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
                                 Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+
+                                mixpanel.track("click_tab_subscribe", null)
 
                                 supportFragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainerView_main, SubscribeFragment())
@@ -136,6 +143,8 @@ class MainActivity : AppCompatActivity() {
                             if (success) {
                                 // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
                                 Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
+
+                                mixpanel.track("click_tab_mypage", null)
 
                                 supportFragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainerView_main, MypageFragment())
