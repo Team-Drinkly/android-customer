@@ -77,10 +77,11 @@ class StoreViewModel: ViewModel() {
                             var openingInfo = result?.payload?.get(s)?.openingInfo
                             var storeTel = result?.payload?.get(s)?.storeTel
                             var storeAddress = result?.payload?.get(s)?.storeAddress
+                            var distance = result?.payload?.get(s)?.distance ?: 0.0
                             for (available in 0 until (result?.payload?.get(s)?.availableDrinks?.size ?: 0)) {
                                 tempAvailableDrink.add(result?.payload?.get(s)?.availableDrinks?.get(available).toString())
                             }
-                            tempStoreListInfo.add(StoreListResponse(storeId!!, storeName, storeMainImageUrl, latitude, longitude, isOpen, isAvailable, openingInfo, storeTel, storeAddress, tempAvailableDrink))
+                            tempStoreListInfo.add(StoreListResponse(storeId!!, storeName, storeMainImageUrl, latitude, longitude, isOpen, isAvailable, openingInfo, storeTel, storeAddress, tempAvailableDrink, distance))
                         }
 
                         storeInfo.value = tempStoreListInfo

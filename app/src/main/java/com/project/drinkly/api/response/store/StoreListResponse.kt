@@ -11,5 +11,6 @@ data class StoreListResponse(
     val openingInfo: String?,
     val storeTel: String?,
     val storeAddress: String?,
-    val availableDrinks: List<String>?
+    val availableDrinks: List<String>?,
+    val distance: Double
 )
