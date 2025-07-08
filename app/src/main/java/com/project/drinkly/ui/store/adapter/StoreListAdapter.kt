@@ -11,6 +11,7 @@ import com.project.drinkly.R
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.RowStoreListBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.util.MainUtil.formatDistance
 
 class StoreListAdapter(
     private var activity: MainActivity,
@@ -47,22 +48,25 @@ class StoreListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.storeName.text = stores[position].storeName
-        holder.isOpen.text = stores[position].isOpen
-        holder.closeOrOpenTime.text = stores[position].openingInfo
-        holder.storeCall.text = stores[position].storeTel
-        holder.avaiableDrink.text = stores[position].availableDrinks?.joinToString(",")
+        with(holder.binding) {
+            textViewStoreName.text = stores[position].storeName
+            textViewStoreIsOpen.text = stores[position].isOpen
+            textViewStoreCloseOrOpenTime.text = stores[position].openingInfo
+            textViewStoreCall.text = stores[position].storeTel
+            textViewStoreAvailableDrink.text = stores[position].availableDrinks?.joinToString(",")
+            textViewDistance.text = formatDistance(stores[position].distance)
 
-        if(stores[position].isAvailable == true) {
-            holder.layoutStoreUnavailable.visibility = View.INVISIBLE
-        } else {
-            holder.layoutStoreUnavailable.visibility = View.VISIBLE
-        }
+            if(stores[position].isAvailable == true) {
+                layoutStoreUnavailable.visibility = View.INVISIBLE
+            } else {
+                layoutStoreUnavailable.visibility = View.VISIBLE
+            }
 
-        if(stores[position].storeMainImageUrl.isNullOrEmpty()) {
-            holder.storeImage.setImageResource(R.drawable.img_store_main_basic)
-        } else {
-            Glide.with(activity).load(stores[position].storeMainImageUrl).into(holder.storeImage)
+            if(stores[position].storeMainImageUrl.isNullOrEmpty()) {
+                imageViewStore.setImageResource(R.drawable.img_store_main_basic)
+            } else {
+                Glide.with(activity).load(stores[position].storeMainImageUrl).into(imageViewStore)
+            }
         }
     }
 
@@ -71,13 +75,6 @@ class StoreListAdapter(
 
     inner class ViewHolder(val binding: RowStoreListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val storeName = binding.textViewStoreName
-        val isOpen = binding.textViewStoreIsOpen
-        val closeOrOpenTime = binding.textViewStoreCloseOrOpenTime
-        val storeCall = binding.textViewStoreCall
-        val avaiableDrink = binding.textViewStoreAvailableDrink
-        val storeImage = binding.imageViewStore
-        val layoutStoreUnavailable = binding.layoutStoreUnavailable
 
         init {
             binding.root.setOnClickListener {

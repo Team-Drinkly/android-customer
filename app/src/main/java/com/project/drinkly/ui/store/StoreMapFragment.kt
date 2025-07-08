@@ -41,6 +41,7 @@ import com.project.drinkly.ui.dialog.DialogEvent
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
+import com.project.drinkly.util.MainUtil.formatDistance
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
 import com.skydoves.balloon.ArrowPositionRules
@@ -448,6 +449,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
                             textViewStoreName.text = storeInfo.storeName
                             textViewStoreCall.text = storeInfo.storeTel
                             textViewStoreAvailableDrink.text = storeInfo.availableDrinks?.joinToString(",")
+                            textViewDistance.text = formatDistance(storeInfo.distance)
 
                             if(storeInfo.isAvailable == true) {
                                 layoutStoreUnavailable.visibility = View.INVISIBLE
