@@ -1,10 +1,10 @@
 package com.project.drinkly.ui.store.adapter
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationManagerCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.drinkly.R
@@ -15,7 +15,7 @@ import com.project.drinkly.util.MainUtil.formatDistance
 
 class StoreListAdapter(
     private var activity: MainActivity,
-    private var stores: List<StoreListResponse>
+    private var stores: MutableList<StoreListResponse>?
 ) :
     RecyclerView.Adapter<StoreListAdapter.ViewHolder>() {
 
@@ -27,7 +27,7 @@ class StoreListAdapter(
         onItemClickListener = listener
     }
 
-    fun updateList(newStores: List<StoreListResponse>) {
+    fun updateList(newStores: MutableList<StoreListResponse>?) {
         stores = newStores
         notifyDataSetChanged()
     }
@@ -49,28 +49,34 @@ class StoreListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.binding) {
-            textViewStoreName.text = stores[position].storeName
-            textViewStoreIsOpen.text = stores[position].isOpen
-            textViewStoreCloseOrOpenTime.text = stores[position].openingInfo
-            textViewStoreCall.text = stores[position].storeTel
-            textViewStoreAvailableDrink.text = stores[position].availableDrinks?.joinToString(",")
-            textViewDistance.text = formatDistance(stores[position].distance)
+            textViewStoreName.text = stores?.get(position)?.storeName
+            textViewStoreIsOpen.text = stores?.get(position)?.isOpen
+            textViewStoreCloseOrOpenTime.text = stores?.get(position)?.openingInfo
+            textViewStoreCall.text = stores?.get(position)?.storeTel
+            textViewStoreAvailableDrink.text = stores?.get(position)?.availableDrinks?.joinToString(",")
+            val isNotificationAllowed = NotificationManagerCompat.from(activity).areNotificationsEnabled()
+            if(isNotificationAllowed) {
+                textViewDistance.visibility = View.VISIBLE
+                textViewDistance.text = formatDistance(stores?.get(position)?.distance ?: 0.0)
+            } else {
+                textViewDistance.visibility = View.GONE
+            }
 
-            if(stores[position].isAvailable == true) {
+            if(stores?.get(position)?.isAvailable == true) {
                 layoutStoreUnavailable.visibility = View.INVISIBLE
             } else {
                 layoutStoreUnavailable.visibility = View.VISIBLE
             }
 
-            if(stores[position].storeMainImageUrl.isNullOrEmpty()) {
+            if(stores?.get(position)?.storeMainImageUrl.isNullOrEmpty()) {
                 imageViewStore.setImageResource(R.drawable.img_store_main_basic)
             } else {
-                Glide.with(activity).load(stores[position].storeMainImageUrl).into(imageViewStore)
+                Glide.with(activity).load(stores?.get(position)?.storeMainImageUrl).into(imageViewStore)
             }
         }
     }
 
-    override fun getItemCount() = stores.size
+    override fun getItemCount() = stores?.size ?: 0
 
 
     inner class ViewHolder(val binding: RowStoreListBinding) :
