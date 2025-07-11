@@ -135,10 +135,12 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             isNightModeEnabled = true
             locationSource = this@StoreMapFragment.locationSource
             locationTrackingMode = LocationTrackingMode.None
-            maxZoom = 20.0
-            minZoom = 5.0
+            maxZoom = 18.0
+            minZoom = 8.0
             uiSettings.apply {
                 setLogoMargin(40, 0, 40, 320)
+                isRotateGesturesEnabled = false
+                isTiltGesturesEnabled = false
                 isZoomControlEnabled = false
                 isCompassEnabled = false
                 isScaleBarEnabled = false
@@ -156,8 +158,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
     // [Location & Permissions]
     private fun checkLocationPermission() {
         if (!locationSource.isActivated) {
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-            getCurrentLocationAndCallApi()
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         } else {
             moveToCurrentLocation()
             requestNotificationPermissionIfNeeded()
@@ -166,12 +167,12 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun moveToCurrentLocation() {
         val fallback = LatLng(MyApplication.latitude, MyApplication.longitude)
-        naverMap.moveCamera(CameraUpdate.scrollAndZoomTo(fallback, 15.0).animate(CameraAnimation.Easing))
+        naverMap.moveCamera(CameraUpdate.scrollAndZoomTo(fallback, 15.0).animate(CameraAnimation.Fly))
         viewModel.getStoreList(mainActivity, fallback.latitude.toString(), fallback.longitude.toString(), 10000, null)
     }
 
     private fun getCurrentLocationAndCallApi() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
             != PackageManager.PERMISSION_GRANTED
         ) return
 
@@ -233,6 +234,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            getCurrentLocationAndCallApi()
             if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
                 moveToCurrentLocation()
                 requestNotificationPermissionIfNeeded()
@@ -276,6 +278,10 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             hideMyLocationButton(true)
             hideMapButton(true)
         }
+
+        val position = LatLng(store.latitude?.toDouble() ?: 0.0, store.longitude?.toDouble() ?: 0.0)
+        val cameraUpdate = CameraUpdate.scrollAndZoomTo(position, 15.0).animate(CameraAnimation.Fly)
+        naverMap.moveCamera(cameraUpdate)
 
         binding.bottomSheetStoreList.apply {
             layoutStoreList.visibility = View.VISIBLE
@@ -383,6 +389,6 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
     fun checkPermissionsAndSendToMixpanel(context: Context) {
         mixpanel.people.set("notification_permission", if (NotificationManagerCompat.from(context).areNotificationsEnabled()) "Granted" else "Denied")
-        mixpanel.people.set("location_permission", if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) "Granted" else "Denied")
+        mixpanel.people.set("location_permission", if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) "Granted" else "Denied")
     }
 }
