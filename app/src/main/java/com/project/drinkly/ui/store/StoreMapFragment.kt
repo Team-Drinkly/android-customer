@@ -80,6 +80,7 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
 
         mapInit()
         checkNotificationInfo()
+        showToolTip()
 
         // 버튼 클릭 시 현재 위치로 이동
         mainActivity.binding.run {
@@ -330,7 +331,6 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
         }
 
         checkPermissionsAndSendToMixpanel(mainActivity)
-        showToolTip()
     }
 
     private fun showToolTip() {
