@@ -23,7 +23,6 @@ class StoreListFragment : Fragment() {
     lateinit var viewModel: StoreViewModel
 
     lateinit var storeListAdapter: StoreListAdapter
-    var getStoreList: MutableList<StoreListResponse>? = mutableListOf<StoreListResponse>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +80,7 @@ class StoreListFragment : Fragment() {
                     // 제휴업체 - 세부 화면으로 전환
                     var nextFragment = StoreDetailFragment()
 
-                    val bundle = Bundle().apply { putLong("storeId", getStoreList?.get(position)?.id ?: 0) }
+                    val bundle = Bundle().apply { putLong("storeId", viewModel.storeInfo.value?.get(position)?.id ?: 0) }
 
                     // 전달할 Fragment 생성
                     nextFragment = StoreDetailFragment().apply {
