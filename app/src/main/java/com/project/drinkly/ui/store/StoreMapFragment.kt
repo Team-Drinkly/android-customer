@@ -202,10 +202,22 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
         )
     }
 
-    private fun setFallbackLocation() {
-        MyApplication.latitude = 37.63022195215973
-        MyApplication.longitude = 127.07671771357782
+class StoreMapFragment : Fragment() {
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 123
+        private const val DEFAULT_LATITUDE = 37.63022195215973
+        private const val DEFAULT_LONGITUDE = 127.07671771357782
     }
+
+    private fun setFallbackLocation() {
+        MyApplication.latitude = DEFAULT_LATITUDE
+        MyApplication.longitude = DEFAULT_LONGITUDE
+    }
+
+    // … rest of the class …
+}
 
 
     private fun requestNotificationPermissionIfNeeded() {
