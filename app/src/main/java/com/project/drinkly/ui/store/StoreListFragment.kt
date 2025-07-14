@@ -15,7 +15,6 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.adapter.StoreListAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
-import com.project.drinkly.util.MyApplication
 
 class StoreListFragment : Fragment() {
 
@@ -24,7 +23,6 @@ class StoreListFragment : Fragment() {
     lateinit var viewModel: StoreViewModel
 
     lateinit var storeListAdapter: StoreListAdapter
-    var getStoreList = mutableListOf<StoreListResponse>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,12 +30,9 @@ class StoreListFragment : Fragment() {
     ): View? {
         binding = FragmentStoreListBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(this)[StoreViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[StoreViewModel::class.java]
 
         initAdapter()
-        observeViewModel()
-
-        viewModel.getStoreList(mainActivity, MyApplication.latitude, MyApplication.longitude, MyApplication.radius, null)
 
         binding.run {
             recyclerViewStoreList.apply {
@@ -76,7 +71,7 @@ class StoreListFragment : Fragment() {
     fun initAdapter() {
         storeListAdapter = StoreListAdapter(
             mainActivity,
-            getStoreList
+            viewModel.storeInfo.value
         ).apply {
             itemClickListener = object : StoreListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
@@ -85,7 +80,7 @@ class StoreListFragment : Fragment() {
                     // 제휴업체 - 세부 화면으로 전환
                     var nextFragment = StoreDetailFragment()
 
-                    val bundle = Bundle().apply { putLong("storeId", getStoreList[position].id) }
+                    val bundle = Bundle().apply { putLong("storeId", viewModel.storeInfo.value?.get(position)?.id ?: 0) }
 
                     // 전달할 Fragment 생성
                     nextFragment = StoreDetailFragment().apply {
@@ -96,16 +91,6 @@ class StoreListFragment : Fragment() {
                         .addToBackStack(null)
                         .commit()
                 }
-            }
-        }
-    }
-
-    fun observeViewModel() {
-        viewModel.run {
-            storeInfo.observe(viewLifecycleOwner) {
-                getStoreList = it
-
-                storeListAdapter.updateList(getStoreList)
             }
         }
     }

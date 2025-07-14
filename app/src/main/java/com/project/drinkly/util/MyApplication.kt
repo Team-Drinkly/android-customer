@@ -16,8 +16,8 @@ class MyApplication : Application() {
         var isLogin = false
 
         // 지도
-        var latitude = ""
-        var longitude = ""
+        var latitude = 37.63022195215973
+        var longitude = 127.07671771357782
         var radius = 0
     }
 }

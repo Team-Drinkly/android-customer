@@ -43,4 +43,15 @@ object MainUtil {
                     )
         }
     }
+
+    // 거리 반환 함수
+    fun formatDistance(distanceKm: Double): String {
+        return if (distanceKm < 1.0) {
+            val distanceMeter = (distanceKm * 1000).toInt()
+            "${distanceMeter}m"
+        } else {
+            String.format("%.1fkm", distanceKm)
+        }
+    }
+
 }
