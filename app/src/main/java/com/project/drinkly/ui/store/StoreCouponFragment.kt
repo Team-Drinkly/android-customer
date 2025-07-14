@@ -115,6 +115,7 @@ class StoreCouponFragment : Fragment() {
                     visibility = View.VISIBLE
                     setImageResource(R.drawable.ic_coupon_check)
                 }
+                textViewStoreName.text = arguments?.getString("storeName")
                 textViewCouponTitle.text = arguments?.getString("couponTitle")
                 textViewCouponDescription.text = arguments?.getString("couponDescription")
                 textViewCouponDate.text = "유효기간: ${arguments?.getString("couponDate")}까지"

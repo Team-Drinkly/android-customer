@@ -21,6 +21,7 @@ import com.project.drinkly.api.InfoManager
 import com.project.drinkly.api.response.coupon.StoreCouponResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.databinding.FragmentStoreDetailBinding
+import com.project.drinkly.ui.BasicToast
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreImagePagerAdapter
@@ -294,7 +295,9 @@ class StoreDetailFragment : Fragment() {
                     mainActivity,
                     couponInfo?.get(position)?.id ?: 0L,
                     arguments?.getLong("storeId", 0) ?: 0
-                )
+                ) {
+                    BasicToast.showBasicToast(requireContext(), "쿠폰 다운로드가 완료되었어요.", R.drawable.ic_check, binding.buttonMembership)
+                }
             }
 
             "AVAILABLE" -> {
