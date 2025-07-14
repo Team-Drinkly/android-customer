@@ -69,11 +69,6 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
     private val markers = mutableListOf<Marker>()
     private var lastCameraPosition: LatLng? = null
 
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 123
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentStoreMapBinding.inflate(inflater, container, false)
         mainActivity = activity as MainActivity
@@ -201,24 +196,6 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             null
         )
     }
-
-class StoreMapFragment : Fragment() {
-
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 123
-        private const val DEFAULT_LATITUDE = 37.63022195215973
-        private const val DEFAULT_LONGITUDE = 127.07671771357782
-    }
-
-    private fun setFallbackLocation() {
-        MyApplication.latitude = DEFAULT_LATITUDE
-        MyApplication.longitude = DEFAULT_LONGITUDE
-    }
-
-    // … rest of the class …
-}
-
 
     private fun requestNotificationPermissionIfNeeded() {
         if (!MyApplication.preferences.isNotificationPermissionChecked() && MyApplication.isLogin) {
@@ -402,5 +379,17 @@ class StoreMapFragment : Fragment() {
     fun checkPermissionsAndSendToMixpanel(context: Context) {
         mixpanel.people.set("notification_permission", if (NotificationManagerCompat.from(context).areNotificationsEnabled()) "Granted" else "Denied")
         mixpanel.people.set("location_permission", if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) "Granted" else "Denied")
+    }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+        private const val NOTIFICATION_PERMISSION_REQUEST_CODE = 123
+        private const val DEFAULT_LATITUDE = 37.63022195215973
+        private const val DEFAULT_LONGITUDE = 127.07671771357782
+    }
+
+    private fun setFallbackLocation() {
+        MyApplication.latitude = DEFAULT_LATITUDE
+        MyApplication.longitude = DEFAULT_LONGITUDE
     }
 }
