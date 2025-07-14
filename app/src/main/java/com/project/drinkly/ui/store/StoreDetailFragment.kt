@@ -2,6 +2,7 @@ package com.project.drinkly.ui.store
 
 import android.content.Intent
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -110,7 +112,7 @@ class StoreDetailFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             }
 
-            layoutCoupon.layoutCouponFrame.setOnClickListener {
+            layoutCoupon.layoutCoupon.layoutCouponFrame.setOnClickListener {
                 when (couponInfo?.status) {
                     "NONE" -> {
                         mixpanel.track("click_detail_coupon_download", null)
@@ -181,6 +183,8 @@ class StoreDetailFragment : Fragment() {
                         textViewStoreDescription.visibility = View.GONE
                         dividerStoreInfo.visibility = View.GONE
                     } else {
+                        textViewStoreDescription.visibility = View.VISIBLE
+                        dividerStoreInfo.visibility = View.VISIBLE
                         textViewStoreDescription.text = getStoreDetailInfo?.storeDescription
                     }
 
@@ -248,12 +252,13 @@ class StoreDetailFragment : Fragment() {
             storeCouponInfo.observe(viewLifecycleOwner) {
                 couponInfo = it
 
-                binding.layoutCoupon.run {
+                binding.layoutCoupon.layoutCoupon.run {
                     if (couponInfo == null) {
-                        layoutCouponFrame.visibility = View.GONE
+                        binding.layoutCoupon.layoutStoreCoupon.visibility = View.GONE
                     } else {
-                        layoutCouponFrame.visibility = View.VISIBLE
+                        binding.layoutCoupon.layoutStoreCoupon.visibility = View.VISIBLE
 
+                        textViewStoreName.text = couponInfo?.storeName ?: ""
                         textViewCouponTitle.text = couponInfo?.title
                         textViewCouponDescription.text = couponInfo?.description
                         textViewCouponDate.text = "유효기간: ${couponInfo?.expirationDate}까지"
@@ -404,7 +409,7 @@ class StoreDetailFragment : Fragment() {
         viewModel.getStoreDetail(mainActivity, arguments?.getLong("storeId", 0) ?: 0)
 
         binding.run {
-            layoutCoupon.layoutCouponFrame.visibility = View.GONE
+            layoutCoupon.layoutStoreCoupon.visibility = View.GONE
             textViewStoreAvailableDaysTitle.visibility = View.INVISIBLE
 
             toolbar.run {

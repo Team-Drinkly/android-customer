@@ -61,6 +61,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="body4">
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="caption1">
         <item name="android:fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">12sp</item>

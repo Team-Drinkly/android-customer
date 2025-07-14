@@ -109,7 +109,12 @@ class StoreCouponFragment : Fragment() {
         binding.run {
             layoutCheckBox.visibility = View.VISIBLE
             textViewStoreName.text = arguments?.getString("storeName")
-            layoutCoupon.run {
+            layoutCoupon.layoutCoupon.run {
+                textViewCouponDownload.visibility = View.GONE
+                imageViewCouponDownload.run {
+                    visibility = View.VISIBLE
+                    setImageResource(R.drawable.ic_coupon_check)
+                }
                 textViewCouponTitle.text = arguments?.getString("couponTitle")
                 textViewCouponDescription.text = arguments?.getString("couponDescription")
                 textViewCouponDate.text = "유효기간: ${arguments?.getString("couponDate")}까지"

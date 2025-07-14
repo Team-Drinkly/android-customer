@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp">
 
-
     <LinearLayout
+        android:id="@+id/layout_coupon_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -33,12 +33,12 @@
 
             <TextView
                 android:id="@+id/textView_store_name"
+                style="@style/body4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="14dp"
-                android:fontFamily="@font/pretendard_semi_bold"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
                 android:textColor="@color/primary_50"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -50,12 +50,10 @@
                 style="@style/SubTitle2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginEnd="14dp"
-                android:minLines="1"
-                android:maxLines="1"
-                android:lines="1"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="12dp"
+                android:maxLines="2"
                 android:ellipsize="end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -64,14 +62,12 @@
 
             <TextView
                 android:id="@+id/textView_coupon_description"
-                style="@style/caption1"
+                style="@style/body4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="14dp"
-                android:minLines="2"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="12dp"
                 android:maxLines="2"
-                android:lines="2"
                 android:ellipsize="end"
                 android:textColor="@color/gray4"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -81,41 +77,39 @@
             <TextView
                 android:id="@+id/textView_coupon_date"
                 style="@style/caption1"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="12dp"
                 android:text="유효기간: 2025-01-01까지"
-                android:textAlignment="textEnd"
                 android:textColor="@color/gray6"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textView_coupon_description"
                 app:layout_constraintTop_toBottomOf="@+id/textView_coupon_description" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/divider"
-            android:layerType="software"
+        <ImageView
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:layout_marginVertical="6dp"
-            android:background="@drawable/background_dotted_dash" />
+            android:paddingVertical="10dp"
+            android:src="@drawable/img_dash" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="3.5"
             android:background="@drawable/background_coupon">
 
             <TextView
                 android:id="@+id/textView_coupon_download"
-                style="@style/SubTitle1"
+                style="@style/SubTitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="쿠폰\n사용"
+                android:textColor="@color/gray3"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

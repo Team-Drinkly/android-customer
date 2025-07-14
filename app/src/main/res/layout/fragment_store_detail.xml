@@ -60,7 +60,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:background="@color/card_background"
-                    android:padding="14dp"
+                    android:paddingVertical="14dp"
+                    android:paddingHorizontal="34dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/layout_store">
