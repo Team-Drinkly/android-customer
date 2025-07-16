@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
@@ -131,5 +132,15 @@ class StoreMembershipFragment : Fragment() {
                 }
             }
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(!isUsedMembership) {
+                    fragmentManager?.popBackStack()
+                } else {
+                    fragmentManager?.popBackStack("membership", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                }
+            }
+        })
     }
 }
