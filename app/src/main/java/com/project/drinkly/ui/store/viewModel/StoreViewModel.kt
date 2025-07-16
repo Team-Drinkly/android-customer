@@ -196,7 +196,7 @@ class StoreViewModel: ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    downloadCoupon(activity, couponId, storeId) { }
+                                    downloadCoupon(activity, couponId, storeId, onSuccess)
                                 }
                             }
 

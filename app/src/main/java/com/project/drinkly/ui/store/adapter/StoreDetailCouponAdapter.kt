@@ -79,12 +79,12 @@ class StoreDetailCouponAdapter(
 
         init {
             binding.root.setOnClickListener {
-                itemClickListener?.onItemClick(adapterPosition,
-                    coupons?.get(adapterPosition)?.status.toString()
+                itemClickListener?.onItemClick(bindingAdapterPosition,
+                    coupons?.get(bindingAdapterPosition)?.status.toString()
                 )
 
                 // 클릭 리스너 호출
-                onItemClickListener?.invoke(position)
+                onItemClickListener?.invoke(bindingAdapterPosition)
 
                 true
             }

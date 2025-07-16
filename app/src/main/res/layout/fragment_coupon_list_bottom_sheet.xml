@@ -40,7 +40,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView_coupon"
         android:layout_width="0dp"
-        android:layout_height="500dp"
+        android:layout_height="wrap_content"
+        android:maxHeight="500dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="43dp"
         app:layout_constraintBottom_toTopOf="@+id/button_download_all"

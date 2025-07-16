@@ -163,8 +163,8 @@ class StoreDetailFragment : Fragment() {
                 binding.layoutCoupon.layoutStoreCoupon.visibility = View.VISIBLE
 
                 textViewStoreName.text = couponInfo?.get(position)?.storeName ?: ""
-                textViewCouponTitle.text = couponInfo?.get(position)?.title
-                textViewCouponDescription.text = couponInfo?.get(position)?.description
+                textViewCouponTitle.text = couponInfo?.get(position)?.title ?: ""
+                textViewCouponDescription.text = couponInfo?.get(position)?.description ?: ""
                 textViewCouponDate.text = "유효기간: ${couponInfo?.get(position)?.expirationDate}까지"
 
                 if((couponInfo?.size ?: 0) > 1) {
