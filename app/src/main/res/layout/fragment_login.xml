@@ -18,8 +18,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="20dp">
+            android:layout_height="wrap_content">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPager"
@@ -66,14 +65,17 @@
                     style="@style/SubTitle2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
                     android:paddingVertical="15.5dp"
                     android:layout_marginBottom="15dp"
+                    android:textColor="@color/gray1"
                     android:text="제휴업체 둘러보기" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/button_kakao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
                     android:layout_marginBottom="150dp"
                     android:background="@drawable/background_button_kakao"
                     android:paddingVertical="15.5dp">
