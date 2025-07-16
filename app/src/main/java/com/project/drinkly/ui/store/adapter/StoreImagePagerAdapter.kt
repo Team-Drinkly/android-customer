@@ -43,11 +43,15 @@ class StoreImagePagerAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(images != null) {
-            Glide.with(activity).load(images?.get(position))
+        val url = images?.get(position)
+        if (url == "basic") {
+            Glide.with(activity)
+                .load(R.drawable.img_store_main_basic)
                 .into(holder.storeImage)
         } else {
-            holder.storeImage.setImageResource(R.drawable.img_store_main_basic)
+            Glide.with(activity)
+                .load(url)
+                .into(holder.storeImage)
         }
     }
 

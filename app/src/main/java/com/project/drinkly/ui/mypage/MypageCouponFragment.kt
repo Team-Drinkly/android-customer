@@ -66,7 +66,7 @@ class MypageCouponFragment : Fragment() {
         for (i in 0 until mTabLayout.tabCount) {
             val tab = (mTabLayout.getChildAt(0) as ViewGroup).getChildAt(i)
             val p = tab.layoutParams as ViewGroup.MarginLayoutParams
-            p.setMargins(4, 4, 4, 4)
+            p.setMargins(12, 12, 12, 12)
             tab.requestLayout()
         }
     }

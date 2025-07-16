@@ -39,7 +39,7 @@ class StoreViewModel: ViewModel() {
 
     var storeInfo: MutableLiveData<MutableList<StoreListResponse>> = MutableLiveData()
     var storeDetailInfo: MutableLiveData<StoreDetailResponse> = MutableLiveData()
-    var storeCouponInfo: MutableLiveData<StoreCouponResponse?> = MutableLiveData()
+    var storeCouponInfo: MutableLiveData<MutableList<StoreCouponResponse>?> = MutableLiveData()
 
     var isUsed: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -125,7 +125,7 @@ class StoreViewModel: ViewModel() {
                         when(result?.result?.code) {
                             in 200..299 -> {
                                 if(result?.payload?.size != 0) {
-                                    storeCouponInfo.value = result?.payload?.get(0)
+                                    storeCouponInfo.value = result?.payload as MutableList<StoreCouponResponse>?
                                 } else {
                                     storeCouponInfo.value = null
                                 }
@@ -163,7 +163,7 @@ class StoreViewModel: ViewModel() {
             })
     }
 
-    fun downloadCoupon(activity: MainActivity, couponId: Long, storeId: Long) {
+    fun downloadCoupon(activity: MainActivity, couponId: Long, storeId: Long, onSuccess: () -> Unit) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
 
@@ -183,6 +183,7 @@ class StoreViewModel: ViewModel() {
                         when(result?.result?.code) {
                             in 200..299 -> {
                                 getStoreCoupon(activity, storeId)
+                                onSuccess()
                             }
                         }
                     } else {
@@ -195,7 +196,7 @@ class StoreViewModel: ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    downloadCoupon(activity, couponId, storeId)
+                                    downloadCoupon(activity, couponId, storeId, onSuccess)
                                 }
                             }
 

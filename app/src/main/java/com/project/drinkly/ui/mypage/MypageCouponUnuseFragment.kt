@@ -88,7 +88,7 @@ class MypageCouponUnuseFragment : Fragment() {
                         }
                     })
 
-                    dialog.show(mainActivity.supportFragmentManager, "DialogLogout")
+                    dialog.show(mainActivity.supportFragmentManager, "DialogCoupon")
                 }
             }
         }
