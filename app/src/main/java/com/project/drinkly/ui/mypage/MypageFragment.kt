@@ -44,7 +44,7 @@ class MypageFragment : Fragment() {
                 mixpanel.track("click_mypage_subscribe", null)
 
                 mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                    .replace(R.id.fragmentContainerView_main, MypageSubscribeFragment())
                     .addToBackStack(null)
                     .commit()
             }

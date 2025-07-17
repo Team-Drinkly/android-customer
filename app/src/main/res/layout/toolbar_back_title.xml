@@ -16,7 +16,7 @@
 
     <TextView
         android:id="@+id/textView_title"
-        style="@style/HeadLine3"
+        style="@style/HeadLine5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/button_back"
