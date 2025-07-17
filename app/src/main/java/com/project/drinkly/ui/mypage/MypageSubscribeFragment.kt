@@ -38,6 +38,10 @@ class MypageSubscribeFragment : Fragment() {
 
             // 결제 수단 관리
             layoutButtonPayment.setOnClickListener {
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, PaymentManageFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
 

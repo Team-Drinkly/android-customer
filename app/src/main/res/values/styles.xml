@@ -89,7 +89,7 @@
     </style>
 
     <!-- NEXT Button -->
-    <style name="NextButton" parent="HeadLine3">
+    <style name="NextButton" parent="HeadLine5">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="cornerRadius">50dp</item>
@@ -98,7 +98,7 @@
     </style>
 
     <!-- 탈퇴 Button -->
-    <style name="WithdrawalButton" parent="HeadLine3">
+    <style name="WithdrawalButton" parent="HeadLine5">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/gray1</item>
         <item name="cornerRadius">50dp</item>
@@ -138,7 +138,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:inputType">text</item>
         <item name="android:textColor">@color/gray2</item>
-        <item name="android:textColorHint">@color/gray6</item>
+        <item name="android:textColorHint">@color/gray7</item>
         <item name="android:background">@drawable/background_edittext_default</item>
         <item name="android:paddingHorizontal">16dp</item>
         <item name="android:paddingVertical">18dp</item>

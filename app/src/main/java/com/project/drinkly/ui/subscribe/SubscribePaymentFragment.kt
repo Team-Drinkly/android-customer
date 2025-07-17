@@ -18,6 +18,7 @@ import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.mypage.MypageCouponFragment
+import com.project.drinkly.ui.payment.PaymentManageFragment
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
@@ -103,31 +104,11 @@ class SubscribePaymentFragment : Fragment() {
                             textViewSubscribeDay.text = "$today ~ ${checkFormat(calendar)}"
 
                             setOnClickListener {
-                                mixpanel.track("click_subscribe_payment_prepare", null)
-
-                                val dialog = DialogBasicButton("결제 기능 준비 중입니다.\n빠른 시일 내에 업데이트 될 예정입니다!", "네", "쿠폰 확인", R.color.primary_50)
-
-                                dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
-                                    override fun onClickYesButton() {
-                                        mixpanel.track("move_subscribe_to_coupon", null)
-
-                                        mainActivity.supportFragmentManager.beginTransaction()
-                                            .replace(R.id.fragmentContainerView_main, MypageCouponFragment())
-                                            .addToBackStack(null)
-                                            .commit()
-                                    }
-                                })
-
-                                dialog.show(mainActivity.supportFragmentManager, "DialogPayment")
-
-
-                                /*
-                                // 구독권 결제 완료 화면으로 이동
+                                // 구독권 결제 수단 관리 화면으로 이동
                                 mainActivity.supportFragmentManager.beginTransaction()
-                                    .replace(R.id.fragmentContainerView_main, SubscribeCompleteFragment())
+                                    .replace(R.id.fragmentContainerView_main, PaymentManageFragment())
                                     .addToBackStack(null)
                                     .commit()
-                                 */
                             }
                         }
                     }
