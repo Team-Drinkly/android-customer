@@ -1,36 +1,21 @@
-package com.project.drinkly.ui.subscribe
+package com.project.drinkly.ui.payment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.api.InfoManager
-import com.project.drinkly.api.TokenManager
 import com.project.drinkly.databinding.FragmentSubscribePaymentBinding
 import com.project.drinkly.ui.MainActivity
-import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
-import com.project.drinkly.ui.dialog.BasicDialogInterface
-import com.project.drinkly.ui.dialog.DialogBasic
-import com.project.drinkly.ui.dialog.DialogBasicButton
-import com.project.drinkly.ui.mypage.MypageCouponFragment
-import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
-import com.project.drinkly.ui.onboarding.LoginFragment
-import com.project.drinkly.ui.payment.PaymentManageFragment
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
-import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
-import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
-import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
-import com.project.drinkly.util.MyApplication
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import kotlin.concurrent.fixedRateTimer
 
 class SubscribePaymentFragment : Fragment() {
 
@@ -128,7 +113,7 @@ class SubscribePaymentFragment : Fragment() {
 
                         setOnClickListener {
                             // 구독 해지
-                            
+
                         }
                     }
                 }

@@ -11,7 +11,7 @@ import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentMypageSubscribeBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.payment.PaymentManageFragment
-import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
+import com.project.drinkly.ui.payment.SubscribePaymentFragment
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class MypageSubscribeFragment : Fragment() {

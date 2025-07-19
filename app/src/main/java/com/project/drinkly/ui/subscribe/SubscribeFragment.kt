@@ -15,6 +15,7 @@ import com.project.drinkly.api.response.subscribe.OrderHistory
 import com.project.drinkly.databinding.FragmentSubscribeBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.MypageWithdrawalFragment
+import com.project.drinkly.ui.payment.SubscribePaymentFragment
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel

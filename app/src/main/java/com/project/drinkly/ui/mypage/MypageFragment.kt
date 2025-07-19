@@ -12,7 +12,7 @@ import com.project.drinkly.databinding.FragmentMypageBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.store.StoreMapFragment
-import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
+import com.project.drinkly.ui.payment.SubscribePaymentFragment
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 

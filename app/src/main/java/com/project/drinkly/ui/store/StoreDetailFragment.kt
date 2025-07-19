@@ -27,7 +27,7 @@ import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreImagePagerAdapter
 import com.project.drinkly.ui.store.adapter.StoreMenuImageAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
-import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
+import com.project.drinkly.ui.payment.SubscribePaymentFragment
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
