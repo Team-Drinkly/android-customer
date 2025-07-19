@@ -21,10 +21,7 @@ class SubscribePaymentFragment : Fragment() {
 
     lateinit var binding: FragmentSubscribePaymentBinding
     lateinit var mainActivity: MainActivity
-    private val viewModel: SubscribeViewModel by lazy {
-        ViewModelProvider(requireActivity())[SubscribeViewModel::class.java]
-    }
-    private val paymentViewModel: PaymentViewModel by lazy {
+    private val viewModel: PaymentViewModel by lazy {
         ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
     }
 
@@ -59,7 +56,7 @@ class SubscribePaymentFragment : Fragment() {
                 // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
                 Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
 
-                paymentViewModel.getSubscribeStatusInfo(mainActivity)
+                viewModel.getSubscribeStatusInfo(mainActivity)
 
             } else {
                 Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
@@ -79,7 +76,7 @@ class SubscribePaymentFragment : Fragment() {
     }
 
     fun observeViewModel() {
-        paymentViewModel.run {
+        viewModel.run {
             subscribeStatus.observe(viewLifecycleOwner) {
                 checkSubscribeInfo(it)
             }
@@ -95,26 +92,37 @@ class SubscribePaymentFragment : Fragment() {
             }
 
             if (InfoManager(mainActivity).getIsSubscribe() == true) {
-                if(status == "ACTIVE_SCHEDULED") {
-                    buttonMembershipPayment.run {
-                        visibility = View.VISIBLE
-                        text = "멤버십 해지 취소하기"
-                        backgroundTintList = resources.getColorStateList(R.color.gray9)
-                    }
-                    buttonUnsubscribe.visibility = View.INVISIBLE
-                } else {
-                    buttonMembershipPayment.run {
-                        visibility = View.VISIBLE
-                        text = "멤버십 구독 중"
-                        backgroundTintList = resources.getColorStateList(R.color.gray9)
-                    }
-                    buttonUnsubscribe.run {
-                        visibility = View.VISIBLE
-
-                        setOnClickListener {
-                            // 구독 해지
-
+                when(status) {
+                    "ACTIVE_SCHEDULED" -> {
+                        buttonMembershipPayment.run {
+                            visibility = View.VISIBLE
+                            text = "멤버십 해지 취소하기"
+                            backgroundTintList = resources.getColorStateList(R.color.gray9)
                         }
+                        buttonUnsubscribe.visibility = View.INVISIBLE
+                    }
+                    "ACTIVE" -> {
+                        buttonMembershipPayment.run {
+                            visibility = View.VISIBLE
+                            text = "멤버십 구독 중"
+                            backgroundTintList = resources.getColorStateList(R.color.gray9)
+                        }
+                        buttonUnsubscribe.run {
+                            visibility = View.VISIBLE
+
+                            setOnClickListener {
+                                // 구독 해지
+
+                            }
+                        }
+                    }
+                    else -> {
+                        buttonMembershipPayment.run {
+                            visibility = View.VISIBLE
+                            text = "멤버십 구독 중"
+                            backgroundTintList = resources.getColorStateList(R.color.gray9)
+                        }
+                        buttonUnsubscribe.visibility = View.INVISIBLE
                     }
                 }
             } else {
