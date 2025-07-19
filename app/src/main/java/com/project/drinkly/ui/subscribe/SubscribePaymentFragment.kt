@@ -18,6 +18,7 @@ import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.mypage.MypageCouponFragment
+import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.payment.PaymentManageFragment
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
@@ -105,8 +106,14 @@ class SubscribePaymentFragment : Fragment() {
 
                             setOnClickListener {
                                 // 구독권 결제 수단 관리 화면으로 이동
+                                val bundle = Bundle().apply { putBoolean("payment", true) }
+
+                                var nextFragment = PaymentManageFragment().apply {
+                                    arguments = bundle
+                                }
+
                                 mainActivity.supportFragmentManager.beginTransaction()
-                                    .replace(R.id.fragmentContainerView_main, PaymentManageFragment())
+                                    .replace(R.id.fragmentContainerView_main, nextFragment)
                                     .addToBackStack(null)
                                     .commit()
                             }

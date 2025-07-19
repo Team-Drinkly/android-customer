@@ -38,8 +38,15 @@ class MypageSubscribeFragment : Fragment() {
 
             // 결제 수단 관리
             layoutButtonPayment.setOnClickListener {
+                // 구독권 결제 수단 관리 화면으로 이동
+                val bundle = Bundle().apply { putBoolean("payment", false) }
+
+                var nextFragment = PaymentManageFragment().apply {
+                    arguments = bundle
+                }
+
                 mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, PaymentManageFragment())
+                    .replace(R.id.fragmentContainerView_main, nextFragment)
                     .addToBackStack(null)
                     .commit()
             }
