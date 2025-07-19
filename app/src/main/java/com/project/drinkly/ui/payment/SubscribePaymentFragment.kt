@@ -12,10 +12,8 @@ import com.project.drinkly.api.InfoManager
 import com.project.drinkly.databinding.FragmentSubscribePaymentBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
-import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
-import java.text.SimpleDateFormat
+import com.project.drinkly.util.MainUtil.checkFormat
 import java.util.Calendar
-import java.util.Locale
 
 class SubscribePaymentFragment : Fragment() {
 
@@ -112,7 +110,10 @@ class SubscribePaymentFragment : Fragment() {
 
                             setOnClickListener {
                                 // 구독 해지
-
+                                mainActivity.supportFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainerView_main, PaymentCancelFragment())
+                                    .addToBackStack(null)
+                                    .commit()
                             }
                         }
                     }
@@ -153,12 +154,5 @@ class SubscribePaymentFragment : Fragment() {
                 buttonUnsubscribe.visibility = View.INVISIBLE
             }
         }
-    }
-
-    fun checkFormat(calendar: Calendar): String {
-
-        val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREAN) // 원하는 날짜 형식 지정
-        return "${dateFormat.format(calendar.time)}" // 변환된 날짜 반환
-
     }
 }

@@ -25,6 +25,12 @@
     <string name="membership_cancel_guide">- 결제 후 7일 이내에 결제 취소가 가능합니다.\n- 결제 이후 1번 이상 사용하면 취소가 불가능합니다.\n- 결제 후 7일 이내에 드링클리 앱 “마이페이지 > 구독 관리 > 멤버십 구독 관리 > 해지하기” 를 통해 결제 취소가 가능합니다.\n- 그 외의 취소/환불 문의는 “마이페이지 > 고객센터 > 카카오톡 플러스친구 또는 대표 이메일을 통해 문의해주시면 신속하게 응답해드리겠습니다.</string>
     <string name="membership_caution">멤버십 사용 버튼은 매장 직원만 클릭 할 수 있습니다.\n부주의로 인해 사용하신 경우 재사용이 불가능합니다.</string>
 
+    <string name="membership_unsubscribe_guide">
+        %1$s까지 멤버십을 한 번도 사용하지 않으셨다면, 자동으로 전액 환불 처리됩니다.\n\n
+        %2$s 이후 또는 멤버십 혜택을 한 번이라도 사용한 경우에는 환불이 불가하며, 멤버십은 %3$s까지 계속 이용하실 수 있습니다.\n\n
+        해지 후에는 언제든지 다시 구독하실 수 있습니다.
+    </string>
+
     <string name="membership_price">5,900원</string>
     <string name="button_membership_price">5,900원 결제하기</string>
 
