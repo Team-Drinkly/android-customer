@@ -11,6 +11,7 @@ import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
+import com.project.drinkly.api.response.payment.SubscribeStatusInfoResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.api.response.subscribe.OrderHistoryResponse
@@ -213,4 +214,13 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("couponId") couponId: Long
     ): Call<BaseResponse<String?>>
+
+
+    /* 결제 관련 API (Payment) */
+
+    // 구독 상태값 조회
+    @GET("/api/v1/payment/m/nicepay/status")
+    fun getSubscribeStatusInfo(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<SubscribeStatusInfoResponse>>
 }

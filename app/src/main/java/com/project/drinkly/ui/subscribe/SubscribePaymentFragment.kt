@@ -18,8 +18,10 @@ import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.mypage.MypageCouponFragment
+import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.payment.PaymentManageFragment
+import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.ui.subscribe.viewModel.SubscribeViewModel
 import com.project.drinkly.ui.subscribe.viewModel.SubscriptionChecker.removeSubscriptionLastCheckedDate
@@ -34,7 +36,12 @@ class SubscribePaymentFragment : Fragment() {
 
     lateinit var binding: FragmentSubscribePaymentBinding
     lateinit var mainActivity: MainActivity
-    lateinit var viewModel: SubscribeViewModel
+    private val viewModel: SubscribeViewModel by lazy {
+        ViewModelProvider(requireActivity())[SubscribeViewModel::class.java]
+    }
+    private val paymentViewModel: PaymentViewModel by lazy {
+        ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +50,8 @@ class SubscribePaymentFragment : Fragment() {
 
         binding = FragmentSubscribePaymentBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(requireActivity())[SubscribeViewModel::class.java]
+
+        observeViewModel()
 
         return binding.root
     }
@@ -66,60 +74,7 @@ class SubscribePaymentFragment : Fragment() {
                 // 구독 상태가 오늘 날짜 기준으로 정상 체크됨 → 이후 로직 실행
                 Log.d("SubscriptionCheck", "✅ 상태 확인 완료 후 이어서 작업 실행")
 
-                binding.run {
-                    var infoManager = InfoManager(mainActivity)
-                    if (infoManager.getIsSubscribe() == true) {
-                        binding.textViewSubscribeDay.text =
-                            "${infoManager.getStartDate()} ~ ${infoManager.getExpiredDate()}"
-                    }
-
-                    buttonMembershipPayment.run {
-                        if (InfoManager(mainActivity).getIsSubscribe() == true) {
-                            visibility = View.INVISIBLE
-
-                            text = "멤버십 구독 해지하기"
-                            backgroundTintList = resources.getColorStateList(R.color.gray9)
-
-
-                            setOnClickListener {
-                                mixpanel.track("click_subscribe_cancel", null)
-
-                                val dialog = DialogBasic("멤버십 쿠폰을 사용한 경우에는\n구독 해지가 불가능합니다.")
-
-                                dialog.setBasicDialogInterface(object : BasicDialogInterface {
-                                    override fun onClickYesButton() {
-
-                                    }
-                                })
-
-                                dialog.show(mainActivity.supportFragmentManager, "DialogSubscribe")
-                            }
-                        } else {
-                            text = "멤버십 구독권 결제하기"
-                            backgroundTintList = resources.getColorStateList(R.color.primary_50)
-
-                            val calendar = Calendar.getInstance() // 현재 날짜 가져오기
-                            val today = checkFormat(calendar)
-                            calendar.add(Calendar.DAY_OF_YEAR, 30) // 30일 추가
-
-                            textViewSubscribeDay.text = "$today ~ ${checkFormat(calendar)}"
-
-                            setOnClickListener {
-                                // 구독권 결제 수단 관리 화면으로 이동
-                                val bundle = Bundle().apply { putBoolean("payment", true) }
-
-                                var nextFragment = PaymentManageFragment().apply {
-                                    arguments = bundle
-                                }
-
-                                mainActivity.supportFragmentManager.beginTransaction()
-                                    .replace(R.id.fragmentContainerView_main, nextFragment)
-                                    .addToBackStack(null)
-                                    .commit()
-                            }
-                        }
-                    }
-                }
+                paymentViewModel.getSubscribeStatusInfo(mainActivity)
 
             } else {
                 Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
@@ -134,6 +89,75 @@ class SubscribePaymentFragment : Fragment() {
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }
+            }
+        }
+    }
+
+    fun observeViewModel() {
+        paymentViewModel.run {
+            subscribeStatus.observe(viewLifecycleOwner) {
+                checkSubscribeInfo(it)
+            }
+        }
+    }
+
+    fun checkSubscribeInfo(status: String) {
+        binding.run {
+            var infoManager = InfoManager(mainActivity)
+            if (infoManager.getIsSubscribe() == true) {
+                binding.textViewSubscribeDay.text =
+                    "${infoManager.getStartDate()} ~ ${infoManager.getExpiredDate()}"
+            }
+
+            if (InfoManager(mainActivity).getIsSubscribe() == true) {
+                if(status == "ACTIVE_SCHEDULED") {
+                    buttonMembershipPayment.run {
+                        visibility = View.VISIBLE
+                        text = "멤버십 해지 취소하기"
+                        backgroundTintList = resources.getColorStateList(R.color.gray9)
+                    }
+                    buttonUnsubscribe.visibility = View.INVISIBLE
+                } else {
+                    buttonMembershipPayment.run {
+                        visibility = View.VISIBLE
+                        text = "멤버십 구독 중"
+                        backgroundTintList = resources.getColorStateList(R.color.gray9)
+                    }
+                    buttonUnsubscribe.run {
+                        visibility = View.VISIBLE
+
+                        setOnClickListener {
+                            // 구독 해지
+                            
+                        }
+                    }
+                }
+            } else {
+                buttonMembershipPayment.run {
+                    text = "멤버십 구독권 결제하기"
+                    backgroundTintList = resources.getColorStateList(R.color.primary_50)
+
+                    val calendar = Calendar.getInstance() // 현재 날짜 가져오기
+                    val today = checkFormat(calendar)
+                    calendar.add(Calendar.DAY_OF_YEAR, 30) // 30일 추가
+
+                    textViewSubscribeDay.text = "$today ~ ${checkFormat(calendar)}"
+
+                    setOnClickListener {
+                        // 구독권 결제 수단 관리 화면으로 이동
+                        val bundle = Bundle().apply { putBoolean("payment", true) }
+
+                        var nextFragment = PaymentManageFragment().apply {
+                            arguments = bundle
+                        }
+
+                        mainActivity.supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView_main, nextFragment)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                }
+                buttonUnsubscribe.visibility = View.INVISIBLE
             }
         }
     }

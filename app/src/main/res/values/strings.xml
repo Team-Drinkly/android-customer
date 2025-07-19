@@ -37,5 +37,6 @@
 
     <!-- underline 버튼 -->
     <string name="button_card_delete"><u>카드삭제</u></string>
+    <string name="button_membership_unsubscribe"><u>해지하기</u></string>
 
 </resources>
