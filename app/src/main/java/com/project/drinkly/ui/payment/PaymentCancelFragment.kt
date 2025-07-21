@@ -54,7 +54,9 @@ class PaymentCancelFragment : Fragment() {
                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                     override fun onClickYesButton() {
 
-
+                        viewModel.cancelSubscribe(mainActivity) {
+                            fragmentManager?.popBackStack()
+                        }
                     }
                 })
 

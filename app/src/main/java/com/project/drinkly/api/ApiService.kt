@@ -223,4 +223,10 @@ interface ApiService {
     fun getSubscribeStatusInfo(
         @Header("Authorization") token: String
     ): Call<BaseResponse<SubscribeStatusInfoResponse>>
+
+    // 구독 해지 요청
+    @POST("/api/v1/payment/m/nicepay/cancel/request")
+    fun cancelSubscribe(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<String?>>
 }
