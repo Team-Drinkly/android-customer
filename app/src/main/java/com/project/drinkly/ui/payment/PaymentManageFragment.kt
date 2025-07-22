@@ -92,6 +92,7 @@ class PaymentManageFragment : Fragment() {
             registeredCardInfo.observe(viewLifecycleOwner) {
                 binding.run {
                     if(it != null) {
+                        textViewTitle.text = "지금 등록된 카드로\n멤버십이 자동으로 결제돼요"
                         if(arguments?.getBoolean("payment") == true) {
                             layoutCheckBox.visibility = View.VISIBLE
                             buttonNext.visibility = View.VISIBLE
@@ -152,6 +153,8 @@ class PaymentManageFragment : Fragment() {
                             }
                         }
                     } else {
+                        textViewTitle.text = "멤버십 구독을 위한\n간편결제 카드를 등록해주세요"
+                        
                         layoutCardEmpty.visibility = View.VISIBLE
                         layoutCardInfo.visibility = View.GONE
                         buttonNext.visibility = View.GONE

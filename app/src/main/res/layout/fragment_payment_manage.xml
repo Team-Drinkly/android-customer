@@ -47,7 +47,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="멤버십 구매 시 등록한 카드로 결제돼요"
+                android:text="멤버십 구독 시 등록한 카드로 결제돼요"
                 android:textColor="@color/gray6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

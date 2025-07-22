@@ -27,7 +27,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
@@ -177,10 +178,11 @@
                 android:id="@+id/button_unsubscribe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/body4"
+                style="@style/SubTitle2"
                 android:layout_marginTop="9dp"
                 android:paddingVertical="6dp"
                 android:paddingHorizontal="16dp"
+                android:visibility="invisible"
                 android:text="@string/button_membership_unsubscribe"
                 android:textColor="@color/gray6"
                 app:layout_constraintStart_toStartOf="parent"
