@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbars="none"
@@ -60,6 +61,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="1234-5678-1234-5678"
+                android:maxLength="19"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +85,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ems="10"
-                android:hint="05/15"
+                android:hint="유효기간을 입력해주세요"
+                android:maxLength="5"
                 android:inputType="number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +111,7 @@
                 android:layout_marginTop="10dp"
                 android:ems="10"
                 android:hint="카드 비밀번호의 앞 2자리를 입력해주세요"
-                android:inputType="number"
+                android:inputType="number|numberPassword|numberSigned"
                 android:maxLength="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -135,7 +138,7 @@
                 android:ems="10"
                 android:hint="개인카드: 생년월일 6자리 /법인카드: 사업자등록번호"
                 android:inputType="number"
-                android:maxLength="2"
+                android:maxLength="10"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
