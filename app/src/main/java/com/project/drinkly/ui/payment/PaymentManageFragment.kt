@@ -10,8 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentPaymentManageBinding
 import com.project.drinkly.ui.MainActivity
-import com.project.drinkly.ui.mypage.MypageWithdrawalFragment
+import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
+import com.project.drinkly.util.MyApplication
 
 class PaymentManageFragment : Fragment() {
 
@@ -103,8 +104,44 @@ class PaymentManageFragment : Fragment() {
                             textViewCardName.text = "${it.cardName}카드"
                             textViewCardNumber.text = "${it.cardFirst}-****-****-${it.cardLast}"
 
+                            var cardOrderId = it.orderId
                             buttonCardDelete.setOnClickListener {
                                 // 카드 삭제
+                                when(viewModel.subscribeStatus.value) {
+                                    "ACTIVE" -> {
+                                        val dialog = DialogBasicButton("카드를 삭제하면 멤버십은 다음 결제일까지 유지됩니다. 삭제하시겠어요?", "취소", "삭제하기", R.color.primary_50)
+
+                                        dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+                                            override fun onClickYesButton() {
+                                                viewModel.deleteCard(mainActivity, cardOrderId) {
+                                                    layoutCardEmpty.visibility = View.VISIBLE
+                                                    layoutCardInfo.visibility = View.GONE
+                                                    buttonNext.visibility = View.GONE
+                                                    layoutCheckBox.visibility = View.GONE
+
+                                                }
+                                            }
+                                        })
+
+                                        dialog.show(mainActivity.supportFragmentManager, "DialogCardDeleteActive")
+                                    }
+                                    else -> {
+                                        val dialog = DialogBasicButton("등록된 카드를 삭제하시겠어요?", "취소", "삭제하기", R.color.primary_50)
+
+                                        dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+                                            override fun onClickYesButton() {
+                                                viewModel.deleteCard(mainActivity, cardOrderId) {
+                                                    layoutCardEmpty.visibility = View.VISIBLE
+                                                    layoutCardInfo.visibility = View.GONE
+                                                    buttonNext.visibility = View.GONE
+                                                    layoutCheckBox.visibility = View.GONE
+                                                }
+                                            }
+                                        })
+
+                                        dialog.show(mainActivity.supportFragmentManager, "DialogCardDeleteBasic")
+                                    }
+                                }
                             }
                         }
                     } else {

@@ -2,6 +2,7 @@ package com.project.drinkly.api
 
 import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
+import com.project.drinkly.api.request.payment.DeleteCardRequest
 import com.project.drinkly.api.request.payment.RegisterCardRequest
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
@@ -13,6 +14,7 @@ import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
 import com.project.drinkly.api.response.payment.CardInfoResponse
+import com.project.drinkly.api.response.payment.DeleteCardResponse
 import com.project.drinkly.api.response.payment.RegisterCardResponse
 import com.project.drinkly.api.response.payment.SubscribeStatusInfoResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
@@ -245,4 +247,11 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body parameters: RegisterCardRequest
     ): Call<BaseResponse<RegisterCardResponse>>
+
+    // 카드 삭제 (빌링키 삭제)
+    @POST("/api/v1/payment/m/nicepay/delete")
+    fun deleteCard(
+        @Header("Authorization") token: String,
+        @Body parameters: DeleteCardRequest
+    ): Call<BaseResponse<DeleteCardResponse>>
 }
