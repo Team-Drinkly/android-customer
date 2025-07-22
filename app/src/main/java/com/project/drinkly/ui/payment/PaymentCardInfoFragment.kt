@@ -1,6 +1,8 @@
 package com.project.drinkly.ui.payment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -12,16 +14,29 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.BuildConfig
 import com.project.drinkly.R
+import com.project.drinkly.api.request.payment.RegisterCardRequest
 import com.project.drinkly.databinding.FragmentPaymentCardInfoBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.BasicDialogInterface
+import com.project.drinkly.ui.dialog.DialogBasic
+import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.util.EncryptManager
 
 class PaymentCardInfoFragment : Fragment() {
 
     lateinit var binding: FragmentPaymentCardInfoBinding
     lateinit var mainActivity: MainActivity
+    private val viewModel: PaymentViewModel by lazy {
+        ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
+    }
+
+    private val handler = Handler(Looper.getMainLooper())
+    private var lastInputTime: Long = 0L
+    private val delayMillis: Long = 1000 // 1초 동안 입력이 없으면 중복 확인 실행
 
     private var cardNumber = ""
     private var expiredDate = ""
@@ -80,6 +95,10 @@ class PaymentCardInfoFragment : Fragment() {
                         isFormatting = false
 
                         cardNumber = limited // 하이픈 없는 숫자만 저장
+
+                        if(cardNumber.length == 16) {
+                            editTextExpiredDate.requestFocus()
+                        }
                         checkEnabled()
                     }
                 })
@@ -123,6 +142,10 @@ class PaymentCardInfoFragment : Fragment() {
                         isFormatting = false
 
                         expiredDate = limited // 하이픈 없는 숫자만 저장
+
+                        if(expiredDate.length == 4) {
+                            editTextPassword.requestFocus()
+                        }
                         checkEnabled()
                     }
                 })
@@ -130,12 +153,26 @@ class PaymentCardInfoFragment : Fragment() {
 
             editTextPassword.addTextChangedListener {
                 password = it.toString()
+                if(password.length == 2) {
+                    editTextBirth.requestFocus()
+                }
 
                 checkEnabled()
             }
 
             editTextBirth.addTextChangedListener {
                 birth = it.toString()
+
+                handler.removeCallbacksAndMessages(null) // 기존 예약된 중복 확인 제거
+                lastInputTime = System.currentTimeMillis()
+
+                if(birth.length == 6 || birth.length == 10) {
+                    handler.postDelayed({
+                        if (System.currentTimeMillis() - lastInputTime >= delayMillis) {
+                            mainActivity.hideKeyboard()
+                        }
+                    }, delayMillis)
+                }
 
                 checkEnabled()
             }
@@ -149,7 +186,24 @@ class PaymentCardInfoFragment : Fragment() {
                     cardPw = password,
                     secretKey = BuildConfig.NICE_PAYMENT_KEY
                 )
-                println(encData)
+
+                viewModel.registerCard(mainActivity,
+                    RegisterCardRequest(encData.toString(), cardNumber.substring(0..3).toInt(), cardNumber.substring(12..15).toInt()),
+                    onSuccess = {
+                        fragmentManager?.popBackStack()
+                    },
+                    onFailure = {
+                        val dialog = DialogBasic("카드 정보를 정확히 입력해주세요")
+
+                        dialog.setBasicDialogInterface(object : BasicDialogInterface {
+                            override fun onClickYesButton() {
+
+                            }
+                        })
+
+                        dialog.show(mainActivity.supportFragmentManager, "DialogCard")
+                    }
+                )
             }
 
 

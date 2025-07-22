@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
+import com.project.drinkly.api.request.payment.RegisterCardRequest
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.payment.CardInfoResponse
+import com.project.drinkly.api.response.payment.RegisterCardResponse
 import com.project.drinkly.api.response.payment.SubscribeStatusInfoResponse
 import com.project.drinkly.ui.MainActivity
 import retrofit2.Call
@@ -87,6 +89,44 @@ class PaymentViewModel: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<BaseResponse<CardInfoResponse>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+                }
+            })
+    }
+
+    fun registerCard(activity: MainActivity, cardInfo: RegisterCardRequest, onSuccess: () -> Unit, onFailure: () -> Unit) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.registerCard("Bearer ${tokenManager.getAccessToken()}", cardInfo)
+            .enqueue(object :
+                Callback<BaseResponse<RegisterCardResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<RegisterCardResponse>>,
+                    response: Response<BaseResponse<RegisterCardResponse>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<RegisterCardResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        when(result?.payload?.resultCode) {
+                            "0000" -> onSuccess()
+                            else -> onFailure()
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<RegisterCardResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<RegisterCardResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
                 }

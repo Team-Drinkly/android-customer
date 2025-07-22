@@ -2,6 +2,7 @@ package com.project.drinkly.api
 
 import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
+import com.project.drinkly.api.request.payment.RegisterCardRequest
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
@@ -12,6 +13,7 @@ import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
 import com.project.drinkly.api.response.payment.CardInfoResponse
+import com.project.drinkly.api.response.payment.RegisterCardResponse
 import com.project.drinkly.api.response.payment.SubscribeStatusInfoResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
@@ -236,4 +238,11 @@ interface ApiService {
     fun getCardInfo(
         @Header("Authorization") token: String
     ): Call<BaseResponse<CardInfoResponse>>
+
+    // 카드 등록 (빌링키 등록)
+    @POST("/api/v1/payment/m/nicepay/register")
+    fun registerCard(
+        @Header("Authorization") token: String,
+        @Body parameters: RegisterCardRequest
+    ): Call<BaseResponse<RegisterCardResponse>>
 }

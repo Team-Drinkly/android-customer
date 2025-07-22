@@ -81,13 +81,6 @@ class PaymentManageFragment : Fragment() {
                     fragmentManager?.popBackStack()
                 }
             }
-
-            if(arguments?.getBoolean("payment") == true) {
-                buttonNext.visibility = View.VISIBLE
-            } else  {
-                buttonNext.visibility = View.GONE
-                layoutCheckBox.visibility = View.GONE
-            }
         }
     }
 
@@ -96,10 +89,18 @@ class PaymentManageFragment : Fragment() {
             registeredCardInfo.observe(viewLifecycleOwner) {
                 binding.run {
                     if(it != null) {
+                        if(arguments?.getBoolean("payment") == true) {
+                            layoutCheckBox.visibility = View.VISIBLE
+                            buttonNext.visibility = View.VISIBLE
+                        } else  {
+                            buttonNext.visibility = View.GONE
+                            layoutCheckBox.visibility = View.GONE
+                        }
+
                         layoutCardEmpty.visibility = View.GONE
                         layoutCardInfo.run {
                             visibility = View.VISIBLE
-                            textViewCardName.text = it.cardName
+                            textViewCardName.text = "${it.cardName}카드"
                             textViewCardNumber.text = "${it.cardFirst}-****-****-${it.cardLast}"
 
                             buttonCardDelete.setOnClickListener {
@@ -109,6 +110,8 @@ class PaymentManageFragment : Fragment() {
                     } else {
                         layoutCardEmpty.visibility = View.VISIBLE
                         layoutCardInfo.visibility = View.GONE
+                        buttonNext.visibility = View.GONE
+                        layoutCheckBox.visibility = View.GONE
                     }
                 }
             }
