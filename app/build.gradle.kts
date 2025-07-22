@@ -25,14 +25,14 @@ android {
         versionName = "1.0"
 
         buildConfigField("String", "SERVER_URL", "\"${properties["server_url"]}\"")
-        buildConfigField("String", "DEV_URL", "\"${properties["dev_url"]}\"")
         buildConfigField("String", "PASS_URL", "\"${properties["pass_url"]}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "KAKAO_APP_KEY", "\"${properties["kakao_key"]}\"")
         buildConfigField("String", "MAP_API_KEY", "\"${properties["map_client_id"]}\"")
-//        buildConfigField("String", "SERVER_URL", properties.getProperty("SERVER_URL"))
+
+        buildConfigField("String", "NICE_PAYMENT_KEY", "\"${properties["nice_payment_secret_key"]}\"")
 
         buildConfigField("String", "MIXPANEL_KEY", "\"${properties["mixpanel_token"]}\"")
 
@@ -103,4 +103,7 @@ dependencies {
 
     // mixpanel
     implementation("com.mixpanel.android:mixpanel-android:7.+")
+
+    // 결제
+    implementation("org.bouncycastle:bcprov-jdk15to18:1.70")
 }

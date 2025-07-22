@@ -12,9 +12,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
+import com.project.drinkly.BuildConfig
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentPaymentCardInfoBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.util.EncryptManager
 
 class PaymentCardInfoFragment : Fragment() {
 
@@ -136,6 +138,18 @@ class PaymentCardInfoFragment : Fragment() {
                 birth = it.toString()
 
                 checkEnabled()
+            }
+
+            buttonRegister.setOnClickListener {
+                val encData = EncryptManager.encryptCardInfo(
+                    cardNo = cardNumber,
+                    expYear = expiredDate.substring(2..3),
+                    expMonth = expiredDate.substring(0..1),
+                    idNo = birth,
+                    cardPw = password,
+                    secretKey = BuildConfig.NICE_PAYMENT_KEY
+                )
+                println(encData)
             }
 
 
