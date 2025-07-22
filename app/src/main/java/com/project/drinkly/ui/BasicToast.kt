@@ -2,6 +2,7 @@ package com.project.drinkly.ui
 
 import android.content.Context
 import android.content.res.Resources
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,4 +62,36 @@ object BasicToast {
             }, 2000)
         }
     }
+
+    fun showBasicToastBottom(context: Context, message: String, icon: Int, anchorView: View) {
+        val inflater = LayoutInflater.from(context)
+        val binding: ToastBasicBinding =
+            DataBindingUtil.inflate(inflater, R.layout.toast_basic, null, false)
+
+        binding.run {
+            textViewTooltip.text = message
+            imageViewTooltip.setImageResource(icon)
+        }
+
+        val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+        val marginPx = 20.toPx()
+        val popupWidth = screenWidth - marginPx * 2
+
+        val popupWindow = PopupWindow(
+            binding.root,
+            popupWidth,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            false
+        )
+
+        // 💡 여기 변경: anchorView 위치 기반이 아닌 화면 전체 기준
+        popupWindow.showAtLocation(anchorView, Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 30.toPx())
+
+        binding.root.postDelayed({
+            if (popupWindow.isShowing) {
+                popupWindow.dismiss()
+            }
+        }, 2000)
+    }
+
 }

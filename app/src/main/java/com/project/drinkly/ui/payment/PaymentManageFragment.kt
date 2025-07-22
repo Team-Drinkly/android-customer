@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentPaymentManageBinding
+import com.project.drinkly.ui.BasicToast
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
+import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.util.MyApplication
 
@@ -98,6 +100,8 @@ class PaymentManageFragment : Fragment() {
                             layoutCheckBox.visibility = View.GONE
                         }
 
+                        showToast()
+
                         layoutCardEmpty.visibility = View.GONE
                         layoutCardInfo.run {
                             visibility = View.VISIBLE
@@ -119,6 +123,7 @@ class PaymentManageFragment : Fragment() {
                                                     buttonNext.visibility = View.GONE
                                                     layoutCheckBox.visibility = View.GONE
 
+                                                    BasicToast.showBasicToastBottom(requireContext(), "등록된 카드가 정상적으로 삭제됐어요", R.drawable.ic_check, binding.root)
                                                 }
                                             }
                                         })
@@ -135,6 +140,8 @@ class PaymentManageFragment : Fragment() {
                                                     layoutCardInfo.visibility = View.GONE
                                                     buttonNext.visibility = View.GONE
                                                     layoutCheckBox.visibility = View.GONE
+
+                                                    BasicToast.showBasicToastBottom(requireContext(), "등록된 카드가 정상적으로 삭제됐어요", R.drawable.ic_check, binding.root)
                                                 }
                                             }
                                         })
@@ -150,6 +157,20 @@ class PaymentManageFragment : Fragment() {
                         buttonNext.visibility = View.GONE
                         layoutCheckBox.visibility = View.GONE
                     }
+                }
+            }
+        }
+    }
+
+    fun showToast() {
+        binding.root.post {
+            if (MyApplication.isCardRegistered) {
+                MyApplication.isCardRegistered = false
+
+                if(arguments?.getBoolean("payment") == true) {
+                    BasicToast.showBasicToast(requireContext(), "카드 등록이 정상적으로 완료됐어요!", R.drawable.ic_check, binding.buttonNext)
+                } else {
+                    BasicToast.showBasicToastBottom(requireContext(), "카드 등록이 정상적으로 완료됐어요!", R.drawable.ic_check, binding.root)
                 }
             }
         }

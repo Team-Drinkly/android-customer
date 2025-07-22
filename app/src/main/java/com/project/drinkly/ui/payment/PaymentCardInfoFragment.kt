@@ -25,6 +25,7 @@ import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.util.EncryptManager
+import com.project.drinkly.util.MyApplication
 
 class PaymentCardInfoFragment : Fragment() {
 
@@ -190,6 +191,8 @@ class PaymentCardInfoFragment : Fragment() {
                 viewModel.registerCard(mainActivity,
                     RegisterCardRequest(encData.toString(), cardNumber.substring(0..3).toInt(), cardNumber.substring(12..15).toInt()),
                     onSuccess = {
+                        MyApplication.isCardRegistered = true
+
                         fragmentManager?.popBackStack()
                     },
                     onFailure = {

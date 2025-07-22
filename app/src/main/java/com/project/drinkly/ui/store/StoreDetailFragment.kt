@@ -296,7 +296,7 @@ class StoreDetailFragment : Fragment() {
                     couponInfo?.get(position)?.id ?: 0L,
                     arguments?.getLong("storeId", 0) ?: 0
                 ) {
-                    BasicToast.showBasicToast(requireContext(), "쿠폰 다운로드가 완료되었어요.", R.drawable.ic_check, binding.buttonMembership)
+                    BasicToast.showBasicToast(requireContext(), "쿠폰 다운로드가 완료되었어요", R.drawable.ic_check, binding.buttonMembership)
                 }
             }
 
