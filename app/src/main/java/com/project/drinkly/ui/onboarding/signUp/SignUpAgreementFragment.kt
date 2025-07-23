@@ -144,7 +144,7 @@ class SignUpAgreementFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "약관 동의"
+                textViewHead.text = "약관 동의"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

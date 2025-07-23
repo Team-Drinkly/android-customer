@@ -122,7 +122,7 @@ class StoreMembershipFragment : Fragment() {
             }
 
             toolbar.run {
-                textViewTitle.text = "멤버십 사용"
+                textViewHead.text = "멤버십 사용"
                 buttonBack.setOnClickListener {
                     if(!isUsedMembership) {
                         fragmentManager?.popBackStack()

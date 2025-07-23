@@ -79,7 +79,7 @@ class PaymentManageFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "결제 수단 관리"
+                textViewHead.text = "결제 수단 관리"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

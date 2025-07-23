@@ -106,7 +106,7 @@ class PaymentCancelFragment : Fragment() {
 
 
             toolbar.run {
-                textViewTitle.text = "멤버십 구독 해지"
+                textViewHead.text = "멤버십 구독 해지"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

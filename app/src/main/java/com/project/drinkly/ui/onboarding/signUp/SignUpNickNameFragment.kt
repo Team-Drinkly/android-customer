@@ -122,7 +122,7 @@ class SignUpNickNameFragment : Fragment() {
             textViewNicknameDescription.visibility = View.GONE
 
             toolbar.run {
-                textViewTitle.text = "정보 입력"
+                textViewHead.text = "정보 입력"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

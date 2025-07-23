@@ -87,7 +87,7 @@ class MypageNotificationFragment : Fragment() {
             }
 
             toolbar.run {
-                textViewTitle.text = "알림 설정"
+                textViewHead.text = "알림 설정"
                 buttonBack.setOnClickListener {
                     viewModel.saveNotificationStatus(mainActivity, switchNotification.isChecked)
                     mainActivity.supportFragmentManager.popBackStack()

@@ -53,7 +53,7 @@ class MypageQnaFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "고객센터"
+                textViewHead.text = "고객센터"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

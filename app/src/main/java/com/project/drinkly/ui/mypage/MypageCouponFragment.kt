@@ -92,7 +92,7 @@ class MypageCouponFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "내 쿠폰함"
+                textViewHead.text = "내 쿠폰함"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

@@ -249,7 +249,7 @@ class PaymentCardInfoFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "카드 정보 입력"
+                textViewHead.text = "카드 정보 입력"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

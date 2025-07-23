@@ -7,7 +7,7 @@
     android:paddingBottom="23dp">
 
     <TextView
-        android:id="@+id/textView_title"
+        android:id="@+id/textView_head"
         style="@style/HeadLine3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView_title"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_title"
+        app:layout_constraintTop_toTopOf="@+id/textView_head"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_head"
         app:srcCompat="@drawable/ic_notification_unselected" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -144,7 +144,7 @@ class SubscribeFragment : Fragment() {
             }
 
             toolbar.run {
-                textViewTitle.text = "구독"
+                textViewHead.text = "구독"
             }
         }
     }

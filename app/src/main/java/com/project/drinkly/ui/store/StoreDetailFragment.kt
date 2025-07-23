@@ -198,7 +198,7 @@ class StoreDetailFragment : Fragment() {
 
     fun applyStoreDetailInfo() {
         binding.run {
-            toolbar.textViewTitle.text = getStoreDetailInfo?.storeName ?: ""
+            toolbar.textViewHead.text = getStoreDetailInfo?.storeName ?: ""
 
             // 가게 정보
             if(getStoreDetailInfo?.storeDescription.isNullOrEmpty()) {

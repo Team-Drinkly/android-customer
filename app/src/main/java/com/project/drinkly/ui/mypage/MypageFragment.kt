@@ -114,7 +114,7 @@ class MypageFragment : Fragment() {
             textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}"
 
             toolbar.run {
-                textViewTitle.text = "마이페이지"
+                textViewHead.text = "마이페이지"
             }
         }
     }

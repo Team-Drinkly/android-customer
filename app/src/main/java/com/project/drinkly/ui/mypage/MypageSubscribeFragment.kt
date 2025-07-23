@@ -82,7 +82,7 @@ class MypageSubscribeFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "구독 관리"
+                textViewHead.text = "구독 관리"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }
