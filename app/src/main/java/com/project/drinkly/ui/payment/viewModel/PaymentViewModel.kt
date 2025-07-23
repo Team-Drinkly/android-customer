@@ -5,12 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
+import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.api.request.payment.DeleteCardRequest
 import com.project.drinkly.api.request.payment.RegisterCardRequest
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.payment.CardInfoResponse
 import com.project.drinkly.api.response.payment.DeleteCardResponse
 import com.project.drinkly.api.response.payment.RegisterCardResponse
+import com.project.drinkly.api.response.payment.SubscribePaymentResponse
 import com.project.drinkly.api.response.payment.SubscribeStatusInfoResponse
 import com.project.drinkly.ui.MainActivity
 import retrofit2.Call
@@ -52,12 +54,24 @@ class PaymentViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getSubscribeStatusInfo(activity)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<BaseResponse<SubscribeStatusInfoResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -87,12 +101,24 @@ class PaymentViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getCardInfo(activity)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<BaseResponse<CardInfoResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -125,12 +151,24 @@ class PaymentViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    registerCard(activity, cardInfo, onSuccess, onFailure)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<BaseResponse<RegisterCardResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -161,12 +199,74 @@ class PaymentViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    deleteCard(activity, cardOrderId, onSuccess)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+
                     }
                 }
 
                 override fun onFailure(call: Call<BaseResponse<DeleteCardResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
+                }
+            })
+    }
+
+    fun paymentForSubscribe(activity: MainActivity, onSuccess: () -> Unit) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.paymentForSubscribe("Bearer ${tokenManager.getAccessToken()}")
+            .enqueue(object :
+                Callback<BaseResponse<SubscribePaymentResponse?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<SubscribePaymentResponse?>>,
+                    response: Response<BaseResponse<SubscribePaymentResponse?>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<SubscribePaymentResponse?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        TokenUtil.refreshToken(activity) {
+                            onSuccess()
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<SubscribePaymentResponse?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    paymentForSubscribe(activity, onSuccess)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<SubscribePaymentResponse?>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }
@@ -196,12 +296,24 @@ class PaymentViewModel: ViewModel() {
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
                         Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    cancelSubscribe(activity, onSuccess)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
                     }
                 }
 
                 override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
                 }
             })
     }

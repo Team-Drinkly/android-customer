@@ -24,6 +24,8 @@ class PaymentManageFragment : Fragment() {
         ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
     }
 
+    var isChecked = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,8 +44,24 @@ class PaymentManageFragment : Fragment() {
                     .commit()
             }
 
+            layoutCheckBox.setOnClickListener {
+                isChecked = !isChecked
+                if(isChecked) {
+                    imageViewCheckBox.setImageResource(R.drawable.ic_checkcircle_checked)
+                    buttonNext.isEnabled = true
+                } else {
+                    imageViewCheckBox.setImageResource(R.drawable.ic_checkcircle_unchecked)
+                    buttonNext.isEnabled = false
+                }
+            }
+
             buttonNext.setOnClickListener {
                 // 구독권 결제
+                viewModel.paymentForSubscribe(mainActivity) {
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, PaymentCompleteFragment())
+                        .commit()
+                }
             }
         }
 
@@ -154,7 +172,7 @@ class PaymentManageFragment : Fragment() {
                         }
                     } else {
                         textViewTitle.text = "멤버십 구독을 위한\n간편결제 카드를 등록해주세요"
-                        
+
                         layoutCardEmpty.visibility = View.VISIBLE
                         layoutCardInfo.visibility = View.GONE
                         buttonNext.visibility = View.GONE
