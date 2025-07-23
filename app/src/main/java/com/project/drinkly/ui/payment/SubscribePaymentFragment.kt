@@ -10,7 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.api.InfoManager
 import com.project.drinkly.databinding.FragmentSubscribePaymentBinding
+import com.project.drinkly.ui.BasicToast
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
+import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.util.MainUtil.checkFormat
 import java.util.Calendar
@@ -95,7 +98,22 @@ class SubscribePaymentFragment : Fragment() {
                         buttonMembershipPayment.run {
                             visibility = View.VISIBLE
                             text = "멤버십 해지 취소하기"
-                            backgroundTintList = resources.getColorStateList(R.color.gray9)
+                            backgroundTintList = resources.getColorStateList(R.color.primary_50)
+
+                            setOnClickListener {
+                                val dialog = DialogBasicButton("멤버십 해지를 취소하고 계속해서 드링클리 혜택을 누리시겠어요?", "아니요", "해지 취소하기", R.color.primary_50)
+
+                                dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+                                    override fun onClickYesButton() {
+                                        // 구독 해지 요청 취소
+                                        viewModel.revertCancelSubscribe(mainActivity) {
+                                            viewModel.getSubscribeStatusInfo(mainActivity)
+                                        }
+                                    }
+                                })
+
+                                dialog.show(mainActivity.supportFragmentManager, "DialogRevertSubscribe")
+                            }
                         }
                         buttonUnsubscribe.visibility = View.INVISIBLE
                     }

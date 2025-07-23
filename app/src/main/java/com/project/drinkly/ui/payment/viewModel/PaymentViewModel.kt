@@ -288,7 +288,9 @@ class PaymentViewModel: ViewModel() {
                         val result: BaseResponse<String?>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        onSuccess()
+                        TokenUtil.refreshToken(activity) {
+                            onSuccess()
+                        }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String?>? = response.body()
@@ -300,6 +302,55 @@ class PaymentViewModel: ViewModel() {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
                                     cancelSubscribe(activity, onSuccess)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
+                }
+            })
+    }
+
+    fun revertCancelSubscribe(activity: MainActivity, onSuccess: () -> Unit) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.revertCancelSubscribe("Bearer ${tokenManager.getAccessToken()}")
+            .enqueue(object :
+                Callback<BaseResponse<String?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<String?>>,
+                    response: Response<BaseResponse<String?>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        when(result?.result?.code) {
+                           200 -> onSuccess()
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    revertCancelSubscribe(activity, onSuccess)
                                 }
                             }
                             else -> {

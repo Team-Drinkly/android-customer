@@ -236,6 +236,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<BaseResponse<String?>>
 
+    // 구독 해지 요청 취소
+    @POST("/api/v1/payment/m/nicepay/cancel/scheduled/revert")
+    fun revertCancelSubscribe(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<String?>>
+
     // 카드 등록 정보 조회
     @GET("/api/v1/payment/m/nicepay/cardinfo")
     fun getCardInfo(
