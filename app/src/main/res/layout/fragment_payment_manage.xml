@@ -105,7 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/background_card_radius10"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -115,11 +115,13 @@
                 <TextView
                     android:id="@+id/textView_card_name"
                     style="@style/SubTitle2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
                     android:text="카드"
-                    android:textAlignment="center"
                     android:textColor="@color/gray5"
+                    app:layout_constraintEnd_toStartOf="@+id/button_card_delete"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
