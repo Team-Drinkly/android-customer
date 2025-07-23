@@ -84,7 +84,7 @@ class MypageWithdrawalFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "계정 탈퇴"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

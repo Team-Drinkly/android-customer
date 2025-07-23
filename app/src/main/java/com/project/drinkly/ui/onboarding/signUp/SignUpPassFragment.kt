@@ -61,7 +61,7 @@ class SignUpPassFragment : Fragment() {
 
             dialog.setBasicDialogInterface(object : BasicDialogInterface {
                 override fun onClickYesButton() {
-                    fragmentManager?.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    parentFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             })
 
@@ -81,7 +81,7 @@ class SignUpPassFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "본인 인증"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

@@ -124,7 +124,7 @@ class StoreMembershipSelectFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "멤버십 사용"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

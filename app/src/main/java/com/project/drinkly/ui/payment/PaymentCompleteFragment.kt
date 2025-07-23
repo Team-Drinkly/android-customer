@@ -25,7 +25,7 @@ class PaymentCompleteFragment : Fragment() {
 
         binding.run {
             buttonNext.setOnClickListener {
-                fragmentManager?.popBackStack()
+                parentFragmentManager.popBackStack()
             }
         }
 

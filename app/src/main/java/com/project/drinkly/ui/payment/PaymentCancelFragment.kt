@@ -55,7 +55,7 @@ class PaymentCancelFragment : Fragment() {
                     override fun onClickYesButton() {
 
                         viewModel.cancelSubscribe(mainActivity) {
-                            fragmentManager?.popBackStack()
+                            parentFragmentManager.popBackStack()
                         }
                     }
                 })
@@ -108,7 +108,7 @@ class PaymentCancelFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "멤버십 구독 해지"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

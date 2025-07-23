@@ -55,7 +55,7 @@ class MypageQnaFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "고객센터"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

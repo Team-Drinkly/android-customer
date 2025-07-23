@@ -193,7 +193,7 @@ class PaymentCardInfoFragment : Fragment() {
                     onSuccess = {
                         MyApplication.isCardRegistered = true
 
-                        fragmentManager?.popBackStack()
+                        parentFragmentManager.popBackStack()
                     },
                     onFailure = {
                         val dialog = DialogBasic("카드 정보를 정확히 입력해주세요")
@@ -251,7 +251,7 @@ class PaymentCardInfoFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "카드 정보 입력"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

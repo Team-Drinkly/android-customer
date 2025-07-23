@@ -124,7 +124,7 @@ class SignUpNickNameFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "정보 입력"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

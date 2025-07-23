@@ -457,7 +457,7 @@ class StoreDetailFragment : Fragment() {
                 buttonBack.setOnClickListener {
                     viewModel.storeDetailInfo.removeObservers(viewLifecycleOwner)
                     viewModel.storeDetailInfo.value = null
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
 
@@ -465,7 +465,7 @@ class StoreDetailFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     viewModel.storeDetailInfo.removeObservers(viewLifecycleOwner)
                     viewModel.storeDetailInfo.value = null
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             })
         }

@@ -70,7 +70,7 @@ class SubscribePaymentFragment : Fragment() {
             toolbar.run {
                 textViewHead.text = "구독 관리"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }
