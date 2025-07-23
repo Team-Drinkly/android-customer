@@ -117,7 +117,7 @@ class OrderHistoryFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "멤버십 사용 내역"
+                textViewHead.text = "멤버십 사용 내역"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

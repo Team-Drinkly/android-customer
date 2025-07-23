@@ -6,6 +6,8 @@ import android.os.Build
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 import kotlin.math.roundToInt
 
@@ -58,5 +60,28 @@ object MainUtil {
             String.format(Locale.getDefault(), "%.1fkm", distanceKm)
         }
     }
+
+    // 날짜 형식 변환
+    fun checkFormat(calendar: Calendar): String {
+
+        val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREAN) // 원하는 날짜 형식 지정
+        return "${dateFormat.format(calendar?.time)}" // 변환된 날짜 반환
+
+    }
+
+    fun parseKoreanDateToCalendar(dateString: String): Calendar? {
+        return try {
+            val sdf = SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA)
+            val date = sdf.parse(dateString)
+
+            Calendar.getInstance().apply {
+                time = date
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
 }

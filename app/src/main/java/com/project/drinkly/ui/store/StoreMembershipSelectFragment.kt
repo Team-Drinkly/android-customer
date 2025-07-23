@@ -122,7 +122,7 @@ class StoreMembershipSelectFragment : Fragment() {
         binding.run {
             textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}"
             toolbar.run {
-                textViewTitle.text = "멤버십 사용"
+                textViewHead.text = "멤버십 사용"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

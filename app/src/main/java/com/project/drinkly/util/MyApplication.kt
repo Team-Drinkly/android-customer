@@ -19,5 +19,8 @@ class MyApplication : Application() {
         var latitude = 37.63022195215973
         var longitude = 127.07671771357782
         var radius = 0
+
+        // 카드 정보
+        var isCardRegistered = false
     }
 }

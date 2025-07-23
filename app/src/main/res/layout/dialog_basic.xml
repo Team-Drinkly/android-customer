@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/textView_dialog_description"
-            style="@style/HeadLine6"
+            style="@style/SubTitle2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"

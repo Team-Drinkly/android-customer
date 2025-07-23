@@ -56,7 +56,7 @@ class SubscribeViewModel : ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    getSubscribeInfo(activity)
+                                    getOrderHistory(activity)
                                 }
                             }
                             else -> {

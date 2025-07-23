@@ -2,6 +2,8 @@ package com.project.drinkly.api
 
 import com.project.drinkly.api.request.login.FcmTokenRequest
 import com.project.drinkly.api.request.login.SignUpRequest
+import com.project.drinkly.api.request.payment.DeleteCardRequest
+import com.project.drinkly.api.request.payment.RegisterCardRequest
 import com.project.drinkly.api.request.subscribe.UseMembershipRequest
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
@@ -11,6 +13,11 @@ import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
 import com.project.drinkly.api.response.login.SignUpResponse
+import com.project.drinkly.api.response.payment.CardInfoResponse
+import com.project.drinkly.api.response.payment.DeleteCardResponse
+import com.project.drinkly.api.response.payment.RegisterCardResponse
+import com.project.drinkly.api.response.payment.SubscribePaymentResponse
+import com.project.drinkly.api.response.payment.SubscribeStatusInfoResponse
 import com.project.drinkly.api.response.store.StoreDetailResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.api.response.subscribe.OrderHistoryResponse
@@ -213,4 +220,51 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("couponId") couponId: Long
     ): Call<BaseResponse<String?>>
+
+
+    /* 결제 관련 API (Payment) */
+
+    // 구독 상태값 조회
+    @GET("/api/v1/payment/m/nicepay/status")
+    fun getSubscribeStatusInfo(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<SubscribeStatusInfoResponse>>
+
+    // 구독 해지 요청
+    @POST("/api/v1/payment/m/nicepay/cancel/request")
+    fun cancelSubscribe(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<String?>>
+
+    // 구독 해지 요청 취소
+    @POST("/api/v1/payment/m/nicepay/cancel/scheduled/revert")
+    fun revertCancelSubscribe(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<String?>>
+
+    // 카드 등록 정보 조회
+    @GET("/api/v1/payment/m/nicepay/cardinfo")
+    fun getCardInfo(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<CardInfoResponse>>
+
+    // 카드 등록 (빌링키 등록)
+    @POST("/api/v1/payment/m/nicepay/register")
+    fun registerCard(
+        @Header("Authorization") token: String,
+        @Body parameters: RegisterCardRequest
+    ): Call<BaseResponse<RegisterCardResponse>>
+
+    // 카드 삭제 (빌링키 삭제)
+    @POST("/api/v1/payment/m/nicepay/delete")
+    fun deleteCard(
+        @Header("Authorization") token: String,
+        @Body parameters: DeleteCardRequest
+    ): Call<BaseResponse<DeleteCardResponse>>
+
+    // 정기 결제
+    @POST("/api/v1/payment/m/nicepay/pay")
+    fun paymentForSubscribe(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<SubscribePaymentResponse?>>
 }

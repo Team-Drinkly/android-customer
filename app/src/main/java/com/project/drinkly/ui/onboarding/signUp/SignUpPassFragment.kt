@@ -79,7 +79,7 @@ class SignUpPassFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "본인 인증"
+                textViewHead.text = "본인 인증"
                 buttonBack.setOnClickListener {
                     fragmentManager?.popBackStack()
                 }

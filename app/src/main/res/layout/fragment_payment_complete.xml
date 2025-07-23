@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="20dp"
-    tools:context=".ui.subscribe.SubscribeCompleteFragment">
+    tools:context=".ui.payment.PaymentCompleteFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"
-            android:text="구독권 결제가 완료되었습니다."
+            android:text="구독권 결제가 완료되었습니다"
             android:textAlignment="center" />
     </LinearLayout>
 

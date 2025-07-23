@@ -28,7 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="쿠폰 다운로드가 완료되었어요."
             android:textColor="@color/gray9" />
     </LinearLayout>
 
