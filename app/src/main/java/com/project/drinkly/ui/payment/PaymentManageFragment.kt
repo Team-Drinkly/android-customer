@@ -24,7 +24,8 @@ class PaymentManageFragment : Fragment() {
         ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
     }
 
-    var isChecked = false
+    private var isChecked = false
+    private var status: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,6 +88,10 @@ class PaymentManageFragment : Fragment() {
 
                     viewModel.getCardInfo(mainActivity)
 
+                    status = arguments?.getString("status")
+                    if(status.isNullOrEmpty()) {
+                        viewModel.getSubscribeStatusInfo(mainActivity)
+                    }
                 } else {
                     Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
 
@@ -130,43 +135,15 @@ class PaymentManageFragment : Fragment() {
                             var cardOrderId = it.orderId
                             buttonCardDelete.setOnClickListener {
                                 // 카드 삭제
-                                when(viewModel.subscribeStatus.value) {
-                                    "ACTIVE" -> {
-                                        val dialog = DialogBasicButton("카드를 삭제하면 멤버십은 다음 결제일까지 유지됩니다. 삭제하시겠어요?", "취소", "삭제하기", R.color.primary_50)
-
-                                        dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
-                                            override fun onClickYesButton() {
-                                                viewModel.deleteCard(mainActivity, cardOrderId) {
-                                                    layoutCardEmpty.visibility = View.VISIBLE
-                                                    layoutCardInfo.visibility = View.GONE
-                                                    buttonNext.visibility = View.GONE
-                                                    layoutCheckBox.visibility = View.GONE
-
-                                                    BasicToast.showBasicToastBottom(requireContext(), "등록된 카드가 정상적으로 삭제됐어요", R.drawable.ic_check, binding.root)
-                                                }
-                                            }
-                                        })
-
-                                        dialog.show(mainActivity.supportFragmentManager, "DialogCardDeleteActive")
-                                    }
-                                    else -> {
-                                        val dialog = DialogBasicButton("등록된 카드를 삭제하시겠어요?", "취소", "삭제하기", R.color.primary_50)
-
-                                        dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
-                                            override fun onClickYesButton() {
-                                                viewModel.deleteCard(mainActivity, cardOrderId) {
-                                                    layoutCardEmpty.visibility = View.VISIBLE
-                                                    layoutCardInfo.visibility = View.GONE
-                                                    buttonNext.visibility = View.GONE
-                                                    layoutCheckBox.visibility = View.GONE
-
-                                                    BasicToast.showBasicToastBottom(requireContext(), "등록된 카드가 정상적으로 삭제됐어요", R.drawable.ic_check, binding.root)
-                                                }
-                                            }
-                                        })
-
-                                        dialog.show(mainActivity.supportFragmentManager, "DialogCardDeleteBasic")
-                                    }
+                                when(status) {
+                                    "ACTIVE" -> showCardDeleteDialog(
+                                        "카드를 삭제하면 멤버십은 다음 결제일까지 유지됩니다. 삭제하시겠어요?",
+                                        cardOrderId
+                                    )
+                                    else -> showCardDeleteDialog(
+                                        "등록된 카드를 삭제하시겠어요?",
+                                        cardOrderId
+                                    )
                                 }
                             }
                         }
@@ -180,7 +157,36 @@ class PaymentManageFragment : Fragment() {
                     }
                 }
             }
+
+            subscribeStatus.observe(viewLifecycleOwner) {
+                status = it
+            }
         }
+    }
+
+    private fun showCardDeleteDialog(message: String, cardOrderId: String) {
+        val dialog = DialogBasicButton(message, "취소", "삭제하기", R.color.primary_50)
+
+        dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+            override fun onClickYesButton() {
+                viewModel.deleteCard(mainActivity, cardOrderId) {
+                    binding.run {
+                        layoutCardEmpty.visibility = View.VISIBLE
+                        layoutCardInfo.visibility = View.GONE
+                        buttonNext.visibility = View.GONE
+                        layoutCheckBox.visibility = View.GONE
+                    }
+                    BasicToast.showBasicToastBottom(
+                        requireContext(),
+                        "등록된 카드가 정상적으로 삭제됐어요",
+                        R.drawable.ic_check,
+                        binding.root
+                    )
+                }
+            }
+        })
+
+        dialog.show(mainActivity.supportFragmentManager, "DialogCardDelete")
     }
 
     fun showToast() {

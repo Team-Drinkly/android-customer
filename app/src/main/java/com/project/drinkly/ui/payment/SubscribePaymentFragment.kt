@@ -26,6 +26,8 @@ class SubscribePaymentFragment : Fragment() {
         ViewModelProvider(requireActivity())[PaymentViewModel::class.java]
     }
 
+    private var status: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,6 +81,8 @@ class SubscribePaymentFragment : Fragment() {
     fun observeViewModel() {
         viewModel.run {
             subscribeStatus.observe(viewLifecycleOwner) {
+                status = it
+
                 checkSubscribeInfo(it)
             }
         }
@@ -157,7 +161,10 @@ class SubscribePaymentFragment : Fragment() {
 
                     setOnClickListener {
                         // 구독권 결제 수단 관리 화면으로 이동
-                        val bundle = Bundle().apply { putBoolean("payment", true) }
+                        val bundle = Bundle().apply {
+                            putBoolean("payment", true)
+                            putString("status", status)
+                        }
 
                         var nextFragment = PaymentManageFragment().apply {
                             arguments = bundle
