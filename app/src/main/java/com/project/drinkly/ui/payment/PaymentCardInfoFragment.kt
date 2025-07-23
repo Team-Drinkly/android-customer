@@ -122,7 +122,7 @@ class PaymentCardInfoFragment : Fragment() {
                         if (isFormatting) return
 
                         val digitsOnly = s.toString().filter { it.isDigit() }
-                        val maxLength = 16
+                        val maxLength = 4
                         val limited = digitsOnly.take(maxLength)
 
                         val formatted = buildString {
