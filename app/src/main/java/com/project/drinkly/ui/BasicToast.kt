@@ -87,6 +87,16 @@ object BasicToast {
         // 💡 여기 변경: anchorView 위치 기반이 아닌 화면 전체 기준
         popupWindow.showAtLocation(anchorView, Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL, 0, 30.toPx())
 
+        // 뷰가 detach될 때 PopupWindow 해제
+        anchorView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View) {}
+            override fun onViewDetachedFromWindow(v: View) {
+                if (popupWindow.isShowing) {
+                    popupWindow.dismiss()
+                }
+            }
+        })
+
         binding.root.postDelayed({
             if (popupWindow.isShowing) {
                 popupWindow.dismiss()
