@@ -36,11 +36,9 @@ class PaymentViewModel: ViewModel() {
                     call: Call<BaseResponse<SubscribeStatusInfoResponse>>,
                     response: Response<BaseResponse<SubscribeStatusInfoResponse>>
                 ) {
-                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<SubscribeStatusInfoResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         if(result?.payload != null) {
                             subscribeStatus.value = result?.payload?.status
@@ -50,9 +48,7 @@ class PaymentViewModel: ViewModel() {
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<SubscribeStatusInfoResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         when(response.code()) {
                             498 -> {
@@ -69,8 +65,6 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<SubscribeStatusInfoResponse>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
-
                     activity.goToLogin()
                 }
             })
@@ -87,19 +81,15 @@ class PaymentViewModel: ViewModel() {
                     call: Call<BaseResponse<CardInfoResponse>>,
                     response: Response<BaseResponse<CardInfoResponse>>
                 ) {
-                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<CardInfoResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         registeredCardInfo.value = result?.payload
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<CardInfoResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         when(response.code()) {
                             498 -> {
@@ -116,8 +106,6 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<CardInfoResponse>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
-
                     activity.goToLogin()
                 }
             })
@@ -134,11 +122,9 @@ class PaymentViewModel: ViewModel() {
                     call: Call<BaseResponse<RegisterCardResponse>>,
                     response: Response<BaseResponse<RegisterCardResponse>>
                 ) {
-                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<RegisterCardResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         when(result?.payload?.resultCode) {
                             "0000" -> onSuccess()
@@ -147,9 +133,7 @@ class PaymentViewModel: ViewModel() {
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<RegisterCardResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         when(response.code()) {
                             498 -> {
@@ -166,8 +150,6 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<RegisterCardResponse>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
-
                     activity.goToLogin()
                 }
             })
@@ -185,19 +167,15 @@ class PaymentViewModel: ViewModel() {
                     call: Call<BaseResponse<DeleteCardResponse>>,
                     response: Response<BaseResponse<DeleteCardResponse>>
                 ) {
-                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<DeleteCardResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         onSuccess()
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<DeleteCardResponse>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         when(response.code()) {
                             498 -> {
@@ -215,8 +193,6 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<DeleteCardResponse>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
-
                     activity.goToLogin()
                 }
             })
@@ -233,11 +209,9 @@ class PaymentViewModel: ViewModel() {
                     call: Call<BaseResponse<SubscribePaymentResponse?>>,
                     response: Response<BaseResponse<SubscribePaymentResponse?>>
                 ) {
-                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<SubscribePaymentResponse?>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         TokenUtil.refreshToken(activity) {
                             onSuccess()
@@ -245,9 +219,7 @@ class PaymentViewModel: ViewModel() {
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<SubscribePaymentResponse?>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         when(response.code()) {
                             498 -> {
@@ -264,8 +236,6 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<SubscribePaymentResponse?>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
-
                     activity.goToLogin()
                 }
             })
@@ -282,11 +252,9 @@ class PaymentViewModel: ViewModel() {
                     call: Call<BaseResponse<String?>>,
                     response: Response<BaseResponse<String?>>
                 ) {
-                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<String?>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         TokenUtil.refreshToken(activity) {
                             onSuccess()
@@ -294,9 +262,7 @@ class PaymentViewModel: ViewModel() {
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String?>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         when(response.code()) {
                             498 -> {
@@ -313,8 +279,6 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
-
                     activity.goToLogin()
                 }
             })
@@ -331,21 +295,18 @@ class PaymentViewModel: ViewModel() {
                     call: Call<BaseResponse<String?>>,
                     response: Response<BaseResponse<String?>>
                 ) {
-                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
                     if (response.isSuccessful) {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<String?>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
                         when(result?.result?.code) {
-                           200 -> onSuccess()
+                            200 -> onSuccess()
+                            else -> { }
                         }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
                         var result: BaseResponse<String?>? = response.body()
-                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
                         val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
-                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
 
                         when(response.code()) {
                             498 -> {
@@ -362,8 +323,6 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
                     // 통신 실패
-                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
-
                     activity.goToLogin()
                 }
             })

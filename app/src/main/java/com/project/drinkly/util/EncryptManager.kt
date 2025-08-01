@@ -28,14 +28,13 @@ object EncryptManager {
             val encrypted = aesEncryptECB(plainText, secretKey)
             encrypted.joinToString("") { "%02x".format(it) } // Hex 인코딩
         } catch (e: Exception) {
-            e.printStackTrace()
             null
         }
     }
 
     private fun aesEncryptECB(plainText: String, key: String): ByteArray {
         val charset = Charset.forName("UTF-8")
-        val keyBytes = key.toByteArray(charset).copyOf(16) // AES-128이므로 16바이트로 잘라냄
+        val keyBytes = key.toByteArray(charset).copyOf(16)
 
         val secretKey = SecretKeySpec(keyBytes, "AES")
         val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC")
