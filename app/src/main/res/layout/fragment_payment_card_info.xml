@@ -63,6 +63,7 @@
                 android:hint="1234-5678-1234-5678"
                 android:maxLength="19"
                 android:inputType="number"
+                android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_card_number" />
@@ -112,6 +113,7 @@
                 android:ems="10"
                 android:hint="카드 비밀번호의 앞 2자리를 입력해주세요"
                 android:inputType="number|numberPassword|numberSigned"
+                android:importantForAutofill="no"
                 android:maxLength="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
