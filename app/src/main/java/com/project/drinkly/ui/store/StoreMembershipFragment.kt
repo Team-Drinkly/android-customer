@@ -122,12 +122,12 @@ class StoreMembershipFragment : Fragment() {
             }
 
             toolbar.run {
-                textViewTitle.text = "멤버십 사용"
+                textViewHead.text = "멤버십 사용"
                 buttonBack.setOnClickListener {
                     if(!isUsedMembership) {
-                        fragmentManager?.popBackStack()
+                        parentFragmentManager.popBackStack()
                     } else {
-                        fragmentManager?.popBackStack("membership", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                        parentFragmentManager.popBackStack("membership", FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     }
                 }
             }
@@ -136,9 +136,9 @@ class StoreMembershipFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(!isUsedMembership) {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 } else {
-                    fragmentManager?.popBackStack("membership", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    parentFragmentManager.popBackStack("membership", FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 }
             }
         })

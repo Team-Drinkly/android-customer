@@ -268,18 +268,14 @@ class MainActivity : AppCompatActivity() {
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.d("FCM Token", "Fetching FCM registration token failed", task.exception)
                 return@addOnCompleteListener
             }
 
             // Get new FCM registration token
             val token = task.result
-            Log.d("FCM Token", "$token")
             MyApplication.preferences.setFCMToken(token)
-            Log.d("FCM Token", "FCM 토큰 : ${MyApplication.preferences.getFCMToken()}")
 
             if (this::sharedPreferenceManager.isInitialized) {
-                Log.d("FCM Token", "this::sharedPreferenceManager.isInitialized")
                 sharedPreferenceManager.setFCMToken(token)
             }
         }

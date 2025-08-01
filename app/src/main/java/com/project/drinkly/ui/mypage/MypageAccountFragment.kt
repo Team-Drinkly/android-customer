@@ -96,9 +96,9 @@ class MypageAccountFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "계정 관리"
+                textViewHead.text = "계정 관리"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

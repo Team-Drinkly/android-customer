@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/textView_dialog_description"
-            style="@style/HeadLine6"
+            style="@style/SubTitle2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"
@@ -40,7 +40,7 @@
                 android:id="@+id/button_cancel"
                 style="@style/DialogCancelButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1"
@@ -51,7 +51,7 @@
                 android:id="@+id/button_check"
                 style="@style/DialogCheckButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"

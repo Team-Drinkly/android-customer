@@ -27,7 +27,7 @@ import com.project.drinkly.ui.store.adapter.StoreAvailableDrinkAdapter
 import com.project.drinkly.ui.store.adapter.StoreImagePagerAdapter
 import com.project.drinkly.ui.store.adapter.StoreMenuImageAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
-import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
+import com.project.drinkly.ui.payment.SubscribePaymentFragment
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 import com.skydoves.balloon.ArrowOrientation
@@ -198,7 +198,7 @@ class StoreDetailFragment : Fragment() {
 
     fun applyStoreDetailInfo() {
         binding.run {
-            toolbar.textViewTitle.text = getStoreDetailInfo?.storeName ?: ""
+            toolbar.textViewHead.text = getStoreDetailInfo?.storeName ?: ""
 
             // 가게 정보
             if(getStoreDetailInfo?.storeDescription.isNullOrEmpty()) {
@@ -296,7 +296,7 @@ class StoreDetailFragment : Fragment() {
                     couponInfo?.get(position)?.id ?: 0L,
                     arguments?.getLong("storeId", 0) ?: 0
                 ) {
-                    BasicToast.showBasicToast(requireContext(), "쿠폰 다운로드가 완료되었어요.", R.drawable.ic_check, binding.buttonMembership)
+                    BasicToast.showBasicToast(requireContext(), "쿠폰 다운로드가 완료되었어요", R.drawable.ic_check, binding.buttonMembership)
                 }
             }
 
@@ -457,7 +457,7 @@ class StoreDetailFragment : Fragment() {
                 buttonBack.setOnClickListener {
                     viewModel.storeDetailInfo.removeObservers(viewLifecycleOwner)
                     viewModel.storeDetailInfo.value = null
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
 
@@ -465,7 +465,7 @@ class StoreDetailFragment : Fragment() {
                 override fun handleOnBackPressed() {
                     viewModel.storeDetailInfo.removeObservers(viewLifecycleOwner)
                     viewModel.storeDetailInfo.value = null
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             })
         }

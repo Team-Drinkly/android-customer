@@ -129,9 +129,9 @@ class StoreCouponFragment : Fragment() {
             }
 
             toolbar.run {
-                textViewTitle.text = "쿠폰 사용"
+                textViewHead.text = "쿠폰 사용"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

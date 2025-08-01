@@ -22,10 +22,17 @@
 
     <!-- 멤버십 안내사항 -->
     <string name="membership_guide">- 메인 메뉴 1개를 필수로 주문해야 사용 가능해요.\n- 테이블(4인 기준)당 멤버십 1회 사용이 가능해요.\n- 같은 매장에서는 하루에 한 번만 사용할 수 있어요.\n- 멤버십은 매일 정오(낮 12시)에 다시 사용할 수 있도록 초기화돼요.</string>
-    <string name="membership_cancel_guide">- 결제 후 7일 이내에 결제 취소가 가능합니다.\n- 결제 이후 1번 이상 사용하면 취소가 불가능합니다.\n- 결제 후 7일 이내에 드링클리 앱 “마이페이지 > 구독관리 > 구독 취소하기” 를 통해 결제 취소가 가능합니다.\n- 그 외의 취소/환불 문의는 “마이페이지 > 고객센터 > 카카오톡 플러스친구 또는 대표 이메일을 통해 문의해주시면 신속하게 응답해드리겠습니다.</string>
+    <string name="membership_cancel_guide">- 결제 후 7일 이내에 결제 취소가 가능합니다.\n- 결제 이후 1번 이상 사용하면 취소가 불가능합니다.\n- 결제 후 7일 이내에 드링클리 앱 “마이페이지 > 구독 관리 > 멤버십 구독 관리 > 해지하기” 를 통해 결제 취소가 가능합니다.\n- 그 외의 취소/환불 문의는 “마이페이지 > 고객센터 > 카카오톡 플러스친구 또는 대표 이메일을 통해 문의해주시면 신속하게 응답해드리겠습니다.</string>
     <string name="membership_caution">멤버십 사용 버튼은 매장 직원만 클릭 할 수 있습니다.\n부주의로 인해 사용하신 경우 재사용이 불가능합니다.</string>
 
+    <string name="membership_unsubscribe_guide">
+        %1$s까지 멤버십을 한 번도 사용하지 않으셨다면, 자동으로 전액 환불 처리됩니다.\n\n
+        %2$s 이후 또는 멤버십 혜택을 한 번이라도 사용한 경우에는 환불이 불가하며, 멤버십은 %3$s까지 계속 이용하실 수 있습니다.\n\n
+        해지 후에는 언제든지 다시 구독하실 수 있습니다.
+    </string>
+
     <string name="membership_price">5,900원</string>
+    <string name="button_membership_price">5,900원 결제하기</string>
 
     <!-- 쿠폰 안내사항 -->
     <string name="coupon_caution">쿠폰 사용 버튼은 매장 직원만 클릭 할 수 있습니다.\n부주의로 인해 사용하신 경우 재사용이 불가능합니다.</string>
@@ -33,7 +40,9 @@
 
     <!-- 계정 탈퇴 안내사항 -->
     <string name="withdrawal_guide">탈퇴시 현재 구독중인 멤버십이 사라집니다.\n탈퇴 후, 24시간 뒤 재가입할 수 있습니다.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- underline 버튼 -->
+    <string name="button_card_delete"><u>카드삭제</u></string>
+    <string name="button_membership_unsubscribe"><u>해지하기</u></string>
 
 </resources>

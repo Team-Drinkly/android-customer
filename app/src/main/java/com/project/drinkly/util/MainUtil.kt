@@ -6,10 +6,15 @@ import android.os.Build
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 import kotlin.math.roundToInt
 
 object MainUtil {
+    private const val KOREAN_DATE_PATTERN = "yyyy년 MM월 dd일"
+
     fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).roundToInt()
 
     // 투명한 status bar
@@ -58,5 +63,30 @@ object MainUtil {
             String.format(Locale.getDefault(), "%.1fkm", distanceKm)
         }
     }
+
+    // 날짜 형식 변환
+    fun checkFormat(calendar: Calendar): String {
+
+        val dateFormat = SimpleDateFormat(KOREAN_DATE_PATTERN, Locale.KOREA)
+        return dateFormat.format(calendar.time)
+
+    }
+
+    fun parseKoreanDateToCalendar(dateString: String): Calendar? {
+        return try {
+            val sdf = SimpleDateFormat(KOREAN_DATE_PATTERN, Locale.KOREA)
+            val date = sdf.parse(dateString)
+
+            date?.let {
+                Calendar.getInstance().apply {
+                    time = it
+                }
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
 
 }

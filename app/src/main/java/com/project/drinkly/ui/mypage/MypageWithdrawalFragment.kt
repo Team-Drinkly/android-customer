@@ -82,9 +82,9 @@ class MypageWithdrawalFragment : Fragment() {
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = "계정 탈퇴"
+                textViewHead.text = "계정 탈퇴"
                 buttonBack.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

@@ -12,7 +12,7 @@ import com.project.drinkly.databinding.FragmentMypageBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.store.StoreMapFragment
-import com.project.drinkly.ui.subscribe.SubscribePaymentFragment
+import com.project.drinkly.ui.payment.SubscribePaymentFragment
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
@@ -44,7 +44,7 @@ class MypageFragment : Fragment() {
                 mixpanel.track("click_mypage_subscribe", null)
 
                 mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                    .replace(R.id.fragmentContainerView_main, MypageSubscribeFragment())
                     .addToBackStack(null)
                     .commit()
             }
@@ -114,7 +114,7 @@ class MypageFragment : Fragment() {
             textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}"
 
             toolbar.run {
-                textViewTitle.text = "마이페이지"
+                textViewHead.text = "마이페이지"
             }
         }
     }

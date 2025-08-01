@@ -26,9 +26,9 @@ class MenuFullscreenFragment(
 
         binding.run {
             toolbar.run {
-                textViewTitle.text = arguments?.getString("storeName") ?: ""
+                textViewHead.text = arguments?.getString("storeName") ?: ""
                 buttonClose.setOnClickListener {
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }
             }
         }

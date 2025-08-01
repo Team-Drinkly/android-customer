@@ -1,17 +1,16 @@
-package com.project.drinkly.ui.subscribe
+package com.project.drinkly.ui.payment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.project.drinkly.R
-import com.project.drinkly.databinding.FragmentSubscribeCompleteBinding
+import androidx.fragment.app.Fragment
+import com.project.drinkly.databinding.FragmentPaymentCompleteBinding
 import com.project.drinkly.ui.MainActivity
 
-class SubscribeCompleteFragment : Fragment() {
+class PaymentCompleteFragment : Fragment() {
 
-    lateinit var binding: FragmentSubscribeCompleteBinding
+    lateinit var binding: FragmentPaymentCompleteBinding
     lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
@@ -19,10 +18,16 @@ class SubscribeCompleteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentSubscribeCompleteBinding.inflate(layoutInflater)
+        binding = FragmentPaymentCompleteBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
         initView()
+
+        binding.run {
+            buttonNext.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
+        }
 
         return binding.root
     }
