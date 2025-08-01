@@ -97,7 +97,6 @@ class MainActivity : AppCompatActivity() {
 
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainerView_main, StoreMapFragment())
-                        .addToBackStack(null)
                         .commit()
                     true
                 }
@@ -113,7 +112,6 @@ class MainActivity : AppCompatActivity() {
 
                                 supportFragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainerView_main, SubscribeFragment())
-                                    .addToBackStack(null)
                                     .commit()
                             } else {
                                 Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
@@ -131,7 +129,6 @@ class MainActivity : AppCompatActivity() {
 
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainerView_main, nextFragment)
-                            .addToBackStack(null)
                             .commit()
                     }
                     true
@@ -148,7 +145,6 @@ class MainActivity : AppCompatActivity() {
 
                                 supportFragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainerView_main, MypageFragment())
-                                    .addToBackStack(null)
                                     .commit()
                             } else {
                                 Log.e("SubscriptionCheck", "❌ 상태 체크 실패")
@@ -166,7 +162,6 @@ class MainActivity : AppCompatActivity() {
 
                         supportFragmentManager.beginTransaction()
                             .replace(R.id.fragmentContainerView_main, nextFragment)
-                            .addToBackStack(null)
                             .commit()
                     }
                     true
