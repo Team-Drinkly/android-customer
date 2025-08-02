@@ -74,4 +74,55 @@ class SubscribeViewModel : ViewModel() {
                 }
             })
     }
+
+    fun getOrderHistoryImage(activity: MainActivity, imageId: Int, onSuccess: (image: String?) -> Unit) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.getOrderHistoryImage("Bearer ${tokenManager.getRefreshToken().toString()}", imageId)
+            .enqueue(object :
+                Callback<BaseResponse<String?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<String?>>,
+                    response: Response<BaseResponse<String?>>
+                ) {
+
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        when(result?.result?.code) {
+                            200 -> { onSuccess(result.payload.toString()) }
+                            404 -> { onSuccess(null) }
+                            else ->  { onSuccess(null) }
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    getOrderHistoryImage(activity, imageId, onSuccess)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
+                }
+            })
+    }
 }

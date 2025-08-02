@@ -61,14 +61,22 @@ class StoreMembershipFragment : Fragment() {
 
             if(arguments?.getBoolean("history") == true) {
                 layoutTitle.visibility = View.GONE
+                buttonNext.visibility = View.GONE
             } else {
                 layoutTitle.visibility = View.VISIBLE
+                buttonNext.visibility = View.VISIBLE
             }
 
             textViewStoreName.text = arguments?.getString("storeName")
             textViewAvailableDrink.text = arguments?.getString("availableDrinkName")
             textViewMembershipUsedTime.text = "${arguments?.getString("usedTime")} 사용완료"
-            Glide.with(mainActivity).load(arguments?.getString("availableDrinkImage")).into(imageViewAvailableDrink)
+
+            var availableImage = arguments?.getString("availableDrinkImage")
+            if(availableImage != null) {
+                Glide.with(mainActivity).load(availableImage).into(imageViewAvailableDrink)
+            } else {
+                Glide.with(mainActivity).load(R.drawable.img_basic).into(imageViewAvailableDrink)
+            }
         }
     }
 }

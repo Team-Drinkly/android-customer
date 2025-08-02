@@ -127,6 +127,13 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<BaseResponse<OrderHistoryResponse>>
 
+    // 멤버십 사용 내역 상세 조회 (이미지 조회)
+    @GET("/api/v1/store/m/free-drink-v2/images/{imageId}")
+    fun getOrderHistoryImage(
+        @Header("Authorization") token: String,
+        @Path("imageId") imageId: Int
+    ): Call<BaseResponse<String?>>
+
     // 제휴업체 조회
     @GET("/api/v1/store/m/list")
     fun getStoreList(
