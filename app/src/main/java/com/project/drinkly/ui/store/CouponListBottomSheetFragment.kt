@@ -120,6 +120,8 @@ class CouponListBottomSheetFragment(var activity: MainActivity, var coupons: Mut
     }
 
     fun useCoupon(position: Int, status: String) {
+        val coupon = couponInfo?.getOrNull(position) ?: return
+
         when (status) {
             "NONE" -> {
                 mixpanel.track("click_detail_coupon_download", null)
@@ -127,7 +129,7 @@ class CouponListBottomSheetFragment(var activity: MainActivity, var coupons: Mut
                 // (쿠폰 다운로드 전) 쿠폰 다운로드
                 viewModel.downloadCoupon(
                     mainActivity,
-                    couponInfo?.get(position)?.id ?: 0L,
+                    coupon.id,
                     storeId
                 ) {
                     BasicToast.showBasicToast(requireContext(), "쿠폰 다운로드가 완료되었어요", R.drawable.ic_check, binding.buttonDownloadAll)
@@ -140,10 +142,10 @@ class CouponListBottomSheetFragment(var activity: MainActivity, var coupons: Mut
                 // (쿠폰 다운로드 후 사용 X) 쿠폰 사용 화면으로 이동
                 val bundle = Bundle().apply {
                     putString("storeName", storeName.toString())
-                    putLong("couponId", couponInfo?.get(position)?.id ?: 0)
-                    putString("couponTitle", couponInfo?.get(position)?.title)
-                    putString("couponDescription", couponInfo?.get(position)?.description)
-                    putString("couponDate", couponInfo?.get(position)?.expirationDate)
+                    putLong("couponId",  coupon.id)
+                    putString("couponTitle",  coupon.title)
+                    putString("couponDescription", coupon.description)
+                    putString("couponDate", coupon.expirationDate)
                 }
 
                 // 전달할 Fragment 생성
