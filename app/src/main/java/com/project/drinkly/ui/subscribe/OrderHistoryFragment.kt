@@ -67,12 +67,13 @@ class OrderHistoryFragment : Fragment() {
                 itemClickListener = object : OrderHistoryAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int) {
                         mixpanel.track("click_subscribe_history_detail", null)
-
+                        
                         val bundle = Bundle().apply {
                             putString("storeName", getOrderHistory[position].storeName.toString())
-                            putString("drinkName", getOrderHistory[position].providedDrink.toString())
-                            putString("usedDate", getOrderHistory[position].usageDate)
-                            putBoolean("isUsed", true)
+                            putString("availableDrinkName", getOrderHistory[position].providedDrink.toString())
+                            putString("usedTime", getOrderHistory[position].usageDate)
+                            putString("availableDrinkImage", getOrderHistory[position].usageDate)
+                            putBoolean("history", true)
                         }
 
                         val nextFragment = StoreMembershipFragment().apply {

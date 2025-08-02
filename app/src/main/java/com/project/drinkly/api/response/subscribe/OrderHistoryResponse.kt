@@ -8,6 +8,7 @@ data class OrderHistoryResponse(
 data class OrderHistory(
     val freeDrinkHistoryId: Int?,
     val storeName: String?,
+    val providedDrinkImageId: Int?,
     val providedDrink: String?,
     val usageDate: String?
 )

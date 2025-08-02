@@ -122,7 +122,7 @@ interface ApiService {
     ): Call<BaseResponse<SubscribeInfoResponse>>
 
     // 멤버십 사용 내역 조회
-    @GET("/api/v1/store/m/free-drink")
+    @GET("/api/v1/store/m/free-drink-v2")
     fun getOrderHistory(
         @Header("Authorization") token: String
     ): Call<BaseResponse<OrderHistoryResponse>>
