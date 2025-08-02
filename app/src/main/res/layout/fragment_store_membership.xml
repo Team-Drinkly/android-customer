@@ -109,6 +109,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView_available_drink" />
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/imageView_gif"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView_available_drink"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/membership"
+                app:lottie_repeatMode="restart" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
