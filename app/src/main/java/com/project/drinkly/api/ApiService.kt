@@ -211,7 +211,7 @@ interface ApiService {
     @POST("/api/v1/coupon/m/issue/store/{storeId}")
     fun downloadAllCoupon(
         @Header("Authorization") token: String,
-        @Path("storeId") couponId: Long
+        @Path("storeId") storeId: Long
     ): Call<BaseResponse<String?>>
 
     // 멤버십 쿠폰 사용
