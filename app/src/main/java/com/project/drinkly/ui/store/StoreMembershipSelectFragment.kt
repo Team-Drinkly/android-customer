@@ -47,7 +47,6 @@ class StoreMembershipSelectFragment : Fragment() {
         observeViewModel()
 
         getStoreDetailInfo = viewModel.storeDetailInfo.value
-        Log.d("DrinklyLog", "store detail info : ${getStoreDetailInfo}")
 
         binding.run {
             recyclerViewGetMembershipDrink.run {
@@ -142,8 +141,6 @@ class StoreMembershipSelectFragment : Fragment() {
                 }
 
                 storeAvaiableDrinkAdapter.updateList(storeDetail.availableDrinkImageUrls)
-            } else {
-                Log.e("DrinklyLog", "storeDetailInfo가 null입니다.")
             }
         }
     }

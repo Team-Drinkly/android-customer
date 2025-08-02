@@ -4,14 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.drinkly.R
 import com.project.drinkly.api.response.store.StoreImageInfo
-import com.project.drinkly.databinding.RowStoreAvaiableDrinkBinding
 import com.project.drinkly.databinding.RowStoreAvaiableDrinkSelectBinding
-import com.project.drinkly.databinding.RowStoreImageBinding
 
 class StoreAvailableDrinkSelectAdapter(
     private var activity: Activity,
@@ -57,8 +54,8 @@ class StoreAvailableDrinkSelectAdapter(
                 backgroundAvaiableDrink.setBackgroundResource(R.drawable.background_gray5_top_radius10)
                 textViewAvaiableDrink.setBackgroundResource(R.drawable.background_primary50_bottom_radius10)
             } else {
-                backgroundAvaiableDrink.setBackgroundResource(R.drawable.background_gray6_top_radius10)
-                textViewAvaiableDrink.setBackgroundResource(R.drawable.background_card_bottom_radius10)
+                backgroundAvaiableDrink.setBackgroundResource(R.drawable.background_gray7_top_radius10)
+                textViewAvaiableDrink.setBackgroundResource(R.drawable.background_gray9_bottom_radius10)
             }
         }
 
