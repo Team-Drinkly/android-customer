@@ -22,6 +22,9 @@ import com.project.drinkly.ui.store.adapter.StoreListAdapter
 import com.project.drinkly.ui.store.viewModel.StoreViewModel
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class StoreMembershipSelectFragment : Fragment() {
 
@@ -33,6 +36,8 @@ class StoreMembershipSelectFragment : Fragment() {
     lateinit var storeAvaiableDrinkAdapter: StoreAvailableDrinkSelectAdapter
 
     var selectedPosition = -1
+
+    private var isExpanded = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,24 +59,39 @@ class StoreMembershipSelectFragment : Fragment() {
                 layoutManager = GridLayoutManager(context, 2)
             }
 
+            layoutTitle.setOnClickListener {
+                isExpanded = !isExpanded
+                if(isExpanded) {
+                    textViewMembershipGuide.visibility = View.VISIBLE
+                    imageViewArrow.setImageResource(R.drawable.ic_arrow_up)
+                } else {
+                    textViewMembershipGuide.visibility = View.GONE
+                    imageViewArrow.setImageResource(R.drawable.ic_arrow_down)
+                }
+            }
+
             buttonNext.setOnClickListener {
-                mixpanel.track("move_select_to_use", null)
+                // 멤버십 사용
+                viewModel.useMembership(mainActivity, getStoreDetailInfo?.storeId ?: 0, getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.imageId ?: 0, getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.description.toString()) {
+                    val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREAN)
+                    val currentDate = Date() // 현재 시간 가져오기
 
-                val bundle = Bundle().apply {
-                    putString("storeName", getStoreDetailInfo?.storeName.toString())
-                    putLong("storeId", getStoreDetailInfo?.storeId ?: 0)
-                    putString("drinkName", getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.description.toString())
+                    val bundle = Bundle().apply {
+                        putString("usedTime",  dateFormat.format(currentDate).toString())
+                        putString("storeName",  getStoreDetailInfo?.storeName)
+                        putString("availableDrinkName",  getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.description.toString())
+                        putString("availableDrinkImage",  getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.imageUrl)
+                    }
+
+                    // 전달할 Fragment 생성
+                    var nextFragment = StoreMembershipFragment().apply {
+                        arguments = bundle
+                    }
+
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .commit()
                 }
-
-                // 전달할 Fragment 생성
-                var nextFragment = StoreMembershipFragment().apply {
-                    arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
-                }
-
-                mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, nextFragment)
-                    .addToBackStack("membership")
-                    .commit()
             }
         }
 
@@ -119,7 +139,6 @@ class StoreMembershipSelectFragment : Fragment() {
         }
 
         binding.run {
-            textViewNickname.text = "${InfoManager(mainActivity).getUserNickname()}"
             toolbar.run {
                 textViewHead.text = "멤버십 사용"
                 buttonBack.setOnClickListener {
@@ -130,17 +149,19 @@ class StoreMembershipSelectFragment : Fragment() {
     }
 
     fun observeViewModel() {
-        viewModel.storeDetailInfo.observe(viewLifecycleOwner) { storeDetail ->
-            if (storeDetail != null) {
-                getStoreDetailInfo = storeDetail
+        viewModel.run {
+            storeDetailInfo.observe(viewLifecycleOwner) { storeDetail ->
+                if (storeDetail != null) {
+                    getStoreDetailInfo = storeDetail
 
-                binding.run {
-                    textViewStoreName.text = storeDetail.storeName
-                    textViewStoreIsOpen.text = storeDetail.isOpen
-                    textViewStoreCloseOrOpenTime.text = storeDetail.openingInfo
+                    binding.run {
+                        textViewStoreName.text = storeDetail.storeName
+                        textViewStoreIsOpen.text = storeDetail.isOpen
+                        textViewStoreCloseOrOpenTime.text = storeDetail.openingInfo
+                    }
+
+                    storeAvaiableDrinkAdapter.updateList(storeDetail.availableDrinkImageUrls)
                 }
-
-                storeAvaiableDrinkAdapter.updateList(storeDetail.availableDrinkImageUrls)
             }
         }
     }

@@ -43,7 +43,6 @@ class StoreViewModel: ViewModel() {
 
     var isUsed: MutableLiveData<Boolean> = MutableLiveData()
 
-    var usedMembershipTime: MutableLiveData<String> = MutableLiveData()
     var usedCouponTime: MutableLiveData<String> = MutableLiveData()
 
     fun getStoreList(activity: MainActivity, latitude: String?, longitude: String?, radius: Int?, searchInput: String?) {
@@ -413,11 +412,11 @@ class StoreViewModel: ViewModel() {
     }
 
 
-    fun useMembership(activity: MainActivity, storeId: Long, drinkName: String) {
+    fun useMembership(activity: MainActivity, storeId: Long, drinkImage: Int, drinkName: String, onSuccess: () -> Unit) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
 
-        apiClient.apiService.useMembership("Bearer ${tokenManager.getAccessToken()}", UseMembershipRequest(storeId, drinkName))
+        apiClient.apiService.useMembership("Bearer ${tokenManager.getAccessToken()}", UseMembershipRequest(storeId, drinkImage, drinkName))
             .enqueue(object :
                 Callback<BaseResponse<String>> {
                 override fun onResponse(
@@ -430,12 +429,10 @@ class StoreViewModel: ViewModel() {
                         val result: BaseResponse<String>? = response.body()
                         Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
 
-                        val dateFormat = SimpleDateFormat("yyyy년 M월 d일 HH시 mm분", Locale.KOREAN)
-                        val currentDate = Date() // 현재 시간 가져오기
 
                         when (result?.result?.code) {
                             201 -> {
-                                usedMembershipTime.value = dateFormat.format(currentDate).toString()
+                                onSuccess()
                             }
                             400 -> {
                                 // 이미 멤버십을 사용한 경우
@@ -456,7 +453,7 @@ class StoreViewModel: ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    useMembership(activity, storeId, drinkName)
+                                    useMembership(activity, storeId, drinkImage, drinkName, onSuccess)
                                 }
                             }
                             else -> {

@@ -157,7 +157,7 @@ interface ApiService {
     ): Call<BaseResponse<Boolean>>
 
     // 멤버십 사용
-    @POST("/api/v1/store/m/free-drink")
+    @POST("/api/v1/store/m/free-drink-v2")
     fun useMembership(
         @Header("Authorization") token: String,
         @Body parameters: UseMembershipRequest

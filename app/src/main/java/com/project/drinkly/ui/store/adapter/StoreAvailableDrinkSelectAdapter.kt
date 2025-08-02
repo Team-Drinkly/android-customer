@@ -2,8 +2,10 @@ package com.project.drinkly.ui.store.adapter
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.drinkly.R
@@ -51,10 +53,14 @@ class StoreAvailableDrinkSelectAdapter(
 
             // 선택된 아이템의 배경 변경
             if (position == selectedPosition) {
+                imageViewAvaiableDrink.alpha = 1f
                 backgroundAvaiableDrink.setBackgroundResource(R.drawable.background_gray5_top_radius10)
+                textViewAvaiableDrink.setTextColor(ContextCompat.getColor(activity, R.color.gray1))
                 textViewAvaiableDrink.setBackgroundResource(R.drawable.background_primary50_bottom_radius10)
             } else {
+                imageViewAvaiableDrink.alpha = 0.7f
                 backgroundAvaiableDrink.setBackgroundResource(R.drawable.background_gray7_top_radius10)
+                textViewAvaiableDrink.setTextColor(ContextCompat.getColor(activity, R.color.gray7))
                 textViewAvaiableDrink.setBackgroundResource(R.drawable.background_gray9_bottom_radius10)
             }
         }
