@@ -22,5 +22,6 @@ class MyApplication : Application() {
 
         // 카드 정보
         var isCardRegistered = false
+        var isCardDelete = false
     }
 }

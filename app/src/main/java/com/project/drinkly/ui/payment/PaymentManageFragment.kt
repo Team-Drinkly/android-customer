@@ -14,6 +14,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
+import com.project.drinkly.ui.store.StoreMembershipFragment
 import com.project.drinkly.util.MyApplication
 
 class PaymentManageFragment : Fragment() {
@@ -79,7 +80,6 @@ class PaymentManageFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
 
             updateSubscriptionStatusIfNeeded(activity = mainActivity) { success ->
                 if (success) {
@@ -137,12 +137,14 @@ class PaymentManageFragment : Fragment() {
                                 // 카드 삭제
                                 when(status) {
                                     "ACTIVE" -> showCardDeleteDialog(
-                                        "카드를 삭제하면 멤버십은 다음 결제일까지 유지됩니다. 삭제하시겠어요?",
-                                        cardOrderId
+                                        "멤버십을 해지한 후 카드를 삭제할 수 있어요. 삭제하시겠어요?",
+                                        cardOrderId,
+                                        false
                                     )
                                     else -> showCardDeleteDialog(
                                         "등록된 카드를 삭제하시겠어요?",
-                                        cardOrderId
+                                        cardOrderId,
+                                        true
                                     )
                                 }
                             }
@@ -164,24 +166,39 @@ class PaymentManageFragment : Fragment() {
         }
     }
 
-    private fun showCardDeleteDialog(message: String, cardOrderId: String) {
-        val dialog = DialogBasicButton(message, "취소", "삭제하기", R.color.primary_50)
+    private fun showCardDeleteDialog(message: String, cardOrderId: String, isAvailable: Boolean) {
+        val dialog = DialogBasicButton(message, "아니요", "삭제하기", R.color.primary_50)
 
         dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
             override fun onClickYesButton() {
-                viewModel.deleteCard(mainActivity, cardOrderId) {
-                    binding.run {
-                        layoutCardEmpty.visibility = View.VISIBLE
-                        layoutCardInfo.visibility = View.GONE
-                        buttonNext.visibility = View.GONE
-                        layoutCheckBox.visibility = View.GONE
+                if(isAvailable) {
+                    viewModel.deleteCard(mainActivity, cardOrderId) {
+                        binding.run {
+                            layoutCardEmpty.visibility = View.VISIBLE
+                            layoutCardInfo.visibility = View.GONE
+                            buttonNext.visibility = View.GONE
+                            layoutCheckBox.visibility = View.GONE
+                        }
+                        BasicToast.showBasicToastBottom(
+                            requireContext(),
+                            "등록된 카드가 정상적으로 삭제됐어요",
+                            R.drawable.ic_check,
+                            binding.root
+                        )
                     }
-                    BasicToast.showBasicToastBottom(
-                        requireContext(),
-                        "등록된 카드가 정상적으로 삭제됐어요",
-                        R.drawable.ic_check,
-                        binding.root
-                    )
+                } else {
+                    val bundle = Bundle().apply {
+                        putBoolean("cardDelete", true)
+                    }
+
+                    val nextFragment = PaymentCancelFragment().apply {
+                        arguments = bundle
+                    }
+
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .addToBackStack(null)
+                        .commit()
                 }
             }
         })
@@ -199,6 +216,12 @@ class PaymentManageFragment : Fragment() {
                 } else {
                     BasicToast.showBasicToastBottom(requireContext(), "카드 등록이 정상적으로 완료됐어요!", R.drawable.ic_check, binding.root)
                 }
+            }
+
+            if (MyApplication.isCardDelete) {
+                MyApplication.isCardDelete = false
+
+                BasicToast.showBasicToastBottom(requireContext(), "등록된 카드가 정상적으로 삭제됐어요", R.drawable.ic_check, binding.root)
             }
         }
     }

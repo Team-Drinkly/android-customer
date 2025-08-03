@@ -198,6 +198,50 @@ class PaymentViewModel: ViewModel() {
             })
     }
 
+    fun deleteCardMembership(activity: MainActivity, onSuccess: () -> Unit) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.deleteCardMembership("Bearer ${tokenManager.getAccessToken()}")
+            .enqueue(object :
+                Callback<BaseResponse<String?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<String?>>,
+                    response: Response<BaseResponse<String?>>
+                ) {
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<String?>? = response.body()
+
+                        TokenUtil.refreshToken(activity) {
+                            onSuccess()
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<String?>? = response.body()
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    deleteCardMembership(activity, onSuccess)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
+                    // 통신 실패
+                    activity.goToLogin()
+                }
+            })
+    }
+
     fun paymentForSubscribe(activity: MainActivity, onSuccess: () -> Unit) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
