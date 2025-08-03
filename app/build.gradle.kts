@@ -89,6 +89,9 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.13.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
 
+    // gif
+    implementation("com.airbnb.android:lottie:5.0.2")
+
     // onboarding dot indicator
     implementation("com.tbuonomo:dotsindicator:5.1.0")
     // tooltip

@@ -122,10 +122,17 @@ interface ApiService {
     ): Call<BaseResponse<SubscribeInfoResponse>>
 
     // 멤버십 사용 내역 조회
-    @GET("/api/v1/store/m/free-drink")
+    @GET("/api/v1/store/m/free-drink-v2")
     fun getOrderHistory(
         @Header("Authorization") token: String
     ): Call<BaseResponse<OrderHistoryResponse>>
+
+    // 멤버십 사용 내역 상세 조회 (이미지 조회)
+    @GET("/api/v1/store/m/free-drink-v2/images/{imageId}")
+    fun getOrderHistoryImage(
+        @Header("Authorization") token: String,
+        @Path("imageId") imageId: Int
+    ): Call<BaseResponse<String?>>
 
     // 제휴업체 조회
     @GET("/api/v1/store/m/list")
@@ -157,7 +164,7 @@ interface ApiService {
     ): Call<BaseResponse<Boolean>>
 
     // 멤버십 사용
-    @POST("/api/v1/store/m/free-drink")
+    @POST("/api/v1/store/m/free-drink-v2")
     fun useMembership(
         @Header("Authorization") token: String,
         @Body parameters: UseMembershipRequest
