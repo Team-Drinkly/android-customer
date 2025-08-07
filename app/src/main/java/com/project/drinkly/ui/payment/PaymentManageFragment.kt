@@ -6,13 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentPaymentManageBinding
 import com.project.drinkly.ui.BasicToast
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
+import com.project.drinkly.ui.dialog.BasicDescriptionDialogInterface
+import com.project.drinkly.ui.dialog.BasicDialogInterface
+import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.dialog.DialogBasicButton
+import com.project.drinkly.ui.dialog.DialogBasicDescription
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.ui.store.StoreMembershipFragment
 import com.project.drinkly.util.MyApplication
@@ -59,11 +64,19 @@ class PaymentManageFragment : Fragment() {
 
             buttonNext.setOnClickListener {
                 // 구독권 결제
-                viewModel.paymentForSubscribe(mainActivity) {
-                    mainActivity.supportFragmentManager.beginTransaction()
+                viewModel.paymentForSubscribe(
+                    mainActivity,
+                    onSuccess = {
+                        mainActivity.supportFragmentManager.beginTransaction()
                         .replace(R.id.fragmentContainerView_main, PaymentCompleteFragment())
                         .commit()
-                }
+                    },
+                    onFailure = {
+                        val dialog = DialogBasicDescription("카드 결제 실패", "은행 점검 시간이거나 카드 잔액이 부족하여\n결제가 진행되지 않았어요", "다시 시도해볼게요")
+
+                        dialog.show(mainActivity.supportFragmentManager, "DialogPayment")
+                    }
+                )
             }
         }
 

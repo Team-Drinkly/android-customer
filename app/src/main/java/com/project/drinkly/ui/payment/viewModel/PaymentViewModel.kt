@@ -242,7 +242,7 @@ class PaymentViewModel: ViewModel() {
             })
     }
 
-    fun paymentForSubscribe(activity: MainActivity, onSuccess: () -> Unit) {
+    fun paymentForSubscribe(activity: MainActivity, onSuccess: () -> Unit, onFailure: () -> Unit) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
 
@@ -268,11 +268,11 @@ class PaymentViewModel: ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    paymentForSubscribe(activity, onSuccess)
+                                    paymentForSubscribe(activity, onSuccess, onFailure)
                                 }
                             }
                             else -> {
-                                activity.goToLogin()
+                                onFailure()
                             }
                         }
                     }
@@ -280,7 +280,7 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<SubscribePaymentResponse?>>, t: Throwable) {
                     // 통신 실패
-                    activity.goToLogin()
+                    onFailure()
                 }
             })
     }
