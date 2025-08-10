@@ -82,6 +82,8 @@ class MypageCouponUnuseFragment : Fragment() {
                     mixpanel.track("click_coupon_subscribe", null)
 
                     if(InfoManager(mainActivity).getIsSubscribe() == true) {
+                        mixpanel.track("click_coupon_already_membership", null)
+
                         val dialog = DialogBasicDescription("이미 멤버십을 구독하고 있어요!", "멤버십 구독 중에는 사용이 어려워요\n멤버십 기간 종료 후 다시 사용해 주세요", "확인")
 
                         dialog.show(mainActivity.supportFragmentManager, "DialogMembershipCoupon")
@@ -136,6 +138,8 @@ class MypageCouponUnuseFragment : Fragment() {
 
                         dialog.setBasicDialogInterface(object : BasicDescriptionButtonDialogInterface {
                             override fun onClickYesButton() {
+                                mixpanel.track("move_coupon_to_subscribe", null)
+                                
                                 mainActivity.supportFragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
                                     .addToBackStack(null)
