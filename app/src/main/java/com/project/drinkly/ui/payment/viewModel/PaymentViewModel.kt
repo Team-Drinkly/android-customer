@@ -257,8 +257,15 @@ class PaymentViewModel: ViewModel() {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<SubscribePaymentResponse?>? = response.body()
 
-                        TokenUtil.refreshToken(activity) {
-                            onSuccess()
+                        when(result?.payload?.resultCode) {
+                            "0000" -> {
+                                TokenUtil.refreshToken(activity) {
+                                    onSuccess()
+                                }
+                            }
+                            else -> {
+                                onFailure()
+                            }
                         }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
