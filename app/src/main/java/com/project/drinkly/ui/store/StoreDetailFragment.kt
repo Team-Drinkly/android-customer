@@ -269,6 +269,7 @@ class StoreDetailFragment : Fragment() {
     fun clickCoupon(position: Int, status: String) {
         if((couponInfo?.size ?: 0) > 1) {
             // 쿠폰 모두보기 bottom sheet
+            mixpanel.track("click_detail_coupon_see_all", null)
             val couponBottomSheet = CouponListBottomSheetFragment(mainActivity, couponInfo, getStoreDetailInfo?.storeId ?: 0, getStoreDetailInfo?.storeName.toString())
 
             couponBottomSheet.show(childFragmentManager, couponBottomSheet.tag)
