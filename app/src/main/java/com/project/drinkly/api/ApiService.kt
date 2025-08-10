@@ -276,6 +276,12 @@ interface ApiService {
         @Body parameters: DeleteCardRequest
     ): Call<BaseResponse<DeleteCardResponse>>
 
+    // 카드 삭제 (빌링키 삭제) + 멤버십 해지/환불
+    @POST("/api/v1/payment/m/nicepay/terminate")
+    fun deleteCardMembership(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<String?>>
+
     // 정기 결제
     @POST("/api/v1/payment/m/nicepay/pay")
     fun paymentForSubscribe(

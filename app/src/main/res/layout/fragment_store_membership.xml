@@ -69,7 +69,7 @@
                 android:layout_height="230dp"
                 app:shapeAppearanceOverlay="@style/RoundSector16"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_store_main_basic"
+                android:src="@drawable/img_basic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_title" />

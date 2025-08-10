@@ -322,7 +322,6 @@ class StoreMapFragment : Fragment(), OnMapReadyCallback {
             hideBottomNavigation(false)
             hideMyLocationButton(false)
             hideMapButton(false)
-            hideOrderHistoryButton(true)
         }
 
         checkPermissionsAndSendToMixpanel(mainActivity)

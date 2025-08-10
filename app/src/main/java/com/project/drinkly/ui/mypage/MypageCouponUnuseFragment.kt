@@ -15,10 +15,14 @@ import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.databinding.FragmentMypageCouponUnuseBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
+import com.project.drinkly.ui.dialog.BasicDescriptionButtonDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasicButton
+import com.project.drinkly.ui.dialog.DialogBasicDescription
+import com.project.drinkly.ui.dialog.DialogBasicDescriptionButton
 import com.project.drinkly.ui.mypage.adapter.MembershipCouponAdapter
 import com.project.drinkly.ui.mypage.adapter.StoreCouponAdapter
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
+import com.project.drinkly.ui.payment.SubscribePaymentFragment
 import com.project.drinkly.ui.store.StoreCouponFragment
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
@@ -77,18 +81,24 @@ class MypageCouponUnuseFragment : Fragment() {
                 override fun onItemClick(position: Int) {
                     mixpanel.track("click_coupon_subscribe", null)
 
-                    val dialog = DialogBasicButton("구독권 쿠폰을 사용하시겠습니까?", "취소", "사용하기", R.color.primary_50)
+                    if(InfoManager(mainActivity).getIsSubscribe() == true) {
+                        val dialog = DialogBasicDescription("이미 멤버십을 구독하고 있어요!", "멤버십 구독 중에는 사용이 어려워요\n멤버십 기간 종료 후 다시 사용해 주세요", "확인")
 
-                    dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
-                        override fun onClickYesButton() {
-                            mixpanel.track("click_coupon_subscribe_confirm", null)
+                        dialog.show(mainActivity.supportFragmentManager, "DialogMembershipCoupon")
+                    } else {
+                        val dialog = DialogBasicButton("구독권 쿠폰을 사용하시겠습니까?", "취소", "사용하기", R.color.primary_50)
 
-                            // 쿠폰 사용
-                            viewModel.useMembershipCoupon(mainActivity, getMembershipCouponList[position].id)
-                        }
-                    })
+                        dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+                            override fun onClickYesButton() {
+                                mixpanel.track("click_coupon_subscribe_confirm", null)
 
-                    dialog.show(mainActivity.supportFragmentManager, "DialogCoupon")
+                                // 쿠폰 사용
+                                viewModel.useMembershipCoupon(mainActivity, getMembershipCouponList[position].id)
+                            }
+                        })
+
+                        dialog.show(mainActivity.supportFragmentManager, "DialogMembershipCouponConfirm")
+                    }
                 }
             }
         }
@@ -102,24 +112,39 @@ class MypageCouponUnuseFragment : Fragment() {
                 override fun onItemClick(position: Int) {
                     mixpanel.track("click_coupon_select", null)
 
-                    // 쿠폰 사용 화면
-                    val bundle = Bundle().apply {
-                        putString("storeName", getStoreCouponList[position].storeName.toString())
-                        putLong("couponId", getStoreCouponList[position].id ?: 0)
-                        putString("couponTitle", getStoreCouponList[position].title)
-                        putString("couponDescription", getStoreCouponList[position].description)
-                        putString("couponDate", getStoreCouponList[position].expirationDate)
-                    }
+                    if(InfoManager(mainActivity).getIsSubscribe() == true) {
+                        // 쿠폰 사용 화면
+                        val bundle = Bundle().apply {
+                            putString("storeName", getStoreCouponList[position].storeName.toString())
+                            putLong("couponId", getStoreCouponList[position].id)
+                            putString("couponTitle", getStoreCouponList[position].title)
+                            putString("couponDescription", getStoreCouponList[position].description)
+                            putString("couponDate", getStoreCouponList[position].expirationDate)
+                        }
 
-                    // 전달할 Fragment 생성
-                    var nextFragment = StoreCouponFragment().apply {
-                        arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
-                    }
+                        // 전달할 Fragment 생성
+                        var nextFragment = StoreCouponFragment().apply {
+                            arguments = bundle // 생성한 Bundle을 Fragment의 arguments에 설정
+                        }
 
-                    mainActivity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView_main, nextFragment)
-                        .addToBackStack(null)
-                        .commit()
+                        mainActivity.supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragmentContainerView_main, nextFragment)
+                            .addToBackStack(null)
+                            .commit()
+                    } else {
+                        val dialog = DialogBasicDescriptionButton("멤버십 구독 중이 아니에요!", "쿠폰을 사용하려면 멤버십이 필요해요\n지금 구독하고 쿠폰 혜택을 받아보세요", "취소", "구독하기")
+
+                        dialog.setBasicDialogInterface(object : BasicDescriptionButtonDialogInterface {
+                            override fun onClickYesButton() {
+                                mainActivity.supportFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                                    .addToBackStack(null)
+                                    .commit()
+                            }
+                        })
+
+                        dialog.show(mainActivity.supportFragmentManager, "DialogStoreCoupon")
+                    }
                 }
             }
         }

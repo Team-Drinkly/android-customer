@@ -15,6 +15,7 @@ import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.util.MainUtil.checkFormat
 import com.project.drinkly.util.MainUtil.parseKoreanDateToCalendar
+import com.project.drinkly.util.MyApplication
 import java.util.Calendar
 
 class PaymentCancelFragment : Fragment() {
@@ -48,19 +49,35 @@ class PaymentCancelFragment : Fragment() {
             }
 
             buttonUnsubscribe.setOnClickListener {
-                // 구독 해지
-                val dialog = DialogBasicButton("멤버십 구독을 해지하시겠습니까?", "아니요", "해지하기", R.color.red)
+                if(arguments?.getBoolean("cardDelete") == true) {
+                    val dialog = DialogBasicButton("멤버십 구독을 해지하고\n카드를 삭제하시겠습니까?", "아니요", "네", R.color.red)
 
-                dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
-                    override fun onClickYesButton() {
+                    dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+                        override fun onClickYesButton() {
+                            // 구독 해지 + 카드 삭제
+                            viewModel.deleteCardMembership(mainActivity) {
+                                MyApplication.isCardDelete = true
 
-                        viewModel.cancelSubscribe(mainActivity) {
-                            parentFragmentManager.popBackStack()
+                                parentFragmentManager.popBackStack()
+                            }
                         }
-                    }
-                })
+                    })
 
-                dialog.show(mainActivity.supportFragmentManager, "DialogUnsubscribe")
+                    dialog.show(mainActivity.supportFragmentManager, "DialogUnsubscribe")
+                } else {
+                    val dialog = DialogBasicButton("멤버십 구독을 해지하시겠습니까?", "아니요", "해지하기", R.color.red)
+
+                    dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
+                        override fun onClickYesButton() {
+                            // 구독 해지
+                            viewModel.cancelSubscribe(mainActivity) {
+                                parentFragmentManager.popBackStack()
+                            }
+                        }
+                    })
+
+                    dialog.show(mainActivity.supportFragmentManager, "DialogUnsubscribe")
+                }
             }
         }
 
@@ -77,7 +94,6 @@ class PaymentCancelFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
         }
 
         binding.run {
@@ -104,9 +120,17 @@ class PaymentCancelFragment : Fragment() {
 
             textViewGuideDescription.text = message
 
+            if(arguments?.getBoolean("cardDelete") == true) {
+                textViewDescription.text = "드링클리 멤버십 구독을 해지하고\n카드를 삭제하시겠습니까?"
+                buttonUnsubscribe.text = "구독 해지하고 카드 삭제하기"
+                toolbar.textViewHead.text = "구독 해지 및 카드 삭제"
+            } else {
+                textViewDescription.text = "드링클리 멤버십 구독을\n해지하시겠습니까?"
+                buttonUnsubscribe.text = "멤버십 구독 해지하기"
+                toolbar.textViewHead.text = "멤버십 구독 해지"
+            }
 
             toolbar.run {
-                textViewHead.text = "멤버십 구독 해지"
                 buttonBack.setOnClickListener {
                     parentFragmentManager.popBackStack()
                 }

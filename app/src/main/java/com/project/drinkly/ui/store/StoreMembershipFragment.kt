@@ -48,7 +48,6 @@ class StoreMembershipFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
         }
 
         binding.run {

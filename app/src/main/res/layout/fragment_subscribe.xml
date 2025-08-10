@@ -28,7 +28,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/color_gradient_subscribe"
+            android:background="@drawable/background_card_radius10"
             android:paddingHorizontal="12dp"
             android:paddingVertical="20dp"
             android:layout_marginTop="20dp"
@@ -51,34 +51,46 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_membership_button"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_primary50_radius10">
 
-                    <Button
-                        android:id="@+id/button_subscribe_membership"
-                        style="@style/MembershipButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="멤버십 구독하기"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/imageView_click"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginBottom="-10dp"
-                        android:src="@drawable/img_click"
-                        app:layout_constraintBottom_toBottomOf="@+id/button_subscribe_membership"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        android:orientation="horizontal"
+                        android:paddingVertical="15dp"
+                        android:gravity="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageView_badge"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_badge_gray1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/button_subscribe_membership"
+                            style="@style/HeadLine5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="멤버십 구독하기"
+                            tools:layout_editor_absoluteX="116dp"
+                            tools:layout_editor_absoluteY="0dp" />
+                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_membership_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_card_radius10"
+                    android:background="@drawable/background_dialog_top_radius10"
                     android:padding="14dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -165,12 +177,23 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <TextView
+                    android:id="@+id/button_order_history"
+                    style="@style/HeadLine5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="15dp"
+                    android:background="@drawable/background_primary50_bottom_radius10"
+                    android:text="멤버십 사용 내역 확인하기"
+                    android:textAlignment="center"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="14dp"
-                    android:background="@drawable/background_dialog_radius12"
-                    android:padding="20dp">
+                    android:background="@drawable/background_dialog_stroke_radius12"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="20dp">
 
                     <TextView
                         android:id="@+id/textView_membership_guide_title"
@@ -186,9 +209,9 @@
                         android:id="@+id/textView_membership_guide_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                         android:fontFamily="@font/pretendard_medium"
-                        android:lineSpacingExtra="5dp"
+                        android:lineSpacingExtra="8dp"
                         android:text="@string/membership_guide"
                         android:textAlignment="textStart"
                         android:textSize="14sp"

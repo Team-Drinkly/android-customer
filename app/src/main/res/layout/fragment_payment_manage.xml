@@ -105,7 +105,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:background="@drawable/background_card_radius10"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"

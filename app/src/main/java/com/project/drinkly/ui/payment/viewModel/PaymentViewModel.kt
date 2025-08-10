@@ -171,6 +171,8 @@ class PaymentViewModel: ViewModel() {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<DeleteCardResponse>? = response.body()
 
+                        registeredCardInfo.value = null
+
                         onSuccess()
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -198,7 +200,51 @@ class PaymentViewModel: ViewModel() {
             })
     }
 
-    fun paymentForSubscribe(activity: MainActivity, onSuccess: () -> Unit) {
+    fun deleteCardMembership(activity: MainActivity, onSuccess: () -> Unit) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.deleteCardMembership("Bearer ${tokenManager.getAccessToken()}")
+            .enqueue(object :
+                Callback<BaseResponse<String?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<String?>>,
+                    response: Response<BaseResponse<String?>>
+                ) {
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<String?>? = response.body()
+
+                        TokenUtil.refreshToken(activity) {
+                            onSuccess()
+                        }
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<String?>? = response.body()
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    deleteCardMembership(activity, onSuccess)
+                                }
+                            }
+                            else -> {
+                                activity.goToLogin()
+                            }
+                        }
+
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
+                    // 통신 실패
+                    activity.goToLogin()
+                }
+            })
+    }
+
+    fun paymentForSubscribe(activity: MainActivity, onSuccess: () -> Unit, onFailure: () -> Unit) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
 
@@ -213,8 +259,15 @@ class PaymentViewModel: ViewModel() {
                         // 정상적으로 통신이 성공된 경우
                         val result: BaseResponse<SubscribePaymentResponse?>? = response.body()
 
-                        TokenUtil.refreshToken(activity) {
-                            onSuccess()
+                        when(result?.payload?.resultCode) {
+                            "0000" -> {
+                                TokenUtil.refreshToken(activity) {
+                                    onSuccess()
+                                }
+                            }
+                            else -> {
+                                onFailure()
+                            }
                         }
                     } else {
                         // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
@@ -224,11 +277,11 @@ class PaymentViewModel: ViewModel() {
                         when(response.code()) {
                             498 -> {
                                 TokenUtil.refreshToken(activity) {
-                                    paymentForSubscribe(activity, onSuccess)
+                                    paymentForSubscribe(activity, onSuccess, onFailure)
                                 }
                             }
                             else -> {
-                                activity.goToLogin()
+                                onFailure()
                             }
                         }
                     }
@@ -236,7 +289,7 @@ class PaymentViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<BaseResponse<SubscribePaymentResponse?>>, t: Throwable) {
                     // 통신 실패
-                    activity.goToLogin()
+                    onFailure()
                 }
             })
     }
