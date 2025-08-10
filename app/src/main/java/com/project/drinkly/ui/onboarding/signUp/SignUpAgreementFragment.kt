@@ -139,7 +139,6 @@ class SignUpAgreementFragment : Fragment() {
             hideBottomNavigation(true)
             hideMyLocationButton(true)
             hideMapButton(true)
-            hideOrderHistoryButton(true)
         }
 
         binding.run {

@@ -116,7 +116,6 @@ class LoginFragment : Fragment() {
                     hideBottomNavigation(false)
                     hideMyLocationButton(true)
                     hideMapButton(true)
-                    hideOrderHistoryButton(true)
                 }
             } else {
                 buttonSeek.visibility = View.VISIBLE
@@ -124,7 +123,6 @@ class LoginFragment : Fragment() {
                     hideBottomNavigation(true)
                     hideMyLocationButton(true)
                     hideMapButton(true)
-                    hideOrderHistoryButton(true)
                 }
             }
         }

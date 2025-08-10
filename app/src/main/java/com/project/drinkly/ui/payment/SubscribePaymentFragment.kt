@@ -51,7 +51,6 @@ class SubscribePaymentFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
         }
 
         mainActivity.updateSubscriptionStatusIfNeeded(activity = mainActivity) { success ->

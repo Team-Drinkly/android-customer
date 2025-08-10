@@ -45,12 +45,22 @@ class SubscribeFragment : Fragment() {
         observeViewModel()
 
         binding.run {
-            buttonSubscribeMembership.setOnClickListener {
+            layoutMembershipButton.setOnClickListener {
                 mixpanel.track("click_subscribe_main", null)
 
                 // 구독권 결제 화면으로 이동
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, SubscribePaymentFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
+
+            buttonOrderHistory.setOnClickListener {
+                mixpanel.track("click_subscribe_history", null)
+
+                // 멤버십 사용 내역 화면으로 이동
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, OrderHistoryFragment())
                     .addToBackStack(null)
                     .commit()
             }
@@ -72,59 +82,11 @@ class SubscribeFragment : Fragment() {
         }
     }
 
-    fun showToolTip() {
-        val balloon = Balloon.Builder(mainActivity)
-                .setWidth(BalloonSizeSpec.WRAP)
-//            .setWidthRatio(0.6f) // sets width as 60% of the horizontal screen's size.
-            .setHeight(BalloonSizeSpec.WRAP)
-            .setText("멤버십 사용 내역을 확인할 수 있어요!")
-            .setTextColorResource(R.color.gray9)
-            .setTextSize(14f)
-            .setTextTypeface(ResourcesCompat.getFont(mainActivity,R.font.pretendard_medium)!!)
-            .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-            .setArrowOrientation(ArrowOrientation.END)
-            .setArrowSize(5)
-            .setArrowPosition(0.5f)
-            .setArrowColorResource(R.color.gray3)
-            .setTextGravity(Gravity.CENTER)
-            .setElevation(0)
-            .setPaddingHorizontal(12)
-            .setPaddingVertical(8)
-            .setMarginHorizontal(5)
-            .setCornerRadius(8f)
-            .setBackgroundDrawableResource(R.drawable.background_tooltip_gray3)
-            .setBalloonAnimation(BalloonAnimation.ELASTIC)
-            .build()
-
-        mainActivity.binding.buttonOrderHistory.showAlignStart(balloon)
-
-        Handler().postDelayed({
-            balloon.dismiss()
-        }, 3000)
-    }
-
     fun initView() {
         mainActivity.run {
             hideBottomNavigation(false)
             hideMapButton(true)
             hideMyLocationButton(true)
-            if(InfoManager(mainActivity).getIsSubscribe() == true) {
-                hideOrderHistoryButton(false)
-                showToolTip()
-
-                viewModel.getOrderHistory(mainActivity)
-            } else {
-                hideOrderHistoryButton(true)
-            }
-
-            binding.buttonOrderHistory.setOnClickListener {
-                mixpanel.track("click_subscribe_history", null)
-
-                mainActivity.supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainerView_main, OrderHistoryFragment())
-                    .addToBackStack(null)
-                    .commit()
-            }
         }
 
         binding.run {
@@ -133,6 +95,7 @@ class SubscribeFragment : Fragment() {
             textViewNickname.text = "${infoManager.getUserNickname()}"
             if(infoManager.getIsSubscribe() == true) {
                 // 멤버십 사용 내역 조회
+                viewModel.getOrderHistory(mainActivity)
 
                 layoutMembershipButton.visibility = View.GONE
 
@@ -141,6 +104,7 @@ class SubscribeFragment : Fragment() {
             } else {
                 layoutSubscribe.visibility = View.GONE
                 layoutMembershipInfo.visibility = View.GONE
+                buttonOrderHistory.visibility = View.GONE
             }
 
             toolbar.run {

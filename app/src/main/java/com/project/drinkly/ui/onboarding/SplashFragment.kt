@@ -30,7 +30,6 @@ class SplashFragment : Fragment() {
             hideBottomNavigation(true)
             hideMyLocationButton(true)
             hideMapButton(true)
-            hideOrderHistoryButton(true)
         }
 
         Handler().postDelayed({

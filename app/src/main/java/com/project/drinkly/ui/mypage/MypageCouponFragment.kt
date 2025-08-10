@@ -76,7 +76,6 @@ class MypageCouponFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
 
             updateSubscriptionStatusIfNeeded(activity = mainActivity) { success ->
                 if (success) {

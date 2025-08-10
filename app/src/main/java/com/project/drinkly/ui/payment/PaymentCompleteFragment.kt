@@ -37,7 +37,6 @@ class PaymentCompleteFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
         }
     }
 }

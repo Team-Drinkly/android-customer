@@ -418,7 +418,6 @@ class StoreDetailFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
         }
 
         if (!MyApplication.isLogin) {

@@ -71,7 +71,6 @@ class MypageNotificationFragment : Fragment() {
             hideBottomNavigation(true)
             hideMapButton(true)
             hideMyLocationButton(true)
-            hideOrderHistoryButton(true)
         }
 
         viewModel.getNotificationStatus(mainActivity)
