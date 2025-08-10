@@ -15,6 +15,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MainUtil.checkFormat
 import java.util.Calendar
 
@@ -104,10 +105,14 @@ class SubscribePaymentFragment : Fragment() {
                             backgroundTintList = resources.getColorStateList(R.color.primary_50)
 
                             setOnClickListener {
+                                mixpanel.track("click_revert_membership", null)
+
                                 val dialog = DialogBasicButton("멤버십 해지를 취소하고 계속해서 드링클리 혜택을 누리시겠어요?", "아니요", "해지 취소하기", R.color.primary_50)
 
                                 dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                                     override fun onClickYesButton() {
+                                        mixpanel.track("click_revert_membership_confirm", null)
+
                                         // 구독 해지 요청 취소
                                         viewModel.revertCancelSubscribe(mainActivity) {
                                             viewModel.getSubscribeStatusInfo(mainActivity)
@@ -130,6 +135,8 @@ class SubscribePaymentFragment : Fragment() {
                             visibility = View.VISIBLE
 
                             setOnClickListener {
+                                mixpanel.track("move_subscribe_to_membership_cancel", null)
+
                                 // 구독 해지
                                 mainActivity.supportFragmentManager.beginTransaction()
                                     .replace(R.id.fragmentContainerView_main, PaymentCancelFragment())
@@ -159,6 +166,8 @@ class SubscribePaymentFragment : Fragment() {
                     textViewSubscribeDay.text = "$today ~ ${checkFormat(calendar)}"
 
                     setOnClickListener {
+                        mixpanel.track("move_subscribe_to_payment", null)
+
                         // 구독권 결제 수단 관리 화면으로 이동
                         val bundle = Bundle().apply {
                             putBoolean("payment", true)

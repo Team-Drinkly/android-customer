@@ -23,6 +23,7 @@ import com.project.drinkly.ui.dialog.DialogBasicDescription
 import com.project.drinkly.ui.onboarding.LoginFragment
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.ui.store.StoreMembershipFragment
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class PaymentManageFragment : Fragment() {
@@ -48,6 +49,8 @@ class PaymentManageFragment : Fragment() {
 
         binding.run {
             layoutCardEmpty.setOnClickListener {
+                mixpanel.track("move_payment_to_card_register", null)
+
                 mainActivity.supportFragmentManager.beginTransaction()
                     .replace(R.id.fragmentContainerView_main, PaymentCardInfoFragment())
                     .addToBackStack(null)
@@ -66,6 +69,8 @@ class PaymentManageFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mixpanel.track("click_payment_confirm", null)
+
                 // 구독권 결제
                 buttonNext.isEnabled = false
 
@@ -77,6 +82,8 @@ class PaymentManageFragment : Fragment() {
                         .commit()
                     },
                     onFailure = {
+                        mixpanel.track("click_payment_error", null)
+
                         buttonNext.isEnabled = true
 
                         val dialog = DialogBasicDescription("카드 결제를 실패했어요!", "은행 점검 시간이거나 카드 잔액이 부족하여\n결제가 진행되지 않았어요", "다시 시도해볼게요")
@@ -154,6 +161,8 @@ class PaymentManageFragment : Fragment() {
 
                             var cardOrderId = it.orderId
                             buttonCardDelete.setOnClickListener {
+                                mixpanel.track("click_card_delete", null)
+
                                 // 카드 삭제
                                 when(status) {
                                     "ACTIVE" -> showCardDeleteDialog(
@@ -192,6 +201,8 @@ class PaymentManageFragment : Fragment() {
         dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
             override fun onClickYesButton() {
                 if(isAvailable) {
+                    mixpanel.track("click_card_delete_confirm", null)
+
                     viewModel.deleteCard(mainActivity, cardOrderId) {
                         binding.run {
                             layoutCardEmpty.visibility = View.VISIBLE
@@ -207,6 +218,8 @@ class PaymentManageFragment : Fragment() {
                         )
                     }
                 } else {
+                    mixpanel.track("move_card_delete_and_cancel", null)
+
                     val bundle = Bundle().apply {
                         putBoolean("cardDelete", true)
                     }

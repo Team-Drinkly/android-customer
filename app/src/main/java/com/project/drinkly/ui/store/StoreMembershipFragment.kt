@@ -6,15 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentStoreMembershipBinding
 import com.project.drinkly.ui.MainActivity
-import com.project.drinkly.ui.store.viewModel.StoreViewModel
-import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 
 class StoreMembershipFragment : Fragment() {
 

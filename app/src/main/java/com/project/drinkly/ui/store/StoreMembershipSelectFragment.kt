@@ -71,6 +71,7 @@ class StoreMembershipSelectFragment : Fragment() {
             }
 
             buttonNext.setOnClickListener {
+                mixpanel.track("click_membership_use", null)
                 // 멤버십 사용
                 viewModel.useMembership(mainActivity, getStoreDetailInfo?.storeId ?: 0, getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.imageId ?: 0, getStoreDetailInfo?.availableDrinkImageUrls?.get(selectedPosition)?.description.toString()) {
                     val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREAN)

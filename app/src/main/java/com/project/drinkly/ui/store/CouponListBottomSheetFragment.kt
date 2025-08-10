@@ -58,6 +58,8 @@ class CouponListBottomSheetFragment(var activity: MainActivity, var coupons: Mut
             }
 
             buttonDownloadAll.setOnClickListener {
+                mixpanel.track("click_detail_coupon_list_download_all", null)
+
                 // 쿠폰 전체 다운로드
                 viewModel.downloadAllCoupon(activity, storeId) {
                     viewModel.getStoreCoupon(activity, storeId)

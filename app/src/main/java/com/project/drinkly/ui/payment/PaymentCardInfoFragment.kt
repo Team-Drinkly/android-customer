@@ -25,6 +25,7 @@ import com.project.drinkly.ui.dialog.BasicDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasic
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 import com.project.drinkly.util.EncryptManager
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MyApplication
 
 class PaymentCardInfoFragment : Fragment() {
@@ -179,6 +180,8 @@ class PaymentCardInfoFragment : Fragment() {
             }
 
             buttonRegister.setOnClickListener {
+                mixpanel.track("click_card_register", null)
+
                 val encData = EncryptManager.encryptCardInfo(
                     cardNo = cardNumber,
                     expYear = expiredDate.substring(2..3),
@@ -200,7 +203,7 @@ class PaymentCardInfoFragment : Fragment() {
 
                         dialog.setBasicDialogInterface(object : BasicDialogInterface {
                             override fun onClickYesButton() {
-
+                                mixpanel.track("click_card_register_info_error", null)
                             }
                         })
 

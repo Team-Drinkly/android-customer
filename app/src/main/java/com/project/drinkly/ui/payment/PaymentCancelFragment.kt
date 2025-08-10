@@ -13,6 +13,7 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.dialog.BasicButtonDialogInterface
 import com.project.drinkly.ui.dialog.DialogBasicButton
 import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
 import com.project.drinkly.util.MainUtil.checkFormat
 import com.project.drinkly.util.MainUtil.parseKoreanDateToCalendar
 import com.project.drinkly.util.MyApplication
@@ -50,10 +51,14 @@ class PaymentCancelFragment : Fragment() {
 
             buttonUnsubscribe.setOnClickListener {
                 if(arguments?.getBoolean("cardDelete") == true) {
+                    mixpanel.track("click_card_delete_and_cancel", null)
+
                     val dialog = DialogBasicButton("멤버십 구독을 해지하고\n카드를 삭제하시겠습니까?", "아니요", "네", R.color.red)
 
                     dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                         override fun onClickYesButton() {
+                            mixpanel.track("click_card_delete_and_cancel_confirm", null)
+
                             // 구독 해지 + 카드 삭제
                             viewModel.deleteCardMembership(mainActivity) {
                                 MyApplication.isCardDelete = true
@@ -65,10 +70,14 @@ class PaymentCancelFragment : Fragment() {
 
                     dialog.show(mainActivity.supportFragmentManager, "DialogUnsubscribe")
                 } else {
+                    mixpanel.track("click_membership_cancel", null)
+
                     val dialog = DialogBasicButton("멤버십 구독을 해지하시겠습니까?", "아니요", "해지하기", R.color.red)
 
                     dialog.setBasicDialogInterface(object : BasicButtonDialogInterface {
                         override fun onClickYesButton() {
+                            mixpanel.track("click_membership_cancel_confirm", null)
+
                             // 구독 해지
                             viewModel.cancelSubscribe(mainActivity) {
                                 parentFragmentManager.popBackStack()
