@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -66,6 +67,33 @@ class MainActivity : AppCompatActivity() {
             //상태바 아이콘(true: 검정 / false: 흰색)
             WindowInsetsControllerCompat(this, this.decorView).isAppearanceLightStatusBars = false
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView_main)
+
+                if (supportFragmentManager.backStackEntryCount == 0 &&
+                    (currentFragment is LoginFragment || currentFragment is StoreMapFragment ||
+                            currentFragment is SubscribeFragment || currentFragment is MypageFragment)) {
+
+                    val tempTime = System.currentTimeMillis()
+                    val intervalTime = tempTime - backPressedTime
+
+                    if (intervalTime in 0..FINISH_INTERVAL_TIME) {
+                        finish()
+                    } else {
+                        backPressedTime = tempTime
+                        Toast.makeText(this@MainActivity, "한 번 더 누르면 앱이 종료됩니다", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    if (supportFragmentManager.backStackEntryCount > 0) {
+                        supportFragmentManager.popBackStack()
+                    } else {
+                        finish()
+                    }
+                }
+            }
+        })
 
         setContentView(binding.root)
     }
@@ -272,26 +300,6 @@ class MainActivity : AppCompatActivity() {
             if (this::sharedPreferenceManager.isInitialized) {
                 sharedPreferenceManager.setFCMToken(token)
             }
-        }
-    }
-
-    override fun onBackPressed() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView_main)
-
-        // 백스택이 비어있고, 현재 화면이 첫 화면일 경우 → 두 번 눌러 종료 로직
-        if (supportFragmentManager.backStackEntryCount == 0 && (currentFragment is LoginFragment || currentFragment is StoreMapFragment || currentFragment is SubscribeFragment || currentFragment is MypageFragment)) {
-            val tempTime = System.currentTimeMillis()
-            val intervalTime = tempTime - backPressedTime
-
-            if (intervalTime in 0..FINISH_INTERVAL_TIME) {
-                super.onBackPressed() // 앱 종료
-            } else {
-                backPressedTime = tempTime
-                Toast.makeText(this, "한 번 더 누르면 앱이 종료됩니다", Toast.LENGTH_SHORT).show()
-            }
-        } else {
-            // 기본 뒤로가기 동작
-            super.onBackPressed()
         }
     }
 }
