@@ -153,6 +153,12 @@
         <item name="cornerFamily">rounded</item>
     </style>
 
+    <style name="TopRoundSector9">
+        <item name="cornerSizeTopLeft">9.14dp</item>
+        <item name="cornerSizeTopRight">9.14dp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
+
     <style name="TopRoundSector10">
         <item name="cornerSizeTopLeft">10dp</item>
         <item name="cornerSizeTopRight">10dp</item>
