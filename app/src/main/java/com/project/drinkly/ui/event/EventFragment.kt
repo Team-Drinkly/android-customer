@@ -1,18 +1,21 @@
 package com.project.drinkly.ui.event
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentEventBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.event.adapter.MainGeneralEventListAdapter
 import com.project.drinkly.ui.event.viewModel.EventViewModel
-import com.project.drinkly.ui.payment.PaymentCardInfoFragment
-import com.project.drinkly.ui.payment.viewModel.PaymentViewModel
 
 class EventFragment : Fragment() {
 
@@ -22,6 +25,9 @@ class EventFragment : Fragment() {
         ViewModelProvider(requireActivity())[EventViewModel::class.java]
     }
 
+    lateinit var mainGeneralEventListAdapter: MainGeneralEventListAdapter
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +36,7 @@ class EventFragment : Fragment() {
         binding = FragmentEventBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
 
+        initAdapter()
         observeViewModel()
 
         binding.run {
@@ -42,7 +49,16 @@ class EventFragment : Fragment() {
             }
 
             layoutGeneralEventMore.setOnClickListener {
+                // 외부 이벤트 목록 화면
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, GeneralEventListFragment())
+                    .addToBackStack(null)
+                    .commit()
+            }
 
+            recyclerViewGeneralEvent.apply {
+                adapter = mainGeneralEventListAdapter
+                layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
             }
         }
 
@@ -86,6 +102,25 @@ class EventFragment : Fragment() {
                     }
                 }
             }
+
+            generalEventList.observe(viewLifecycleOwner) {
+                mainGeneralEventListAdapter.updateList(it)
+            }
+        }
+    }
+
+    fun initAdapter() {
+        mainGeneralEventListAdapter = MainGeneralEventListAdapter(
+            mainActivity,
+            viewModel.generalEventList.value
+        ).apply {
+            itemClickListener = object : MainGeneralEventListAdapter.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    // 외부 행사 링크
+                    var intent = Intent(Intent.ACTION_VIEW, Uri.parse(viewModel.generalEventList.value?.get(position)?.redirectUrl))
+                    startActivity(intent)
+                }
+            }
         }
     }
 
@@ -99,6 +134,7 @@ class EventFragment : Fragment() {
         binding.toolbar.textViewHead.text = "이벤트"
 
         viewModel.getDrinklyEventList(mainActivity)
+        viewModel.getGeneralEventList(mainActivity)
     }
 
 }
