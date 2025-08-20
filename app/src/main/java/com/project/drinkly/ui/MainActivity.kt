@@ -24,6 +24,7 @@ import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.TokenUtil
 import com.project.drinkly.databinding.ActivityMainBinding
 import com.project.drinkly.ui.dialog.DialogEvent
+import com.project.drinkly.ui.event.EventFragment
 import com.project.drinkly.ui.mypage.MypageFragment
 import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.onboarding.LoginFragment
@@ -163,6 +164,13 @@ class MainActivity : AppCompatActivity() {
                             .replace(R.id.fragmentContainerView_main, nextFragment)
                             .commit()
                     }
+                    true
+                }
+
+                R.id.menu_event -> {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, EventFragment())
+                        .commit()
                     true
                 }
 
