@@ -9,6 +9,7 @@ import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponResponse
+import com.project.drinkly.api.response.event.DrinklyEventResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
@@ -234,6 +235,12 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("couponId") couponId: Long
     ): Call<BaseResponse<String?>>
+
+    /* 이벤트 관련 API (Event) */
+
+    // 드링클리 이벤트 리스트 조회
+    @GET("/api/v1/event/m")
+    fun getDrinklyEventList(): Call<BaseResponse<List<DrinklyEventResponse>>>
 
 
     /* 결제 관련 API (Payment) */
