@@ -7,6 +7,7 @@ import com.project.drinkly.api.ApiClient
 import com.project.drinkly.api.TokenManager
 import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.event.DrinklyEventResponse
+import com.project.drinkly.api.response.event.EventDetailResponse
 import com.project.drinkly.api.response.event.GeneralEventResponse
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.ui.MainActivity
@@ -18,6 +19,8 @@ class EventViewModel: ViewModel() {
 
     var drinklyEventList: MutableLiveData<MutableList<DrinklyEventResponse>?> = MutableLiveData()
     var generalEventList: MutableLiveData<MutableList<GeneralEventResponse>?> = MutableLiveData()
+
+    var eventDetail: MutableLiveData<EventDetailResponse?> = MutableLiveData()
 
     fun getDrinklyEventList(activity: MainActivity) {
         val apiClient = ApiClient(activity)
@@ -85,6 +88,42 @@ class EventViewModel: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<BaseResponse<List<GeneralEventResponse>>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
+                }
+            })
+    }
+
+    fun getEventDetail(activity: MainActivity, eventId: Long) {
+        val apiClient = ApiClient(activity)
+
+        apiClient.apiService.getEventDetail(eventId)
+            .enqueue(object :
+                Callback<BaseResponse<EventDetailResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<EventDetailResponse>>,
+                    response: Response<BaseResponse<EventDetailResponse>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<EventDetailResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                        eventDetail.value = result?.payload
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<EventDetailResponse>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<EventDetailResponse>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
 

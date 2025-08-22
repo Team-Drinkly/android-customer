@@ -10,6 +10,7 @@ import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponResponse
 import com.project.drinkly.api.response.event.DrinklyEventResponse
+import com.project.drinkly.api.response.event.EventDetailResponse
 import com.project.drinkly.api.response.event.GeneralEventResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
@@ -247,6 +248,11 @@ interface ApiService {
     @GET("/api/v1/event/m/external")
     fun getGeneralEventList(): Call<BaseResponse<List<GeneralEventResponse>>>
 
+    // 일반 이벤트 상세 조회
+    @GET("/api/v1/event/m/{eventId}")
+    fun getEventDetail(
+        @Path("eventId") eventId: Long
+    ): Call<BaseResponse<EventDetailResponse>>
 
     /* 결제 관련 API (Payment) */
 

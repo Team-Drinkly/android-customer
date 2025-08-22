@@ -1,7 +1,7 @@
 package com.project.drinkly.api.response.event
 
 data class DrinklyEventResponse(
-    val eventId: Int,
+    val eventId: Long,
     val eventCategory: String,
     val thumbnailPath: String,
     val title: String,
