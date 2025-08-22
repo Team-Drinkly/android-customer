@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.project.drinkly.R
 import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.FragmentDrinklyEventListBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.event.adapter.DrinklyEventListAdapter
 import com.project.drinkly.ui.event.viewModel.EventViewModel
+import com.project.drinkly.ui.onboarding.LoginFragment
 
 class DrinklyEventListFragment : Fragment() {
 
@@ -57,7 +59,16 @@ class DrinklyEventListFragment : Fragment() {
         ).apply {
             itemClickListener = object : DrinklyEventListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    val bundle = Bundle().apply { putLong("eventId", viewModel.drinklyEventList.value?.get(position)?.eventId ?: 0) }
 
+                    var nextFragment = EventDetailFragment().apply {
+                        arguments = bundle
+                    }
+
+                    mainActivity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainerView_main, nextFragment)
+                        .addToBackStack(null)
+                        .commit()
                 }
             }
         }

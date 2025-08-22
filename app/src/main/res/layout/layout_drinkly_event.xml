@@ -6,74 +6,85 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="20dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView_event"
-        android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/TopRoundSector9"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_event"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/layout_expired"
-        android:layout_width="0dp"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        android:background="#80000000"
-        app:shapeAppearanceOverlay="@style/TopRoundSector9"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_event"
-        app:layout_constraintStart_toStartOf="@+id/imageView_event"
-        app:layout_constraintTop_toTopOf="@+id/imageView_event" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView_event"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/TopRoundSector9" />
 
-    <TextView
-        android:id="@+id/textView_event_name"
-        style="@style/SubTitle3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_dialog_bottom_radius10"
-        android:text="이벤트"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageView_event"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_event" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView_event"
-        app:layout_constraintTop_toTopOf="@+id/imageView_event">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/layout_expired"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:background="#80000000"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_event"
+            app:layout_constraintStart_toStartOf="@+id/imageView_event"
+            app:layout_constraintTop_toTopOf="@+id/imageView_event"
+            app:shapeAppearanceOverlay="@style/TopRoundSector9" />
 
         <TextView
-            android:id="@+id/textView_tag_type"
-            style="@style/Nav"
-            android:layout_width="wrap_content"
+            android:id="@+id/textView_event_name"
+            style="@style/SubTitle3"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/background_primary50_radius6"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="5dp"
-            android:text="진행중"
-            android:textAlignment="center" />
+            android:background="@drawable/background_dialog_bottom_radius10"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp"
+            android:text="이벤트"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/imageView_event"
+            app:layout_constraintTop_toBottomOf="@+id/imageView_event" />
 
-        <TextView
-            android:id="@+id/textView_tag_day"
-            style="@style/Nav"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_gray3_radius6"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="5dp"
-            android:text="D-0"
-            android:textColor="@color/primary_50"
-            android:textAlignment="center" />
-    </LinearLayout>
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/imageView_event"
+            app:layout_constraintTop_toTopOf="@+id/imageView_event">
+
+            <TextView
+                android:id="@+id/textView_tag_type"
+                style="@style/Nav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/background_primary50_radius6"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="5dp"
+                android:text="진행중"
+                android:textAlignment="center" />
+
+            <TextView
+                android:id="@+id/textView_tag_day"
+                style="@style/Nav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_gray3_radius6"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="5dp"
+                android:text="D-0"
+                android:textAlignment="center"
+                android:textColor="@color/primary_50" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

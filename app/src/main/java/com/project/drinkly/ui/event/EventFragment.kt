@@ -40,6 +40,19 @@ class EventFragment : Fragment() {
         observeViewModel()
 
         binding.run {
+            layoutDrinklyEvent.layoutEvent.setOnClickListener {
+                val bundle = Bundle().apply { putLong("eventId", viewModel.drinklyEventList.value?.get(0)?.eventId ?: 0) }
+
+                var nextFragment = EventDetailFragment().apply {
+                    arguments = bundle
+                }
+
+                mainActivity.supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragmentContainerView_main, nextFragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+
             layoutDrinklyEventMore.setOnClickListener {
                 // 드링클리 이벤트 목록 화면
                 mainActivity.supportFragmentManager.beginTransaction()
