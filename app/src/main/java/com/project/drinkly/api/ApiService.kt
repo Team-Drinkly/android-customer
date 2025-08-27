@@ -11,6 +11,7 @@ import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponResponse
 import com.project.drinkly.api.response.event.DrinklyEventResponse
 import com.project.drinkly.api.response.event.EventDetailResponse
+import com.project.drinkly.api.response.event.EventFriendInviteCodeResponse
 import com.project.drinkly.api.response.event.EventFriendInviteHistoryResponse
 import com.project.drinkly.api.response.event.GeneralEventResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
@@ -262,6 +263,12 @@ interface ApiService {
     fun getEventFriendInviteHistory(
         @Header("Authorization") token: String
     ): Call<BaseResponse<EventFriendInviteHistoryResponse>>
+
+    // 친구 초대 이벤트 초대 코드 생성 및 조회
+    @GET("/api/v1/member/n/invite-history/code")
+    fun getEventFriendInviteCode(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<EventFriendInviteCodeResponse>>
 
     /* 결제 관련 API (Payment) */
 

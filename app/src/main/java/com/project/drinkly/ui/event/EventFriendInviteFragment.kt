@@ -52,6 +52,11 @@ class EventFriendInviteFragment : Fragment() {
 
             buttonInvite.setOnClickListener {
                 // 초대 bottom sheet
+                viewModel.getEventFriendInviteCode(mainActivity) { inviteCode ->
+                    val bottomSheet = EventFriendInviteBottomSheetFragment(mainActivity, inviteCode)
+
+                    bottomSheet.show(childFragmentManager, bottomSheet.tag)
+                }
             }
         }
 
