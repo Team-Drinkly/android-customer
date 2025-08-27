@@ -16,6 +16,7 @@ import com.project.drinkly.ui.event.adapter.DrinklyEventListAdapter
 import com.project.drinkly.ui.event.adapter.EventFriendInviteAdapter
 import com.project.drinkly.ui.event.adapter.EventFriendInviteGuideAdapter
 import com.project.drinkly.ui.event.viewModel.EventViewModel
+import com.project.drinkly.ui.store.CouponListBottomSheetFragment
 
 class EventFriendInviteFragment : Fragment() {
 
@@ -25,6 +26,8 @@ class EventFriendInviteFragment : Fragment() {
         ViewModelProvider(requireActivity())[EventViewModel::class.java]
     }
 
+    lateinit var friendListAdapter: EventFriendInviteAdapter
+    lateinit var guideAdapter: EventFriendInviteGuideAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +40,19 @@ class EventFriendInviteFragment : Fragment() {
         initAdapter()
 
         binding.run {
+            recyclerViewFriend.run {
+                adapter = friendListAdapter
+                layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+            }
+
+            recyclerViewGuide.run {
+                adapter = guideAdapter
+                layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            }
+
+            buttonInvite.setOnClickListener {
+                // 초대 bottom sheet
+            }
         }
 
         return binding.root
@@ -49,6 +65,27 @@ class EventFriendInviteFragment : Fragment() {
     }
 
     fun initAdapter() {
+        friendListAdapter = EventFriendInviteAdapter(
+            mainActivity,
+            viewModel.eventFriendInviteHistory.value?.nickname as MutableList<String>?
+        )
+
+        guideAdapter = EventFriendInviteGuideAdapter(
+            mainActivity,
+            resources.getTextArray(R.array.event_guide_friend_invite).map { it.toString() }
+        )
+    }
+
+    fun observeViewModel() {
+        viewModel.run {
+            eventFriendInviteHistory.observe(viewLifecycleOwner) {
+                binding.run {
+                    textViewFriendNumber.text = "${it}명"
+
+                    friendListAdapter.updateList(it?.nickname as MutableList<String>?)
+                }
+            }
+        }
     }
 
     fun initView() {
@@ -57,6 +94,8 @@ class EventFriendInviteFragment : Fragment() {
             hideMapButton(true)
             hideMyLocationButton(true)
         }
+
+        viewModel.getEventFriendInviteHistory(mainActivity)
 
         binding.toolbar.run {
             textViewHead.text = "이벤트"
