@@ -36,11 +36,21 @@
     <string name="coupon_caution">쿠폰 사용 버튼은 매장 직원만 클릭 할 수 있습니다.\n부주의로 인해 사용하신 경우 재사용이 불가능합니다.</string>
     <string name="coupon_guide">- 쿠폰 사용 조건 충족 시 사용 가능\n- 쿠폰 중복 사용 불가</string>
 
+    <!-- 친구초대 안내사항 -->
+    <array name="event_guide_friend_invite">
+        <item>- 본 이벤트는 초대한 친구가 앱에 가입하고 초대 코드를 입력해야 정상 초대로 인정돼요.</item>
+        <item>- 3명 초대 시, 드링클리 30일 멤버십 쿠폰이 지급돼요.</item>
+        <item>- 초대된 친구가 중간에 탈퇴하거나 코드 미입력 시, 정상 초대 인원으로 포함되지 않아요.</item>
+        <item>- 멤버십 쿠폰은 초대 조건 달성 후 앱 내 알림 또는 쿠폰함으로 자동 지급돼요.</item>
+        <item>- 초대는 중복 참여 가능하지만, 쿠폰은 계정당 1회만 지급돼요.</item>
+        <item>- 이벤트 기간 내에 초대 조건을 달성한 인원만 보상을 받을 수 있어요.</item>
+        <item>- 부정한 방법(허위 계정 생성 등)으로 참여할 경우, 지급이 제한될 수 있어요.</item>
+    </array>
+
     <!-- 계정 탈퇴 안내사항 -->
     <string name="withdrawal_guide">탈퇴시 현재 구독중인 멤버십이 사라집니다.\n탈퇴 후, 24시간 뒤 재가입할 수 있습니다.</string>
 
     <!-- underline 버튼 -->
     <string name="button_card_delete"><u>카드삭제</u></string>
     <string name="button_membership_unsubscribe"><u>해지하기</u></string>
-
 </resources>
