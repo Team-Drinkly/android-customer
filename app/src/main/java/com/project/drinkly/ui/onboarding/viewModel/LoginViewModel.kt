@@ -224,10 +224,9 @@ class LoginViewModel : ViewModel() {
             })
     }
 
-    fun signUp(activity: MainActivity, nickname: String) {
+    fun signUp(activity: MainActivity, nickname: String, onSuccess: () -> Unit) {
         val apiClient = ApiClient(activity)
         val tokenManager = TokenManager(activity)
-        val viewModel = ViewModelProvider(activity)[MypageViewModel::class.java]
 
         apiClient.apiService.signUp(SignUpRequest(MyApplication.oauthId, nickname))
             .enqueue(object :
@@ -251,14 +250,9 @@ class LoginViewModel : ViewModel() {
 
                                 TokenUtil.getSubscribeInfo(activity)
 
-                                // 앱 다운로드 이벤트 쿠폰 발급
-                                viewModel.getCoupon(activity, "INITIAL")
-                                viewModel.checkReserve(activity)
-
                                 MyApplication.isLogin = true
 
-                                // 홈화면 이동
-                                activity.setBottomNavigationHome()
+                                onSuccess()
                             }
                         }
                     } else {
@@ -272,6 +266,49 @@ class LoginViewModel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<BaseResponse<SignUpResponse>>, t: Throwable) {
+                    // 통신 실패
+                    Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
+
+                    activity.goToLogin()
+                }
+            })
+    }
+
+    fun inviteWithEventFriendInviteCode(activity: MainActivity, code: String) {
+        val apiClient = ApiClient(activity)
+        val tokenManager = TokenManager(activity)
+
+        apiClient.apiService.inviteWithEventFriendInviteCode("Bearer ${tokenManager.getAccessToken()}", code)
+            .enqueue(object :
+                Callback<BaseResponse<String?>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<String?>>,
+                    response: Response<BaseResponse<String?>>
+                ) {
+                    Log.d("DrinklyViewModel", "onResponse 성공: " + response.body().toString())
+                    if (response.isSuccessful) {
+                        // 정상적으로 통신이 성공된 경우
+                        val result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 성공: " + result?.toString())
+
+                    } else {
+                        // 통신이 실패한 경우(응답코드 3xx, 4xx 등)
+                        var result: BaseResponse<String?>? = response.body()
+                        Log.d("DrinklyViewModel", "onResponse 실패: " + response.body())
+                        val errorBody = response.errorBody()?.string() // 에러 응답 데이터를 문자열로 얻음
+                        Log.d("DrinklyViewModel", "Error Response: $errorBody")
+
+                        when(response.code()) {
+                            498 -> {
+                                TokenUtil.refreshToken(activity) {
+                                    inviteWithEventFriendInviteCode(activity, code)
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<String?>>, t: Throwable) {
                     // 통신 실패
                     Log.d("DrinklyViewModel", "onFailure 에러: " + t.message.toString())
 

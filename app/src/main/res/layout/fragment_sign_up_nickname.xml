@@ -17,8 +17,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView_title"
-        style="@style/HeadLine2"
+        android:id="@+id/textView_nickname_title"
+        style="@style/HeadLine3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
@@ -27,30 +27,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-    <TextView
-        android:id="@+id/textView_description"
-        style="@style/body1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:text="드링클리 앱 내에서 사용될 닉네임을 설정해주세요."
-        android:textColor="@color/gray6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_title" />
-
     <EditText
         android:id="@+id/editText_nickname"
         style="@style/SignUpEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
-        android:inputType="text"
         android:hint="닉네임 입력하기"
-        app:layout_constraintEnd_toEndOf="@+id/textView_description"
-        app:layout_constraintStart_toStartOf="@+id/textView_description"
-        app:layout_constraintTop_toBottomOf="@+id/textView_description" />
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_nickname_title" />
 
     <TextView
         android:id="@+id/textView_nickname_description"
@@ -64,6 +52,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_nickname" />
+
+    <TextView
+        android:id="@+id/textView_code_title"
+        style="@style/HeadLine3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="초대코드를 입력해주세요(선택)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_nickname_description" />
+
+    <EditText
+        android:id="@+id/editText_code"
+        style="@style/SignUpEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="초대코드 입력하기"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_code_title" />
 
     <Button
         android:id="@+id/button_next"

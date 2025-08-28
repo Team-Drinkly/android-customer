@@ -270,6 +270,13 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<BaseResponse<EventFriendInviteCodeResponse>>
 
+    // 친구 초대 이벤트 히스토리 생성
+    @POST("/api/v1/member/n/invite-history")
+    fun inviteWithEventFriendInviteCode(
+        @Header("Authorization") token: String,
+        @Header("invite-code") inviteCode: String
+    ): Call<BaseResponse<String?>>
+
     /* 결제 관련 API (Payment) */
 
     // 구독 상태값 조회
