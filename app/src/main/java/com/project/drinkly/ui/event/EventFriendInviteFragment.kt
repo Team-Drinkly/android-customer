@@ -85,9 +85,27 @@ class EventFriendInviteFragment : Fragment() {
         viewModel.run {
             eventFriendInviteHistory.observe(viewLifecycleOwner) {
                 binding.run {
-                    textViewFriendNumber.text = "${it}명"
+                    textViewFriendNumber.text = "${it?.count}명"
+                    if((it?.count ?: 0) < 3) {
+                        textViewEventBenefit.run {
+                            text = "${3 - (it?.count ?: 0)}명만 더 초대하면, 7일 멤버십 쿠폰 지급 \uD83C\uDF81"
+                            setBackgroundResource(R.drawable.background_dialog_radius10)
+                        }
+                    } else {
+                        textViewEventBenefit.run {
+                            text = "7일 멤버십 쿠폰 지급 완료 \uD83C\uDF81"
+                            setBackgroundResource(R.drawable.background_transparent_primary50_stroke_radius10)
+                        }
+                    }
 
-                    friendListAdapter.updateList(it?.nickname as MutableList<String>?)
+                    if(it?.nickname.isNullOrEmpty()) {
+                        layoutEmpty.visibility = View.VISIBLE
+                        recyclerViewFriend.visibility = View.GONE
+                    } else {
+                        recyclerViewFriend.visibility = View.VISIBLE
+                        layoutEmpty.visibility = View.GONE
+                        friendListAdapter.updateList(it?.nickname as MutableList<String>?)
+                    }
                 }
             }
         }
