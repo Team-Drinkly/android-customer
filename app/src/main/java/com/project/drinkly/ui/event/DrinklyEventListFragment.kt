@@ -1,6 +1,7 @@
 package com.project.drinkly.ui.event
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,9 @@ import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.ui.event.adapter.DrinklyEventListAdapter
 import com.project.drinkly.ui.event.viewModel.EventViewModel
 import com.project.drinkly.ui.onboarding.LoginFragment
+import com.project.drinkly.ui.subscribe.SubscribeFragment
+import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
+import com.project.drinkly.util.MyApplication
 
 class DrinklyEventListFragment : Fragment() {
 
@@ -59,16 +63,38 @@ class DrinklyEventListFragment : Fragment() {
         ).apply {
             itemClickListener = object : DrinklyEventListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int) {
-                    val bundle = Bundle().apply { putLong("eventId", viewModel.drinklyEventList.value?.get(position)?.eventId ?: 0) }
+                    when(viewModel.drinklyEventList.value?.get(position)?.eventCategory) {
+                        "INVITE_FRIEND" -> {
+                            if(MyApplication.isLogin) {
+                                mainActivity.supportFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainerView_main, EventFriendInviteFragment())
+                                    .addToBackStack(null)
+                                    .commit()
+                            } else {
+                                val bundle = Bundle().apply { putBoolean("isEnter", true) }
 
-                    var nextFragment = EventDetailFragment().apply {
-                        arguments = bundle
+                                var nextFragment = LoginFragment().apply {
+                                    arguments = bundle
+                                }
+
+                                mainActivity.supportFragmentManager.beginTransaction()
+                                    .replace(R.id.fragmentContainerView_main, nextFragment)
+                                    .commit()
+                            }
+                        }
+                        else -> {
+                            val bundle = Bundle().apply { putLong("eventId", viewModel.drinklyEventList.value?.get(position)?.eventId ?: 0) }
+
+                            var nextFragment = EventDetailFragment().apply {
+                                arguments = bundle
+                            }
+
+                            mainActivity.supportFragmentManager.beginTransaction()
+                                .replace(R.id.fragmentContainerView_main, nextFragment)
+                                .addToBackStack(null)
+                                .commit()
+                        }
                     }
-
-                    mainActivity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerView_main, nextFragment)
-                        .addToBackStack(null)
-                        .commit()
                 }
             }
         }
