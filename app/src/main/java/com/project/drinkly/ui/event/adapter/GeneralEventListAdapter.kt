@@ -52,7 +52,7 @@ class GeneralEventListAdapter(
             textViewEventDescription.text = events?.get(position)?.description
 
             when(events?.get(position)?.status) {
-                "마감" -> {
+                "종료" -> {
                     layoutExpired.visibility = View.VISIBLE
                     textViewTagType.visibility = View.VISIBLE
                 }

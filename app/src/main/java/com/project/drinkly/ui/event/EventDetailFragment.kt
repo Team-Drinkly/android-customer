@@ -91,7 +91,7 @@ class EventDetailFragment : Fragment() {
                             }
                             textViewTagDay.setTextColor(resources.getColor(R.color.primary_50))
                         }
-                        "마감" -> {
+                        "종료" -> {
                             textViewTagType.run {
                                 setTextColor(resources.getColor(R.color.gray6))
                                 setBackgroundResource(R.drawable.background_gray8_radius6)
