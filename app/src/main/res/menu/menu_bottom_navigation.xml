@@ -13,8 +13,13 @@
         android:title="구독"
         app:showAsAction="always" />
     <item
+        android:id="@+id/menu_event"
+        android:icon="@drawable/ic_bottom_event"
+        android:title="이벤트"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_mypage"
         android:icon="@drawable/ic_bottom_mypage"
-        android:title="마이페이지"
+        android:title="마이"
         app:showAsAction="always" />
 </menu>

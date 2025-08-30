@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView_event"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/TopRoundSector10" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/layout_expired"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:scaleType="centerCrop"
+        android:background="#80000000"
+        app:shapeAppearanceOverlay="@style/TopRoundSector9"
+        app:layout_constraintEnd_toEndOf="@+id/imageView_event"
+        app:layout_constraintStart_toStartOf="@+id/imageView_event"
+        app:layout_constraintTop_toTopOf="@+id/imageView_event" />
+
+    <TextView
+        android:id="@+id/textView_tag_type"
+        style="@style/Nav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_gray8_radius6"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:text="종료"
+        android:textColor="@color/gray6"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/imageView_event"
+        app:layout_constraintTop_toTopOf="@+id/imageView_event" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="12dp"
+        android:background="@drawable/background_dialog_bottom_radius10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_event">
+
+        <TextView
+            android:id="@+id/textView_event_company"
+            style="@style/caption2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_event_title"
+            style="@style/SubTitle3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_event_company" />
+
+        <TextView
+            android:id="@+id/textView_event_description"
+            style="@style/body4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/gray5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_event_title" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

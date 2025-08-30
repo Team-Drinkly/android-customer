@@ -9,6 +9,11 @@ import com.project.drinkly.api.response.BaseResponse
 import com.project.drinkly.api.response.coupon.MembershipCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponListResponse
 import com.project.drinkly.api.response.coupon.StoreCouponResponse
+import com.project.drinkly.api.response.event.DrinklyEventResponse
+import com.project.drinkly.api.response.event.EventDetailResponse
+import com.project.drinkly.api.response.event.EventFriendInviteCodeResponse
+import com.project.drinkly.api.response.event.EventFriendInviteHistoryResponse
+import com.project.drinkly.api.response.event.GeneralEventResponse
 import com.project.drinkly.api.response.login.CheckNicknameDuplicateResponse
 import com.project.drinkly.api.response.login.LoginResponse
 import com.project.drinkly.api.response.login.NiceUrlResponse
@@ -235,6 +240,42 @@ interface ApiService {
         @Path("couponId") couponId: Long
     ): Call<BaseResponse<String?>>
 
+    /* 이벤트 관련 API (Event) */
+
+    // 드링클리 이벤트 리스트 조회
+    @GET("/api/v1/event/m")
+    fun getDrinklyEventList(): Call<BaseResponse<List<DrinklyEventResponse>>>
+
+    // 일반 이벤트 리스트 조회
+    @GET("/api/v1/event/m/external")
+    fun getGeneralEventList(): Call<BaseResponse<List<GeneralEventResponse>>>
+
+    // 일반 이벤트 상세 조회
+    @GET("/api/v1/event/m/{eventId}")
+    fun getEventDetail(
+        @Path("eventId") eventId: Long
+    ): Call<BaseResponse<EventDetailResponse>>
+
+    /* 이벤트 관련 API (친구 초대) */
+
+    // 친구 초대 이벤트 히스토리 조회
+    @GET("/api/v1/member/n/invite-history")
+    fun getEventFriendInviteHistory(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<EventFriendInviteHistoryResponse>>
+
+    // 친구 초대 이벤트 초대 코드 생성 및 조회
+    @GET("/api/v1/member/n/invite-history/code")
+    fun getEventFriendInviteCode(
+        @Header("Authorization") token: String
+    ): Call<BaseResponse<EventFriendInviteCodeResponse>>
+
+    // 친구 초대 이벤트 히스토리 생성
+    @POST("/api/v1/member/n/invite-history")
+    fun inviteWithEventFriendInviteCode(
+        @Header("Authorization") token: String,
+        @Header("invite-code") inviteCode: String
+    ): Call<BaseResponse<String?>>
 
     /* 결제 관련 API (Payment) */
 

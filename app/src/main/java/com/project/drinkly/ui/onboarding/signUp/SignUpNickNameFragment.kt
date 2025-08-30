@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.project.drinkly.R
 import com.project.drinkly.databinding.FragmentSignUpNicknameBinding
 import com.project.drinkly.ui.MainActivity
+import com.project.drinkly.ui.event.viewModel.EventViewModel
+import com.project.drinkly.ui.mypage.viewModel.MypageViewModel
 import com.project.drinkly.ui.onboarding.viewModel.LoginViewModel
 import com.project.drinkly.ui.store.StoreMapFragment
 import com.project.drinkly.util.GlobalApplication.Companion.mixpanel
@@ -22,7 +24,12 @@ class SignUpNickNameFragment : Fragment() {
 
     lateinit var binding: FragmentSignUpNicknameBinding
     lateinit var mainActivity: MainActivity
-    lateinit var viewModel: LoginViewModel
+    private val viewModel: LoginViewModel by lazy {
+        ViewModelProvider(requireActivity())[LoginViewModel::class.java]
+    }
+    private val myViewModel: MypageViewModel by lazy {
+        ViewModelProvider(requireActivity())[MypageViewModel::class.java]
+    }
 
     private val handler = Handler(Looper.getMainLooper())
     private var lastInputTime: Long = 0L
@@ -35,7 +42,6 @@ class SignUpNickNameFragment : Fragment() {
 
         binding = FragmentSignUpNicknameBinding.inflate(layoutInflater)
         mainActivity = activity as MainActivity
-        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         observeViewModel()
 
@@ -72,7 +78,18 @@ class SignUpNickNameFragment : Fragment() {
             buttonNext.setOnClickListener {
                 mixpanel.track("click_signup3", null)
 
-                viewModel.signUp(mainActivity, editTextNickname.text.toString())
+                viewModel.signUp(mainActivity, editTextNickname.text.toString()) {
+                    if(editTextCode.text.isNotEmpty()) {
+                        // 친구 초대 히스토리 생성
+                        viewModel.inviteWithEventFriendInviteCode(mainActivity, editTextCode.text.toString())
+                    }
+                    // 앱 다운로드 이벤트 쿠폰 발급
+                    myViewModel.getCoupon(mainActivity, "INITIAL")
+                    myViewModel.checkReserve(mainActivity)
+
+                    // 홈화면 이동
+                    mainActivity.setBottomNavigationHome()
+                }
             }
         }
 
