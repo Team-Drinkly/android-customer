@@ -5,185 +5,205 @@
     android:id="@+id/layout_store_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="14dp"
-    android:paddingVertical="15dp"
-    android:layout_marginBottom="15dp"
-    android:background="@drawable/background_card_radius10">
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imageView_store"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/RoundSector5"
-        app:srcCompat="@drawable/img_store_main_basic" />
+    android:layout_marginBottom="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_card_radius10"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView_store"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/layout_store_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
 
-            <TextView
-                android:id="@+id/textView_store_name"
-                style="@style/HeadLine5"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/imageView_store"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundSector5"
+            app:srcCompat="@drawable/img_store_main_basic" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView_store"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/layout_store_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/textView_store_name"
+                    style="@style/HeadLine5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:text="가게명" />
+
+                <TextView
+                    android:id="@+id/textView_distance"
+                    style="@style/caption1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="end"
+                    android:text="0km"
+                    android:textColor="@color/gray6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_store_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:minLines="1"
-                android:text="가게명" />
+                android:layout_marginTop="13dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/layout_store_name"
+                app:layout_constraintTop_toBottomOf="@+id/layout_store_name">
 
-            <TextView
-                android:id="@+id/textView_distance"
-                style="@style/caption1"
-                android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/imageView_store_time"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_time" />
+
+                <TextView
+                    android:id="@+id/textView_store_isOpen"
+                    style="@style/body2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:text="영업중"
+                    android:textColor="@color/gray1" />
+
+                <TextView
+                    android:id="@+id/textView_store_closeOrOpenTime"
+                    style="@style/caption1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:text="00:00 영업종료"
+                    android:textAlignment="center"
+                    android:textColor="@color/gray5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_store_call"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:layout_gravity="center"
-                android:text="0km"
-                android:textColor="@color/gray6" />
-        </LinearLayout>
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/layout_store_time"
+                app:layout_constraintTop_toBottomOf="@+id/layout_store_time">
 
-        <LinearLayout
-            android:id="@+id/layout_store_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/layout_store_name"
-            app:layout_constraintTop_toBottomOf="@+id/layout_store_name">
+                <ImageView
+                    android:id="@+id/imageView_store_call"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_call" />
 
-            <ImageView
-                android:id="@+id/imageView_store_time"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_time" />
+                <TextView
+                    android:id="@+id/textView_store_call"
+                    style="@style/body3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:text="00-000-0000"
+                    android:textColor="@color/gray5" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_store_available_drink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/layout_store_call"
+                app:layout_constraintTop_toBottomOf="@+id/layout_store_call">
+
+                <ImageView
+                    android:id="@+id/imageView_store_available_drink"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="top"
+                    app:srcCompat="@drawable/ic_crown" />
+
+                <TextView
+                    android:id="@+id/textView_store_available_drink"
+                    style="@style/body3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/gray3" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_store_unavailable"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/background_store_unavailable"
+            android:translationZ="1dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_store"
+            app:layout_constraintEnd_toEndOf="@+id/imageView_store"
+            app:layout_constraintStart_toStartOf="@+id/imageView_store"
+            app:layout_constraintTop_toTopOf="@+id/imageView_store">
 
             <TextView
-                android:id="@+id/textView_store_isOpen"
+                android:id="@+id/textView_store_unavailable"
                 style="@style/body2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:text="영업중"
-                android:textColor="@color/gray1" />
-
-            <TextView
-                android:id="@+id/textView_store_closeOrOpenTime"
-                style="@style/caption1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:text="00:00 영업종료"
+                android:text="지금은 멤버십\n이용이 불가합니다"
                 android:textAlignment="center"
-                android:textColor="@color/gray5" />
-        </LinearLayout>
+                android:textColor="@color/gray3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_store_call"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/layout_store_time"
-            app:layout_constraintTop_toBottomOf="@+id/layout_store_time">
-
-            <ImageView
-                android:id="@+id/imageView_store_call"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/ic_call" />
-
-            <TextView
-                android:id="@+id/textView_store_call"
-                style="@style/body3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:text="00-000-0000"
-                android:textColor="@color/gray5" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_store_available_drink"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/layout_store_call"
-            app:layout_constraintTop_toBottomOf="@+id/layout_store_call">
-
-            <ImageView
-                android:id="@+id/imageView_store_available_drink"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_gravity="top"
-                app:srcCompat="@drawable/ic_crown" />
-
-            <TextView
-                android:id="@+id/textView_store_available_drink"
-                style="@style/body3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="8dp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/gray3" />
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_store_unavailable"
+    <Space
+        android:id="@+id/space"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/background_store_unavailable"
-        android:visibility="visible"
-        android:translationZ="1dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView_store"
-        app:layout_constraintEnd_toEndOf="@+id/imageView_store"
-        app:layout_constraintStart_toStartOf="@+id/imageView_store"
-        app:layout_constraintTop_toTopOf="@+id/imageView_store">
-
-        <TextView
-            android:id="@+id/textView_store_unavailable"
-            style="@style/body2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="지금은 멤버십\n이용이 불가합니다"
-            android:textColor="@color/gray3"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="130dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
