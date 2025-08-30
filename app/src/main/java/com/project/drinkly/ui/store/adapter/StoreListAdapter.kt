@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.project.drinkly.R
@@ -12,6 +13,8 @@ import com.project.drinkly.api.response.store.StoreListResponse
 import com.project.drinkly.databinding.RowStoreListBinding
 import com.project.drinkly.ui.MainActivity
 import com.project.drinkly.util.MainUtil.formatDistance
+import com.project.drinkly.util.MainUtil.toPx
+import com.tbuonomo.viewpagerdotsindicator.pxToDp
 
 class StoreListAdapter(
     private var activity: MainActivity,
@@ -49,6 +52,11 @@ class StoreListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder.binding) {
+            if(position == (stores?.size ?: 0) - 1 ) {
+                space.visibility = View.VISIBLE
+            } else {
+                space.visibility = View.GONE
+            }
             textViewStoreName.text = stores?.get(position)?.storeName
             textViewStoreIsOpen.text = stores?.get(position)?.isOpen
             textViewStoreCloseOrOpenTime.text = stores?.get(position)?.openingInfo

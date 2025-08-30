@@ -8,13 +8,13 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_avaiable_drink"
-        android:layout_width="124dp"
-        android:layout_height="124dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/RoundSector5"
+        app:shapeAppearanceOverlay="@style/TopRoundSector10"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -22,8 +22,8 @@
         style="@style/body2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_card_radius10"
-        android:paddingHorizontal="23.5dp"
+        android:background="@drawable/background_card_bottom_radius10"
+        android:paddingHorizontal="5dp"
         android:paddingVertical="5.5dp"
         android:text="drink"
         android:textAlignment="center"
