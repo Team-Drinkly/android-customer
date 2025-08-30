@@ -7,8 +7,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView_store_menu"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:scaleType="centerCrop"
         app:shapeAppearanceOverlay="@style/RoundSector5"
         app:layout_constraintBottom_toBottomOf="parent"
