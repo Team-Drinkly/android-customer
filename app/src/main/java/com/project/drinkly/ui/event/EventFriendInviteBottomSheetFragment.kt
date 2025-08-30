@@ -61,15 +61,15 @@ class EventFriendInviteBottomSheetFragment(var activity: MainActivity, var code:
             buttonShareLink.setOnClickListener {
                 // 초대 링크 복사
                 var inviteLink =
-                        "[친구 초대 이벤트 \uD83C\uDF81]\n" +
-                        "드링클리는 제휴 술집에서 술 한 잔 혜택과 쿠폰을 받을 수 있는 멤버십 앱이에요.\n" +
-                        "\n" +
-                        "가입하실 때 아래 초대코드를 입력해주시면, 초대한 분이 멤버십 구독권을 받을 수 있어요. 친구와 함께 가볍게 한 잔 하러 가요\uD83C\uDF7B\n" +
-                        "\n" +
-                        "초대코드: $code\n" +
-                        "\n" +
-                        "지금 바로 드링클리 다운받기 \n" +
-                        "\uD83D\uDC49 https://tosto.re/drinkly"
+                                "[친구 초대 이벤트 \uD83C\uDF81]\n" +
+                                "드링클리는 제휴 매장에서 술 한 잔 혜택과 쿠폰을 받을 수 있는 멤버십 앱이에요.\n" +
+                                "\n" +
+                                "가입하실 때 아래 초대코드를 입력해주시면, 초대한 분이 멤버십 구독권을 받을 수 있어요. 친구와 함께 가볍게 한 잔 하러 가요!\n" +
+                                "\n" +
+                                "\uD83D\uDCCD 초대코드: ${code}\n" +
+                                "\n" +
+                                "지금 바로 드링클리 다운받기\n" +
+                                "https://tosto.re/drinkly"
                 copyLinkToClipboard(requireContext(), inviteLink, "초대 링크가 복사되었어요")
             }
 
